@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,7 +33,17 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-import eu.tamrielcraft.TCSkills.main.SettingsManager;
+import eu.tamrielcraft.TCSkills.event.LeavingListener;
+import eu.tamrielcraft.TCSkills.races.Argonian;
+import eu.tamrielcraft.TCSkills.races.Breton;
+import eu.tamrielcraft.TCSkills.races.DarkElves;
+import eu.tamrielcraft.TCSkills.races.HighElves;
+import eu.tamrielcraft.TCSkills.races.Imperials;
+import eu.tamrielcraft.TCSkills.races.Khajiit;
+import eu.tamrielcraft.TCSkills.races.Nords;
+import eu.tamrielcraft.TCSkills.races.Orcs;
+import eu.tamrielcraft.TCSkills.races.RedGuard;
+import eu.tamrielcraft.TCSkills.races.WoodElves;
 
 public class Main extends JavaPlugin implements Listener {
 	Logger logger = Logger.getLogger("Minecraft");
@@ -763,4 +774,3 @@ public class Main extends JavaPlugin implements Listener {
 	}
 	
 }
-
