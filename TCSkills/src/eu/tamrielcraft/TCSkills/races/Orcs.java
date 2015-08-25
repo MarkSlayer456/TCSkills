@@ -27,7 +27,7 @@ public class Orcs implements Listener {
 	
 	
 	public static String details() {
-		return "More health and recive 1 lvl after enchanting and repairing"; //TODO spell check and see if possible
+		return "More health and receive 1 lvl after enchanting and repairing"; //TODO spell check and see if possible
 	}
 
 }

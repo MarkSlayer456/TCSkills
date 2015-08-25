@@ -115,7 +115,7 @@ public class Magic implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void playerInteractEvent(PlayerInteractEvent e) {
-		Player player = (Player) e.getPlayer();
+		final Player player = (Player) e.getPlayer();
 		if(e.getAction() == Action.RIGHT_CLICK_AIR && player.getItemInHand().getType() == Material.STICK || e.getAction() == Action.RIGHT_CLICK_BLOCK && player.getItemInHand().getType() == Material.STICK) {
 			if(settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.holder." + 1) == null) {
 				player.sendMessage(ChatColor.RED + "You have no spells favorited! Do /favorite spell <spell name> to favorite some!");
@@ -213,7 +213,7 @@ public class Magic implements Listener {
 					golemTimerSystemInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() { //Timer
 						@Override
 						public void run() {
-							if(golemTimerSystemIntHM.get(player) == null || golemTimerSystemIntHM.get(player) == 0) {
+							/*if(golemTimerSystemIntHM.get(player) == null || golemTimerSystemIntHM.get(player) == 0) {
 							golemTimerSystemIntHM.put(player, golemTimerSystemInt);
 							}
 							if(golemTime.get(golem) <= 0) {
@@ -241,13 +241,13 @@ public class Magic implements Listener {
 								}
 							} else {
 								golemTime.replace(golem, golemTime.get(golem) - 1);
-							}
+							}*/
 						}
 					}, 0, 20);
 					golemTargetingSystemInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() { //IRON GOLEM TARGETING SYSTEM
 						@Override
 						public void run() { //DOESN'T NEED TO RESET GOLEM BECASUE IT'S JUST THE TARGETING SYSTEM
-							if(golemTargetingSystemIntHM.get(player) == null || golemTargetingSystemIntHM.get(player) == 0) {
+							/*if(golemTargetingSystemIntHM.get(player) == null || golemTargetingSystemIntHM.get(player) == 0) {
 							golemTargetingSystemIntHM.put(player, golemTargetingSystemInt);
 							}
 							for(Entity entity : golem.getNearbyEntities(7, 7, 7)) {
@@ -263,13 +263,13 @@ public class Magic implements Listener {
 								}
 								if(golem.getTarget() == null) {
 								}
-							}
+							}*/
 						}
 					}, 0, 5);
 					golemHealthSystemInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() { //HEALTH TRACKING SYSTEM
 						@Override
 						public void run() {
-							if(golemHealthSystemIntHM.get(player) == null || golemHealthSystemIntHM.get(player) == 0) {
+							/*if(golemHealthSystemIntHM.get(player) == null || golemHealthSystemIntHM.get(player) == 0) {
 							golemHealthSystemIntHM.put(player, golemHealthSystemInt);
 							}
 							if(golem.getHealth() <= 200) {
@@ -298,7 +298,7 @@ public class Magic implements Listener {
 									}
 									return;
 								}
-							}
+							}*/
 						}
 					}, 0, 1);	
 					
@@ -327,7 +327,7 @@ public class Magic implements Listener {
 				double oz = player.getLocation().getZ();
 				World ow = player.getWorld();
 				wolfP.put(player, player.getWorld().spawn(new Location(ow, ox + 2, oy + 1, oz), Wolf.class));
-				Wolf wolf = wolfP.get(player);
+				final Wolf wolf = wolfP.get(player);
 				wolf.setTamed(true);
 				wolf.setOwner(player);
 				wolf.setLeashHolder(player);
@@ -346,7 +346,7 @@ public class Magic implements Listener {
 						if(wolfTime.get(wolf) <= 0) {
 							wolf.setLeashHolder(null);
 							if(wolfB.get(player) == false) {
-								wolfB.replace(player, true);	
+								//TODO: wolfB.replace(player, true);	
 							Bukkit.getScheduler().cancelTask(wolfTimerSystemIntHM.get(player));
 							Bukkit.getScheduler().cancelTask(wolfHealthSystemIntHM.get(player));
 							Bukkit.getScheduler().cancelTask(wolfTargetingSystemIntHM.get(player));
@@ -367,7 +367,7 @@ public class Magic implements Listener {
 							return;
 							}
 						} else {
-							wolfTime.replace(wolf, wolfTime.get(wolf) - 1);
+							// wolfTime.replace(wolf, wolfTime.get(wolf) - 1); //TODO
 						}
 						}
 				}, 0, 20);
@@ -417,7 +417,7 @@ public class Magic implements Listener {
 							player.sendMessage(ChatColor.DARK_RED + "Your Wolf was slain by " + wolf.getKiller().getName().toString());
 							}
 							if(wolfB.get(player) == false) {
-								wolfB.replace(player, true);	
+								//TODO: wolfB.replace(player, true);	
 							Bukkit.getScheduler().cancelTask(wolfTimerSystemIntHM.get(player));
 							Bukkit.getScheduler().cancelTask(wolfHealthSystemIntHM.get(player));
 							Bukkit.getScheduler().cancelTask(wolfTargetingSystemIntHM.get(player));
@@ -451,7 +451,7 @@ public class Magic implements Listener {
 					return;
 				}
 				if(score.getScore() >= 35) {
-				Item fireCharge = player.getWorld().dropItemNaturally(blockL1, rune);
+				final Item fireCharge = player.getWorld().dropItemNaturally(blockL1, rune);
 				wasSpawnedIn.add(fireCharge);
 				runeP.put(player, fireCharge);
 				score.setScore(score.getScore() - 35);
@@ -491,7 +491,7 @@ public class Magic implements Listener {
 				Block block = player.getTargetBlock((HashSet<Byte>)null, 200);
 				Location blockL = block.getLocation();
 				ItemStack rune = new ItemStack(Material.SNOW_BALL);
-				Item snowBall = player.getWorld().dropItemNaturally(blockL, rune);
+				final Item snowBall = player.getWorld().dropItemNaturally(blockL, rune);
 				wasSpawnedIn.add(snowBall);
 				runeP.put(player, snowBall);
 				score.setScore(score.getScore() - 35);
@@ -530,7 +530,7 @@ public class Magic implements Listener {
 				Block block = player.getTargetBlock((HashSet<Byte>)null, 200);
 				Location blockL = block.getLocation();
 				ItemStack rune = new ItemStack(Material.NETHER_STAR);
-				Item netherStar = player.getWorld().dropItemNaturally(blockL, rune);
+				final Item netherStar = player.getWorld().dropItemNaturally(blockL, rune);
 				wasSpawnedIn.add(netherStar);
 				runeP.put(player, netherStar);
 				runeHM.put(netherStar, player);
