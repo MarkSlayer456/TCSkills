@@ -56,9 +56,6 @@ public class Magic implements Listener {
 	public static HashMap<Player, IronGolem> golemP = new HashMap<Player, IronGolem>();
 	public static HashMap<Player, Boolean> golemB = new HashMap<Player, Boolean>();
 	
-	
-	
-	
 	public static HashMap<Wolf, Player> wolfHM = new HashMap<Wolf, Player>();
 	public static HashMap<Wolf, Integer> wolfTime = new HashMap<Wolf, Integer>();
 	public static HashMap<Player, Integer> wolfTimerSystemIntHM = new HashMap<Player, Integer>();
@@ -77,6 +74,23 @@ public class Magic implements Listener {
 	//TODO MAKE RUNES HAVE SEPERTATE HASHAMPS
 	//TODO MAKE FAST HEALING CHECK TO SEE YOUR HEALTH
 	//TODO MAKE RUNES BLOCK ENTITIES (FIRECHARGE)
+	
+	//TODO ---> !!!!WHAT ARE YOU DOING ABOUT THE GOLEMS DO YOU WANT TO MAKE METHODS TO DISABLE THEM? AND OTHER METHODS FOR THE TIMER AND THINGS?!!!! <---
+	public void resetGolem() { //TODO if this wasn't what your plans were you can delete them
+		
+	}
+	
+	public void resetWolf() {
+		
+	}
+	
+	public boolean golemDisabled() {
+		return true;
+	}
+	
+	public boolean wolfDisabled() {
+		return true;
+	}
 	
 	
 	private int fireRuneTimerInt;
@@ -101,7 +115,6 @@ public class Magic implements Listener {
 		}
 	}
 	
-	
 	public boolean regeningMagic = false;
 	
 	@EventHandler
@@ -120,7 +133,6 @@ public class Magic implements Listener {
 			if(settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.holder." + 1) == null) {
 				player.sendMessage(ChatColor.RED + "You have no spells favorited! Do /favorite spell <spell name> to favorite some!");
 			} else {
-				//if(settings.getRaces().getString("magic." + player.getUniqueId() + ".favorites.holder." + settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.on") + 1) == null) {
 					if(settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.on") >= 3) {
 						settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.on", 0);
 					}
@@ -141,26 +153,6 @@ public class Magic implements Listener {
 				String spell = settings.getRaces().getString("magic." + player.getUniqueId() + ".favorites.holder." + settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.on"));
 				settings.saveRaces();
 				Bukkit.dispatchCommand(player, "spell " + spell);
-				//} 
-				
-				/*else {
-					if(settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.on") >= 3) {
-						settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.on", 0);
-					}
-			settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
-			settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
-			settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
-			settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
-			settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
-			settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
-			settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
-			settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
-			settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
-			settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.on", settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.on") + 1);
-			String spell = settings.getRaces().getString("magic." + player.getUniqueId() + ".favorites.holder." + settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.on"));
-			settings.saveRaces();
-			Bukkit.dispatchCommand(player, "spell " + spell);
-				}*/
 			}
 		}
 		if(e.getAction() == Action.LEFT_CLICK_AIR && player.getItemInHand().getType() == Material.STICK) {
@@ -462,7 +454,7 @@ public class Magic implements Listener {
 						if(wasSpawnedIn.contains(fireCharge)) {
 							for(Entity entity : fireCharge.getNearbyEntities(5, 5, 5)) {
 								if(entity instanceof LivingEntity) {
-									if(!runeP.containsKey(entity)) {
+									if(runeHM.get(fireCharge) == player) {
 									fireCharge.remove();
 									entity.setFireTicks(200);
 									((LivingEntity) entity).damage(2);
@@ -470,12 +462,12 @@ public class Magic implements Listener {
 										}
 								}
 							}
-						} else {
+						} /*else { //TODO not sure if this is needed (if this one is needed the other is!)
 							Bukkit.getScheduler().cancelTask(fireRuneTimerIntHM.get(player));
 							fireRuneTimerIntHM.remove(player);
 							runeP.remove(player);
 							player.sendMessage(ChatColor.GREEN + "Someone has trigged your fire rune!");
-						}
+						}*/
 					}
 				}, 0, 1);
 				} else {
@@ -502,7 +494,7 @@ public class Magic implements Listener {
 						if(wasSpawnedIn.contains(snowBall)) {
 							for(Entity entity : snowBall.getNearbyEntities(5, 5, 5)) {
 								if(entity instanceof LivingEntity) {
-									if(!runeP.containsKey(entity)) {
+									if(runeHM.get(snowBall) == player) {
 									((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 200, 1));
 									((LivingEntity) entity).damage(2);
 									wasSpawnedIn.remove(snowBall);
@@ -510,12 +502,12 @@ public class Magic implements Listener {
 									}
 								}
 							}
-						} else {
+						} /*else { //TODO not sure this is needed
 							Bukkit.getScheduler().cancelTask(iceRuneTimerIntHM.get(player));
 							iceRuneTimerIntHM.remove(player);
 							runeP.remove(player);
 							player.sendMessage(ChatColor.GREEN + "Someone has trigged your ice rune!");
-						}
+						}*/
 					}
 				}, 0, 1);
 				} else {
@@ -543,7 +535,7 @@ public class Magic implements Listener {
 							for(Entity entity : netherStar.getNearbyEntities(5, 5, 5)) {
 								if(entity instanceof LivingEntity) {
 									if(entity instanceof Player) {
-										if(runeHM.get(netherStar) != null) {
+										if(runeHM.get(netherStar) == player) {
 											entity.getWorld().strikeLightningEffect(entity.getLocation());
 											((LivingEntity) entity).damage(4);
 											wasSpawnedIn.remove(netherStar);

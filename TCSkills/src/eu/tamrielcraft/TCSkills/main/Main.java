@@ -2,49 +2,17 @@ package eu.tamrielcraft.TCSkills.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import eu.tamrielcraft.TCSkills.event.EventListener;
 import eu.tamrielcraft.TCSkills.event.LeavingListener;
-import eu.tamrielcraft.TCSkills.races.Argonian;
-import eu.tamrielcraft.TCSkills.races.Breton;
-import eu.tamrielcraft.TCSkills.races.DarkElves;
-import eu.tamrielcraft.TCSkills.races.HighElves;
-import eu.tamrielcraft.TCSkills.races.Imperials;
-import eu.tamrielcraft.TCSkills.races.Khajiit;
-import eu.tamrielcraft.TCSkills.races.Nords;
-import eu.tamrielcraft.TCSkills.races.Orcs;
-import eu.tamrielcraft.TCSkills.races.RedGuard;
-import eu.tamrielcraft.TCSkills.races.WoodElves;
 
 public class Main extends JavaPlugin implements Listener {
 	Logger logger = Logger.getLogger("Minecraft");

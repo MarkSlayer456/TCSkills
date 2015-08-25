@@ -241,7 +241,7 @@ public class Commands implements CommandExecutor{
 				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
 				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
 				settings.saveRaces();
-				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FAMILIAR " + ChatColor.GOLD + "spell"); //TODO finish this! THINK THIS IS FINISHED DOUBLE CHECK
+				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FAMILIAR " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("firerune") || args[0].equalsIgnoreCase("fr"))  {
 				if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".firerune") == true) {
 					settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
