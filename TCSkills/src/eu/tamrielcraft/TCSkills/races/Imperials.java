@@ -13,9 +13,20 @@ import org.bukkit.inventory.ItemStack;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 
-public class Imperials implements Listener {
+public class Imperials extends Race implements Listener {
 	
 	static SettingsManager settings = SettingsManager.getInstance();
+	
+	static Imperials instance = new Imperials();
+    
+    public static Imperials getInstance() {
+            return instance;
+    }
+	
+    @Override
+	public String formatChat(String s) {
+    	return s.replace(s, "[Imperials]" + s);
+	}
 	
 	
 	@EventHandler

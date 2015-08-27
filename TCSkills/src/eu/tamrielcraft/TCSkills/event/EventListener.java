@@ -28,8 +28,20 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
+import eu.tamrielcraft.TCSkills.races.Argonian;
+import eu.tamrielcraft.TCSkills.races.Breton;
+import eu.tamrielcraft.TCSkills.races.DarkElves;
+import eu.tamrielcraft.TCSkills.races.HighElves;
+import eu.tamrielcraft.TCSkills.races.Imperials;
+import eu.tamrielcraft.TCSkills.races.Khajiit;
+import eu.tamrielcraft.TCSkills.races.Nords;
+import eu.tamrielcraft.TCSkills.races.Orcs;
+import eu.tamrielcraft.TCSkills.races.RedGuard;
+import eu.tamrielcraft.TCSkills.races.WoodElves;
 
 public class EventListener implements Listener{
+	
+	//TODO: The getRace should be implemented in the settings and should give back an abstract Race object
 	
 	private Plugin plugin;
 	private SettingsManager settings;
@@ -49,25 +61,25 @@ public class EventListener implements Listener{
 		String format = e.getFormat();
 		Player player = e.getPlayer();
 		if(settings.getRaces().get("argonians." + player.getUniqueId()) != null) {
-			format = format.replace(format, "[Argonian]" + format);
+			format = Argonian.getInstance().formatChat(format);
 		} else if(settings.getRaces().get("bretons." + player.getUniqueId()) != null) {
-			format = format.replace(format, "[Breton]" + format);
+			format = Breton.getInstance().formatChat(format);
 		} else if(settings.getRaces().get("darkelves." + player.getUniqueId()) != null) {
-			format = format.replace(format, "[DarkElf]" + format);
+			format = DarkElves.getInstance().formatChat(format);
 		} else if(settings.getRaces().get("highelves." + player.getUniqueId()) != null) {
-			format = format.replace(format, "[HighElf]" + format);
+			format = HighElves.getInstance().formatChat(format);
 		} else if(settings.getRaces().get("imperials." + player.getUniqueId()) != null) {
-			format = format.replace(format, "[Imperial]" + format);
+			format = Imperials.getInstance().formatChat(format);
 		} else if(settings.getRaces().get("khajiits." + player.getUniqueId()) != null) {
-			format = format.replace(format, "[Khajiit]" + format);
+			format = Khajiit.getInstance().formatChat(format);
 		} else if(settings.getRaces().get("nords." + player.getUniqueId()) != null) {
-			format = format.replace(format, "[Nord]" + format);
+			format = Nords.getInstance().formatChat(format);
 		} else if(settings.getRaces().get("orcs." + player.getUniqueId()) != null) {
-			format = format.replace(format, "[Orc]" + format);
+			format = Orcs.getInstance().formatChat(format);
 		} else if(settings.getRaces().get("redguards." + player.getUniqueId()) != null) {
-			format = format.replace(format, "[RedGuard]" + format);
+			format = RedGuard.getInstance().formatChat(format);
 		} else if(settings.getRaces().get("woodelves." + player.getUniqueId()) != null) {
-			format = format.replace(format, "[WoodElf]" + format);
+			format = WoodElves.getInstance().formatChat(format);
 		}
 		e.setFormat(format);
 	}

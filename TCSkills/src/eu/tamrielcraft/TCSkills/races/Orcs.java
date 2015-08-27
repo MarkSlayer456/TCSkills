@@ -8,9 +8,20 @@ import org.bukkit.event.player.PlayerLevelChangeEvent;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 
-public class Orcs implements Listener {
+public class Orcs extends Race implements Listener {
 
 	static SettingsManager settings = SettingsManager.getInstance();
+	
+	static Orcs instance = new Orcs();
+    
+    public static Orcs getInstance() {
+            return instance;
+    }
+	
+    @Override
+	public String formatChat(String s) {
+    	return s.replace(s, "[Orc]" + s);
+	}
 	
 	@EventHandler
 	public void playerEnchantEvent(PlayerLevelChangeEvent e) {

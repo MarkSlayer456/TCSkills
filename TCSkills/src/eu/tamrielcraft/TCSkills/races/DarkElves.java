@@ -7,9 +7,22 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 
-public class DarkElves implements Listener {
+public class DarkElves extends Race implements Listener {
 	static SettingsManager settings = SettingsManager.getInstance();
 	
+	static DarkElves instance = new DarkElves();
+    
+    public static DarkElves getInstance() {
+            return instance;
+    }
+	
+	@Override
+	public String formatChat(String s) {
+		return s.replace(s, "[DarkElf]" + s);
+	}
+	
+	
+	//TODO: events should all be handled within the EventListener class = more organization
 	@EventHandler
 	public void playerBurnEvent(EntityDamageEvent e) {
 		if(e.getEntity() instanceof Player) {
