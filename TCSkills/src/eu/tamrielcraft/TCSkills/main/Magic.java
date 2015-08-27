@@ -3,7 +3,6 @@ package eu.tamrielcraft.TCSkills.main;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -462,12 +461,12 @@ public class Magic implements Listener {
 										}
 								}
 							}
-						} /*else { //TODO not sure if this is needed (if this one is needed the other is!)
+						} else { 
 							Bukkit.getScheduler().cancelTask(fireRuneTimerIntHM.get(player));
 							fireRuneTimerIntHM.remove(player);
 							runeP.remove(player);
 							player.sendMessage(ChatColor.GREEN + "Someone has trigged your fire rune!");
-						}*/
+						}
 					}
 				}, 0, 1);
 				} else {
@@ -502,12 +501,12 @@ public class Magic implements Listener {
 									}
 								}
 							}
-						} /*else { //TODO not sure this is needed
+						} else {
 							Bukkit.getScheduler().cancelTask(iceRuneTimerIntHM.get(player));
 							iceRuneTimerIntHM.remove(player);
 							runeP.remove(player);
 							player.sendMessage(ChatColor.GREEN + "Someone has trigged your ice rune!");
-						}*/
+						}
 					}
 				}, 0, 1);
 				} else {

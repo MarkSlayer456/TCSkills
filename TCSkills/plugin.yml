@@ -1,0 +1,31 @@
+name: Elder_Scrolls_Races
+version: 1.0.0
+main: races.Main
+author: MarkSlayer456
+description: A race plugin!
+
+commands:
+  race:
+    description: base race command!
+    usage: /<command> <command>
+  r:
+    description: base race command!
+    usage: /<command> <command>
+  spell:
+    description: base spell command!
+    usage: /<command> <command>
+  s:
+    description: base spell command!
+    usage: /<command> <command>
+  magicregen:
+    description: regens magic super fast
+    usage: /<command>
+  mr:
+    description: regens magic magicly fast
+    usage: /<command>
+  favorite:
+    description: adds a favorite spell
+    usage: /<command> <command>
+  fav:
+    description: adds a favorite spell
+    usage: /<command> <command>
