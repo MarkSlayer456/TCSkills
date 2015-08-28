@@ -2,12 +2,27 @@ package eu.tamrielcraft.TCSkills.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
+
+import eu.tamrielcraft.TCSkills.races.Argonian;
+import eu.tamrielcraft.TCSkills.races.Breton;
+import eu.tamrielcraft.TCSkills.races.DarkElves;
+import eu.tamrielcraft.TCSkills.races.HighElves;
+import eu.tamrielcraft.TCSkills.races.Imperials;
+import eu.tamrielcraft.TCSkills.races.Khajiit;
+import eu.tamrielcraft.TCSkills.races.Nords;
+import eu.tamrielcraft.TCSkills.races.Orcs;
+import eu.tamrielcraft.TCSkills.races.Race;
+import eu.tamrielcraft.TCSkills.races.RedGuard;
+import eu.tamrielcraft.TCSkills.races.WoodElves;
 
 public class SettingsManager {
 	 private SettingsManager() { }
@@ -26,6 +41,33 @@ public class SettingsManager {
      FileConfiguration races;
      File rfile;
     
+     public Race getRace(Player player) { 
+ 		UUID id = player.getUniqueId();
+ 		if(getRaces().get("argonians." + id ) != null) {
+ 			return Argonian.getInstance();
+ 		} else if(getRaces().get("bretons." + id) != null) {
+ 			return Breton.getInstance();
+ 		} else if(getRaces().get("darkelves." + id) != null) {
+ 			return DarkElves.getInstance();
+ 		} else if(getRaces().get("highelves." + id) != null) {
+ 			return HighElves.getInstance();
+ 		} else if(getRaces().get("imperials." + id) != null) {
+ 			return Imperials.getInstance();
+ 		} else if(getRaces().get("khajiits." + id) != null) {
+ 			return Khajiit.getInstance();
+ 		} else if(getRaces().get("nords." + id) != null) {
+ 			return Nords.getInstance();
+ 		} else if(getRaces().get("orcs." + id) != null) {
+ 			return Orcs.getInstance();
+ 		} else if(getRaces().get("redguards." + id) != null) {
+ 			return RedGuard.getInstance();
+ 		} else if(getRaces().get("woodelves." + id) != null) {
+ 			return WoodElves.getInstance();
+ 		} else {
+ 			return null;
+ 		}
+     }
+     
      public void setup(Plugin p) {
              cfile = new File(p.getDataFolder(), "config.yml");
              config = p.getConfig();

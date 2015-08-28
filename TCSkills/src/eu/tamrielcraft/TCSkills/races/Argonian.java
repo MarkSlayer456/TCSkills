@@ -14,7 +14,7 @@ public class Argonian extends Race{
     }	
 	
     @Override
-	public String formatChat(String s){
+	public String formatChat(String s) {
 		return s.replace(s, "[Argonian]" + s);
 	}
 	

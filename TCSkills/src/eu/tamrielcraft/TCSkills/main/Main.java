@@ -3,6 +3,7 @@ package eu.tamrielcraft.TCSkills.main;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,7 +18,7 @@ import eu.tamrielcraft.TCSkills.event.LeavingListener;
 public class Main extends JavaPlugin implements Listener {
 	Logger logger = Logger.getLogger("Minecraft");
 	
-	static SettingsManager settings = SettingsManager.getInstance(); //this should still work even if private make private from now on!
+	static SettingsManager settings = SettingsManager.getInstance();
 	
 	//TODO add groups so summons don't attack certain players!
 	//TODO add usable scroll spells

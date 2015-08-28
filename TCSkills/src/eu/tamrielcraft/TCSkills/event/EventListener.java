@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -51,9 +52,21 @@ public class EventListener implements Listener{
 	private ArrayList<String> sneakCoolDown = new ArrayList<String>();
 	private ArrayList<String> sneakMessage = new ArrayList<String>();
 	
-	public EventListener(Plugin plugin, SettingsManager settings){
+	public EventListener(Plugin plugin, SettingsManager settings) {
 		this.settings = settings;
 		this.plugin = plugin;
+	}
+	
+	@EventHandler
+	public void playerBurnEvent(EntityDamageEvent e) {
+		if(e.getEntity() instanceof Player) {
+			Player player = (Player) e.getEntity();
+			if(settings.getRaces().get("darkelves." + player.getUniqueId()) != null) {
+				if(player.getFireTicks() != 0) {
+					e.setDamage(e.getDamage() / 2);
+				}
+			}
+		}
 	}
 	
 	@EventHandler
