@@ -41,7 +41,7 @@ public class SettingsManager {
      FileConfiguration races;
      File rfile;
     
-     public Race getRace(Player player) { 
+     public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
  		if(getRaces().get("argonians." + id ) != null) {
  			return Argonian.getInstance();
