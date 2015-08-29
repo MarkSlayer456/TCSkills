@@ -17,10 +17,6 @@ public class HighElves extends Race{
 	public String formatChat(String s) {
     	return s.replace(s, "[HighElf]" + s);
 	}
-    
-	public void activate() {
-		
-	}
 	
 	public String details() {
 		return "50 points of extra magic";

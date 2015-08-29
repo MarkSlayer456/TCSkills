@@ -18,10 +18,6 @@ public class Nords extends Race{
     	return s.replace(s, "[Nord]" + s);
 	}
 	
-	public void activate() {
-		
-	}
-	
 	public String details() {
 		return "50% more resistance to negative potion effects";
 	}

@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -55,6 +56,18 @@ public class EventListener implements Listener{
 	public EventListener(Plugin plugin, SettingsManager settings) {
 		this.settings = settings;
 		this.plugin = plugin;
+	}
+	
+	@EventHandler
+	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
+		Player player = (Player) e.getPlayer();
+		if(settings.getRaces().get("orcs." + player.getUniqueId()) != null) {
+			if(e.getNewLevel() < e.getOldLevel()) {
+			player.sendMessage(ChatColor.GOLD + "Your orc powers helped you keep a level!");
+			player.setLevel(player.getLevel() + 1);
+			player.updateInventory(); //TODO might not need this
+			}
+		}
 	}
 	
 	@EventHandler

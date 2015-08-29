@@ -17,11 +17,6 @@ public class Breton extends Race {
 		return s.replace(s, "[Breton]" + s);
 	}
 	
-	
-	public void activate() {
-		// TODO	
-	}
-	
 	public String details() {
 		return "50 points of extra magic";
 	}

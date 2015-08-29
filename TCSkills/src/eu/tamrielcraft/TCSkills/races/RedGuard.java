@@ -17,12 +17,7 @@ public class RedGuard extends Race{
 	public String formatChat(String s) {
     	return s.replace(s, "[RedGuard]" + s);
 	}
-	
-	
-	public void activate() {
-		
-	}
-	
+    
 	public String details() {
 		return "Food doesn't drop below four and weapons do 5% more damage";
 	}

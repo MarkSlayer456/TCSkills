@@ -18,10 +18,6 @@ public class Khajiit extends Race{
     	return s.replace(s, "[Khajiit]" + s);
 	}
 	
-	public void activate() {
-		
-	}
-	
 	public String details() {
 		return "Fist do 100% more damage and invisablity while sneaking (wears off if hit or if you hit someone)";
 	}
