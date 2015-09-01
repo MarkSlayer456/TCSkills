@@ -31,8 +31,8 @@ public class LeavingListener implements Listener {
 		@SuppressWarnings("deprecation")
 		Score score = magic.getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + "Magic:"));
 		
-		settings.getRaces().set("magic.amount." + player.getUniqueId(), score.getScore());
-		settings.saveRaces();
+		settings.getSave().set("magic.amount." + player.getUniqueId(), score.getScore());
+		settings.saveSave();
 		
 		if(Magic.golemHM.containsValue(player)) {
 			IronGolem golem = Magic.golemP.get(player);
@@ -68,7 +68,7 @@ public class LeavingListener implements Listener {
 			}
 		}
 		
-		settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.on", 0);
+		settings.getSave().set("magic." + player.getUniqueId() + ".favorites.on", 0);
 		
 		
 		

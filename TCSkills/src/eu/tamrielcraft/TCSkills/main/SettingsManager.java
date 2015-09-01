@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
+import eu.tamrielcraft.TCSkills.classes.Classes;
+import eu.tamrielcraft.TCSkills.classes.Dwarf;
 import eu.tamrielcraft.TCSkills.races.Argonian;
 import eu.tamrielcraft.TCSkills.races.Breton;
 import eu.tamrielcraft.TCSkills.races.DarkElves;
@@ -32,41 +34,52 @@ public class SettingsManager {
      public static SettingsManager getInstance() {
              return instance;
      }
-    
+     
      Plugin p;
     
      FileConfiguration config;
      File cfile;
     
-     FileConfiguration races;
-     File rfile;
+     FileConfiguration save;
+     File sfile;
     
      public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
- 		if(getRaces().get("argonians." + id ) != null) {
+ 		if(getSave().get("argonians." + id) != null) {
  			return Argonian.getInstance();
- 		} else if(getRaces().get("bretons." + id) != null) {
+ 		} else if(getSave().get("bretons." + id) != null) {
  			return Breton.getInstance();
- 		} else if(getRaces().get("darkelves." + id) != null) {
+ 		} else if(getSave().get("darkelves." + id) != null) {
  			return DarkElves.getInstance();
- 		} else if(getRaces().get("highelves." + id) != null) {
+ 		} else if(getSave().get("highelves." + id) != null) {
  			return HighElves.getInstance();
- 		} else if(getRaces().get("imperials." + id) != null) {
+ 		} else if(getSave().get("imperials." + id) != null) {
  			return Imperials.getInstance();
- 		} else if(getRaces().get("khajiits." + id) != null) {
+ 		} else if(getSave().get("khajiits." + id) != null) {
  			return Khajiit.getInstance();
- 		} else if(getRaces().get("nords." + id) != null) {
+ 		} else if(getSave().get("nords." + id) != null) {
  			return Nords.getInstance();
- 		} else if(getRaces().get("orcs." + id) != null) {
+ 		} else if(getSave().get("orcs." + id) != null) {
  			return Orcs.getInstance();
- 		} else if(getRaces().get("redguards." + id) != null) {
+ 		} else if(getSave().get("redguards." + id) != null) {
  			return RedGuard.getInstance();
- 		} else if(getRaces().get("woodelves." + id) != null) {
+ 		} else if(getSave().get("woodelves." + id) != null) {
  			return WoodElves.getInstance();
  		} else {
  			return null;
  		}
      }
+     
+	public Classes getClass(Player player) {
+    	 UUID id = player.getUniqueId();
+    	 if(getSave().get(id + ".class").equals("dwarf")) {
+    		 return Dwarf.getInstance();
+    	 } else {
+    		 return null;
+    	 }
+     }
+     
+     
      
      public void setup(Plugin p) {
              cfile = new File(p.getDataFolder(), "config.yml");
@@ -78,49 +91,49 @@ public class SettingsManager {
                      p.getDataFolder().mkdir();
              }
             
-             rfile = new File(p.getDataFolder(), "races.yml");
+             sfile = new File(p.getDataFolder(), "save.yml");
             
-             if (!rfile.exists()) {
+             if (!sfile.exists()) {
                      try {
-                             rfile.createNewFile();
+                             sfile.createNewFile();
                      }
                      catch (IOException e) {
-                             Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create races.yml!");
+                             Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create save.yml!");
                      }
              }
             
-             races = YamlConfiguration.loadConfiguration(rfile);
+             save = YamlConfiguration.loadConfiguration(sfile);
              
              if(!p.getDataFolder().exists()) {
              	p.getDataFolder().mkdir();
              }
              
-             if (!rfile.exists()) {
+             if (!sfile.exists()) {
                  try {
-                         rfile.createNewFile();
+                         sfile.createNewFile();
                  }
                  catch (IOException e) {
-                         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create races.yml!");
+                         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create save.yml!");
                  }
          }
              
      }
      
-     public FileConfiguration getRaces() {
-             return races;
+     public FileConfiguration getSave() {
+             return save;
      }
     
-     public void saveRaces() {
+     public void saveSave() {
              try {
-                     races.save(rfile);
+                     save.save(sfile);
              }
              catch (IOException e) {
-                     Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save races.yml!");
+                     Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save save.yml!");
              }
      }
     
-     public void reloadRaces() {
-            races = YamlConfiguration.loadConfiguration(rfile);
+     public void reloadSave() {
+            save = YamlConfiguration.loadConfiguration(sfile);
      }
     
      public FileConfiguration getConfig() {

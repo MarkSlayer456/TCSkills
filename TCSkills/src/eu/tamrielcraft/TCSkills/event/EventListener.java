@@ -6,6 +6,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -58,10 +59,25 @@ public class EventListener implements Listener{
 		this.plugin = plugin;
 	}
 	
+	/*@EventHandler //TODO
+	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
+		Player player = (Player) e.getPlayer();
+		if(settings.race.equals(orc.getInstance()) {
+			if(e.getNewLevel() < e.getOldLevel()) {
+			player.sendMessage(ChatColor.GOLD + "Your orc powers helped you keep a level!");
+			player.setLevel(player.getLevel() + 1);
+			player.updateInventory();
+			}
+		}
+	}*/
+	
+	FileConfiguration save = settings.getSave();
+	
+	
 	@EventHandler
 	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
 		Player player = (Player) e.getPlayer();
-		if(settings.getRaces().get("orcs." + player.getUniqueId()) != null) {
+		if(settings.getRace(player).equals(Orcs.getInstance())) {
 			if(e.getNewLevel() < e.getOldLevel()) {
 			player.sendMessage(ChatColor.GOLD + "Your orc powers helped you keep a level!");
 			player.setLevel(player.getLevel() + 1);
@@ -74,7 +90,7 @@ public class EventListener implements Listener{
 	public void playerBurnEvent(EntityDamageEvent e) {
 		if(e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
-			if(settings.getRaces().get("darkelves." + player.getUniqueId()) != null) {
+			if(save.get("darkelves." + player.getUniqueId()) != null) {
 				if(player.getFireTicks() != 0) {
 					e.setDamage(e.getDamage() / 2);
 				}
@@ -86,25 +102,26 @@ public class EventListener implements Listener{
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		String format = e.getFormat();
 		Player player = e.getPlayer();
-		if(settings.getRaces().get("argonians." + player.getUniqueId()) != null) {
+		FileConfiguration save = settings.getSave();
+		if(save.get("argonians." + player.getUniqueId()) != null) {
 			format = Argonian.getInstance().formatChat(format);
-		} else if(settings.getRaces().get("bretons." + player.getUniqueId()) != null) {
+		} else if(save.get("bretons." + player.getUniqueId()) != null) {
 			format = Breton.getInstance().formatChat(format);
-		} else if(settings.getRaces().get("darkelves." + player.getUniqueId()) != null) {
+		} else if(save.get("darkelves." + player.getUniqueId()) != null) {
 			format = DarkElves.getInstance().formatChat(format);
-		} else if(settings.getRaces().get("highelves." + player.getUniqueId()) != null) {
+		} else if(save.get("highelves." + player.getUniqueId()) != null) {
 			format = HighElves.getInstance().formatChat(format);
-		} else if(settings.getRaces().get("imperials." + player.getUniqueId()) != null) {
+		} else if(save.get("imperials." + player.getUniqueId()) != null) {
 			format = Imperials.getInstance().formatChat(format);
-		} else if(settings.getRaces().get("khajiits." + player.getUniqueId()) != null) {
+		} else if(save.get("khajiits." + player.getUniqueId()) != null) {
 			format = Khajiit.getInstance().formatChat(format);
-		} else if(settings.getRaces().get("nords." + player.getUniqueId()) != null) {
+		} else if(save.get("nords." + player.getUniqueId()) != null) {
 			format = Nords.getInstance().formatChat(format);
-		} else if(settings.getRaces().get("orcs." + player.getUniqueId()) != null) {
+		} else if(save.get("orcs." + player.getUniqueId()) != null) {
 			format = Orcs.getInstance().formatChat(format);
-		} else if(settings.getRaces().get("redguards." + player.getUniqueId()) != null) {
+		} else if(save.get("redguards." + player.getUniqueId()) != null) {
 			format = RedGuard.getInstance().formatChat(format);
-		} else if(settings.getRaces().get("woodelves." + player.getUniqueId()) != null) {
+		} else if(save.get("woodelves." + player.getUniqueId()) != null) {
 			format = WoodElves.getInstance().formatChat(format);
 		}
 		e.setFormat(format);
@@ -114,7 +131,7 @@ public class EventListener implements Listener{
 	public void playerHitEvent(EntityDamageByEntityEvent e) {
 		if(e.getDamager() instanceof Player) {
 			final Player attacker = (Player) e.getDamager();
-			 if(settings.getRaces().get("khajiits." + attacker.getUniqueId()) != null) {
+			 if(save.get("khajiits." + attacker.getUniqueId()) != null) {
 				 if(attacker.getItemInHand().getType() == Material.AIR) {
 					Random r = new Random();
 					int numb = r.nextInt(4) + 1;
@@ -131,11 +148,11 @@ public class EventListener implements Listener{
 					}
 				 }
 			 }
-			 if(settings.getRaces().get("redguards." + attacker.getUniqueId()) != null) {
+			 if(save.get("redguards." + attacker.getUniqueId()) != null) {
 				 e.setDamage(e.getDamage() * 0.05 + e.getDamage());
 			 }
-			 if(settings.getRaces().get("woodelves." + attacker.getUniqueId()) != null ||
-						settings.getRaces().get("khajiits." + attacker.getUniqueId()) != null) {
+			 if(save.get("woodelves." + attacker.getUniqueId()) != null ||
+						save.get("khajiits." + attacker.getUniqueId()) != null) {
 						if(attacker.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
 							attacker.removePotionEffect(PotionEffectType.INVISIBILITY);
 							attacker.removePotionEffect(PotionEffectType.SPEED);
@@ -161,8 +178,8 @@ public class EventListener implements Listener{
 				Projectile project = (Projectile) e.getDamager();
 				if(project.getShooter() instanceof Player) {
 					final Player shooter = (Player) project.getShooter();
-					if(settings.getRaces().get("khajiits." + shooter.getUniqueId()) != null ||
-							settings.getRaces().get("woodelves." + shooter.getUniqueId()) != null) {
+					if(save.get("khajiits." + shooter.getUniqueId()) != null ||
+							save.get("woodelves." + shooter.getUniqueId()) != null) {
 						if(shooter.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
 							shooter.removePotionEffect(PotionEffectType.INVISIBILITY);
 							shooter.removePotionEffect(PotionEffectType.SPEED);
@@ -181,7 +198,7 @@ public class EventListener implements Listener{
 				}
 				if(project.getShooter() instanceof Player) {
 				Player shooter = (Player) project.getShooter();
-				if(settings.getRaces().get("woodelves." + shooter.getUniqueId()) != null) { //TODO make this so the player doesn't always get a headshot
+				if(save.get("woodelves." + shooter.getUniqueId()) != null) { //TODO make this so the player doesn't always get a headshot
 					 if(shooter.getItemInHand().getType() == Material.BOW) {
 						 shooter.sendMessage(ChatColor.RED + "Headshot! 10% more bow damage!");
 						 e.setDamage(e.getDamage() * .10 + e.getDamage());
@@ -210,8 +227,8 @@ public class EventListener implements Listener{
 			} 
 			if(e.getEntity() instanceof Player) {
 			final Player player = (Player) e.getEntity();
-			if(settings.getRaces().get("woodelves." + player.getUniqueId()) != null ||
-					settings.getRaces().get("khajiits." + player.getUniqueId()) != null) {
+			if(save.get("woodelves." + player.getUniqueId()) != null ||
+					save.get("khajiits." + player.getUniqueId()) != null) {
 					
 					if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
 						player.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -244,8 +261,8 @@ public class EventListener implements Listener{
 		for(LivingEntity entity : e.getAffectedEntities()) {
 		if(entity instanceof Player) {
 			 Player player = (Player) entity;
-			 if(settings.getRaces().get("argonians." + player.getUniqueId()) != null ||
-					 settings.getRaces().get("nords." + player.getUniqueId()) != null) {
+			 if(save.get("argonians." + player.getUniqueId()) != null ||
+					 save.get("nords." + player.getUniqueId()) != null) {
 				 for(PotionEffect p : e.getPotion().getEffects()) {
 					 if(p.getType().equals(PotionEffectType.POISON) || p.getType().equals(PotionEffectType.CONFUSION) 
 							 || p.getType().equals(PotionEffectType.SLOW) || p.getType().equals(PotionEffectType.HUNGER)
@@ -263,14 +280,14 @@ public class EventListener implements Listener{
 	@EventHandler
 	public void playerMoveEvent(PlayerMoveEvent e) {
 		Player player = (Player) e.getPlayer();
-		if(settings.getRaces().get("argonians." + player.getUniqueId()) != null) {
+		if(save.get("argonians." + player.getUniqueId()) != null) {
 		if(e.getTo().getBlock().getType() == Material.WATER || e.getTo().getBlock().getType() == Material.STATIONARY_WATER) {
 			player.addPotionEffect(new PotionEffect (PotionEffectType.WATER_BREATHING, 3600, 0));
 		}
 		
 		}
-		if(settings.getRaces().get("khajiits." + player.getUniqueId()) != null ||
-				 settings.getRaces().get("woodelves." + player.getUniqueId()) != null) {
+		if(save.get("khajiits." + player.getUniqueId()) != null ||
+				 save.get("woodelves." + player.getUniqueId()) != null) {
 			if(player.isSneaking()) {
 				if(sneakCoolDown.contains(player.getName().toString())) {
 					return;
@@ -291,24 +308,24 @@ public class EventListener implements Listener{
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		final Player player = (Player) e.getPlayer();
-		if(settings.getRaces().get("argonian." + player.getUniqueId()) != null) {
+		if(save.get("argonian." + player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Argonian] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(settings.getRaces().get("breton." + player.getUniqueId()) != null) {
+		} else if(save.get("breton." + player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Breton] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(settings.getRaces().get("darkelves." + player.getUniqueId()) != null) {
+		} else if(save.get("darkelves." + player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[DarkElf] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(settings.getRaces().get("highelves." + player.getUniqueId()) != null) {
+		} else if(save.get("highelves." + player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[HighElf] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(settings.getRaces().get("imperials." + player.getUniqueId()) != null) {
+		} else if(save.get("imperials." + player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Imperial] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(settings.getRaces().get("khajiits." + player.getUniqueId()) != null) {
+		} else if(save.get("khajiits." + player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Khajiit] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(settings.getRaces().get("nords." + player.getUniqueId()) != null) {
+		} else if(save.get("nords." + player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Nord] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(settings.getRaces().get("orcs." + player.getUniqueId()) != null) {
+		} else if(save.get("orcs." + player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Orc] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
 			player.setMaxHealth(24);
-		} else if(settings.getRaces().get("redguards." + player.getUniqueId()) != null) {
+		} else if(save.get("redguards." + player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[RedGuard] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
 			Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 				@Override
@@ -319,13 +336,13 @@ public class EventListener implements Listener{
 					}
 				}	
 			}, 10, 10);
-		} else if(settings.getRaces().get("woodelves." + player.getUniqueId()) != null) {
+		} else if(save.get("woodelves." + player.getUniqueId()) != null) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[WoodElf] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
 		} else {
 			player.sendMessage(ChatColor.RED + "You might want to join a race it gives you abilities do /race list to see a list of all the races and there abilities");
 		}
-		if(settings.getRaces().get("magic." + player.getUniqueId()) == null) {
-			settings.getRaces().set("magic.amount" + player.getUniqueId(), 100);
+		if(save.get("magic." + player.getUniqueId()) == null) {
+			save.set("magic.amount" + player.getUniqueId(), 100);
 		}
 		//TODO NEED SOMETHING HERE TO CHECK IF PLAYER HAS A SCOREBOARD ENABLED!
 		if(manager == null) {
@@ -339,13 +356,13 @@ public class EventListener implements Listener{
 		
 		@SuppressWarnings("deprecation")
 		final Score score = magic.getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN +  "Magic:"));
-			score.setScore(settings.getRaces().getInt("magic.amount." + player.getUniqueId()));
+			score.setScore(save.getInt("magic.amount." + player.getUniqueId()));
 		
 		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() { //REGENS MAGIC
 			@Override
 			public void run() {
-			if(settings.getRaces().get("bretons." + player.getUniqueId()) != null
-					|| settings.getRaces().get("highelves." + player.getUniqueId()) != null) {
+			if(save.get("bretons." + player.getUniqueId()) != null
+					|| save.get("highelves." + player.getUniqueId()) != null) {
 			if(score.getScore() <= 149) {	
 			score.setScore(score.getScore() + 1);
 			}

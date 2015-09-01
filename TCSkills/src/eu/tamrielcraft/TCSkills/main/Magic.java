@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Cow;
@@ -128,29 +129,30 @@ public class Magic implements Listener {
 	@EventHandler
 	public void playerInteractEvent(PlayerInteractEvent e) {
 		final Player player = (Player) e.getPlayer();
+		FileConfiguration save = settings.getSave();
 		if(e.getAction() == Action.RIGHT_CLICK_AIR && player.getItemInHand().getType() == Material.STICK || e.getAction() == Action.RIGHT_CLICK_BLOCK && player.getItemInHand().getType() == Material.STICK) {
-			if(settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.holder." + 1) == null) {
+			if(save.get("magic." + player.getUniqueId() + ".favorites.holder." + 1) == null) {
 				player.sendMessage(ChatColor.RED + "You have no spells favorited! Do /favorite spell <spell name> to favorite some!");
 			} else {
-					if(settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.on") >= 3) {
-						settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.on", 0);
+					if(save.getInt("magic." + player.getUniqueId() + ".favorites.on") >= 3) {
+						save.set("magic." + player.getUniqueId() + ".favorites.on", 0);
 					}
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.on", settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.on") + 1);
-				if(settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.amount") < settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.on")) {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.on", 1);
-					settings.saveRaces();
+				save.set("magic." + player.getUniqueId() + ".fireball", false);
+				save.set("magic." + player.getUniqueId() + ".iceblast", false);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
+				save.set("magic." + player.getUniqueId() + ".thundershock", false);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				save.set("magic." + player.getUniqueId() + ".firerune", false);
+				save.set("magic." + player.getUniqueId() + ".icerune", false);
+				save.set("magic." + player.getUniqueId() + ".shockrune", false);
+				save.set("magic." + player.getUniqueId() + ".favorites.on", save.getInt("magic." + player.getUniqueId() + ".favorites.on") + 1);
+				if(save.getInt("magic." + player.getUniqueId() + ".favorites.amount") < save.getInt("magic." + player.getUniqueId() + ".favorites.on")) {
+					save.set("magic." + player.getUniqueId() + ".favorites.on", 1);
+					settings.saveSave();
 				}
-				String spell = settings.getRaces().getString("magic." + player.getUniqueId() + ".favorites.holder." + settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.on"));
-				settings.saveRaces();
+				String spell = save.getString("magic." + player.getUniqueId() + ".favorites.holder." + save.get("magic." + player.getUniqueId() + ".favorites.on"));
+				settings.saveSave();
 				Bukkit.dispatchCommand(player, "spell " + spell);
 			}
 		}
@@ -159,21 +161,21 @@ public class Magic implements Listener {
 				Scoreboard board = player.getScoreboard();
 				Objective magic = board.getObjective("Magic");
 				Score score = magic.getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + "Magic:"));
-			if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".fireball") != false) {
+			if(save.getBoolean("magic." + player.getUniqueId() + ".fireball") != false) {
 				if(score.getScore() >= 10) {
 					player.launchProjectile(SmallFireball.class);
 					score.setScore(score.getScore() - 10);
 				} else {
 					player.sendMessage(ChatColor.RED + "You need 10 magic to cast FIREBALL!");
 				}
-			} else if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".iceblast") != false) {
+			} else if(save.getBoolean("magic." + player.getUniqueId() + ".iceblast") != false) {
 				if(score.getScore() >= 8) {
 					player.launchProjectile(Snowball.class);
 					score.setScore(score.getScore() - 8);
 				} else {
 					player.sendMessage(ChatColor.RED + "You need 8 magic to cast ICEBLAST!");
 				}
-			} else if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".fasthealing") != false) {
+			} else if(save.getBoolean("magic." + player.getUniqueId() + ".fasthealing") != false) {
 				if(score.getScore() >= 25) {
 					player.setHealth(player.getHealth() + 2);
 					score.setScore(score.getScore() - 25);
@@ -181,7 +183,7 @@ public class Magic implements Listener {
 					player.sendMessage(ChatColor.RED + "You need 25 magic to cast FASTHEALING!");
 				}
 				
-			} else if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".golemsummon") != false) {
+			} else if(save.getBoolean("magic." + player.getUniqueId() + ".golemsummon") != false) {
 				if(score.getScore() >= 100) {
 					if(golemHM.get(golemP.get(player)) == player) {
 						player.sendMessage(ChatColor.RED + "You can only have one golem spawned at a time!");
@@ -296,7 +298,7 @@ public class Magic implements Listener {
 			} else {
 				player.sendMessage(ChatColor.RED + "You need 100 magic to cast GOLEMSUMMON!");
 			}
-			} else if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".thundershock") != false) {
+			} else if(save.getBoolean("magic." + player.getUniqueId() + ".thundershock") != false) {
 				if(score.getScore() >= 75) {
 				Block block = player.getTargetBlock((HashSet<Byte>)null, 200);
 				Location blockL = block.getLocation();
@@ -305,7 +307,7 @@ public class Magic implements Listener {
 				} else {
 					player.sendMessage(ChatColor.RED + "You need 75 magic to cast THUNDERSHOCK!");
 				}
-			} else if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".familiarsummon") != false) {
+			} else if(save.getBoolean("magic." + player.getUniqueId() + ".familiarsummon") != false) {
 				if(score.getScore() >= 25) {
 					if(wolfHM.get(wolfP.get(player)) == player) {
 						player.sendMessage(ChatColor.RED + "You can only have one familiar spawned at a time!");
@@ -433,7 +435,7 @@ public class Magic implements Listener {
 				} else {
 					player.sendMessage(ChatColor.RED + "You need 25 magic to summon a familiar");
 				}
-			} else if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".firerune") != false) { //TODO setup commands for this!
+			} else if(save.getBoolean("magic." + player.getUniqueId() + ".firerune") != false) { //TODO setup commands for this!
 				Block block1 = player.getTargetBlock((HashSet<Byte>)null, 200);
 				Location blockL1 = block1.getLocation();
 				ItemStack rune = new ItemStack(Material.FIREBALL);
@@ -473,7 +475,7 @@ public class Magic implements Listener {
 					player.sendMessage(ChatColor.RED + "You need 35 magic to cast a fire rune!");
 				}
 				
-			} else if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".icerune") != false) {
+			} else if(save.getBoolean("magic." + player.getUniqueId() + ".icerune") != false) {
 				if(runeP.containsKey(player)) {
 					player.sendMessage(ChatColor.RED + "You can only have one rune active at a time!");
 					return;
@@ -512,7 +514,7 @@ public class Magic implements Listener {
 				} else {
 					player.sendMessage(ChatColor.RED + "You need 35 magic to cast a ice rune!");
 				}
-			} else if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".shockrune") != false) {
+			} else if(save.getBoolean("magic." + player.getUniqueId() + ".shockrune") != false) {
 				if(runeP.containsKey(player)) {
 					player.sendMessage(ChatColor.RED + "You can only have one rune active at a time!");
 					return;

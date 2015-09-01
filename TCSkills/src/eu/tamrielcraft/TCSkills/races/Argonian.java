@@ -3,7 +3,7 @@ package eu.tamrielcraft.TCSkills.races;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Argonian extends Race{
+public class Argonian extends Race {
 	
 	public ArrayList<UUID> Argonian = new ArrayList<UUID>();
 	

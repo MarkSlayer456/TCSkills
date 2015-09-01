@@ -1,10 +1,13 @@
 package eu.tamrielcraft.TCSkills.event;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Objective;
@@ -46,6 +49,8 @@ public class Commands implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender Sender, Command cmd, String label, String[] args) {
 		final Player player = (Player) Sender;
+		UUID id = player.getUniqueId(); //TODO change all player.getUniqueId() to just id no idea why i didn't do this from the start -_-
+		FileConfiguration save = settings.getSave(); //lets just save ourselves from doing settings.getSave() a bunch XD
 		
 		if(cmd.getName().equalsIgnoreCase("favorite") || cmd.getName().equalsIgnoreCase("fav")) {
 			if(args.length == 0) {
@@ -62,38 +67,39 @@ public class Commands implements CommandExecutor{
 					player.sendMessage(ChatColor.RED + "Invalid spell name make sure you used the whole spell name! /favorite spell <full spell name>");
 					return true;
 				}
+				
 				if(args[1].equalsIgnoreCase("fireball") || args[1].equalsIgnoreCase("iceblast") ||
 						args[1].equalsIgnoreCase("fasthealing") || args[1].equalsIgnoreCase("golemsummon") ||
 						args[1].equalsIgnoreCase("familiarsummon") || args[1].equalsIgnoreCase("thundershock") 
 						|| args[1].equalsIgnoreCase("firerune") || args[1].equalsIgnoreCase("icerune")
 						|| args[1].equalsIgnoreCase("shockrune")) {
-					if(settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.amount") == null) {
-						settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.amount", 1);
-						settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.holder." + settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.amount"), args[1]);
+					if(save.get("magic." + player.getUniqueId() + ".favorites.amount") == null) {
+						save.set("magic." + player.getUniqueId() + ".favorites.amount", 1);
+						save.set("magic." + player.getUniqueId() + ".favorites.holder." + save.getInt("magic." + player.getUniqueId() + ".favorites.amount"), args[1]);
 						player.sendMessage(ChatColor.GREEN + "Spell favorited, right click with a stick to cycle through your favorited spells!");
-						settings.saveRaces();
+						settings.saveSave();
 					} else {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.amount", settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.amount") + 1);
-					settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.holder." + settings.getRaces().getInt("magic." + player.getUniqueId() + ".favorites.amount"), args[1]);
+					save.set("magic." + player.getUniqueId() + ".favorites.amount", save.getInt("magic." + player.getUniqueId() + ".favorites.amount") + 1);
+					save.set("magic." + player.getUniqueId() + ".favorites.holder." + save.getInt("magic." + player.getUniqueId() + ".favorites.amount"), args[1]);
 					player.sendMessage(ChatColor.GREEN + "Spell favorited, right click with a stick to cycle through your favorited spells!");
-					settings.saveRaces();
+					settings.saveSave();
 					}
 					
 				} else {
 					player.sendMessage(ChatColor.RED + "Invalid spell name make sure you used the whole spell name! /favorite spell <full spell name>");
 				}
 			} else if(args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("l")) {
-				if(settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.holder.1") != null) {
+				if(save.get("magic." + player.getUniqueId() + ".favorites.holder.1") != null) {
 				player.sendMessage(ChatColor.AQUA + "----- Favorites -----");
-				player.sendMessage(ChatColor.GREEN + "1: " + settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.holder.1"));
+				player.sendMessage(ChatColor.GREEN + "1: " + save.get("magic." + player.getUniqueId() + ".favorites.holder.1"));
 				} else {
 					player.sendMessage(ChatColor.RED + "You have no spells favorited /favorite spell <full spell name>");
 				}
-				if(settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.holder.2") != null) {
-				player.sendMessage(ChatColor.GREEN + "2: " + settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.holder.2"));
+				if(save.get("magic." + player.getUniqueId() + ".favorites.holder.2") != null) {
+				player.sendMessage(ChatColor.GREEN + "2: " + save.get("magic." + player.getUniqueId() + ".favorites.holder.2"));
 				}
-				if(settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.holder.3") != null) {
-				player.sendMessage(ChatColor.GREEN + "3: " + settings.getRaces().get("magic." + player.getUniqueId() + ".favorites.holder.3"));
+				if(save.get("magic." + player.getUniqueId() + ".favorites.holder.3") != null) {
+				player.sendMessage(ChatColor.GREEN + "3: " + save.get("magic." + player.getUniqueId() + ".favorites.holder.3"));
 				}
 				return true;
 				
@@ -104,9 +110,9 @@ public class Commands implements CommandExecutor{
 							args[2].equalsIgnoreCase("familiarsummon") || args[2].equalsIgnoreCase("thundershock") 
 							|| args[2].equalsIgnoreCase("firerune") || args[2].equalsIgnoreCase("icerune")
 							|| args[2].equalsIgnoreCase("shockrune")) {
-						settings.getRaces().set("magic." + player.getUniqueId() + ".favorites.holder." + args[1], args[2]);
+						save.set("magic." + player.getUniqueId() + ".favorites.holder." + args[1], args[2]);
 						player.sendMessage(ChatColor.GREEN + "Spell replaced, right click with a stick to cycle through your favorited spells!");
-						settings.saveRaces();
+						settings.saveSave();
 						return true;
 						
 					} else {
@@ -141,163 +147,188 @@ public class Commands implements CommandExecutor{
 				player.sendMessage(ChatColor.RED + "ShockRune");
 				player.sendMessage(ChatColor.GOLD + "--- Page: 2/2 ---");
 			} else if(args[0].equalsIgnoreCase("fireball") || args[0].equalsIgnoreCase("fb")) {
-				if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".fireball") == true) {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
+				if(save.getBoolean("magic." + player.getUniqueId() + ".fireball") == true) {
+					save.set("magic." + player.getUniqueId() + ".fireball", false);
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", true);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
-				settings.saveRaces();
+				save.set("magic." + player.getUniqueId() + ".fireball", true);
+				save.set("magic." + player.getUniqueId() + ".iceblast", false);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
+				save.set("magic." + player.getUniqueId() + ".thundershock", false);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				save.set("magic." + player.getUniqueId() + ".firerune", false);
+				save.set("magic." + player.getUniqueId() + ".icerune", false);
+				save.set("magic." + player.getUniqueId() + ".shockrune", false);
+				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FIREBALL " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("iceblast") || args[0].equalsIgnoreCase("ib")) {
-				if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".iceblast") == true) {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
+				if(save.getBoolean("magic." + player.getUniqueId() + ".iceblast") == true) {
+					save.set("magic." + player.getUniqueId() + ".iceblast", false);
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", true);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
-				settings.saveRaces();
+				save.set("magic." + player.getUniqueId() + ".fireball", false);
+				save.set("magic." + player.getUniqueId() + ".iceblast", true);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
+				save.set("magic." + player.getUniqueId() + ".thundershock", false);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				save.set("magic." + player.getUniqueId() + ".firerune", false);
+				save.set("magic." + player.getUniqueId() + ".icerune", false);
+				save.set("magic." + player.getUniqueId() + ".shockrune", false);
+				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "ICEBLAST " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("fasthealing") || args[0].equalsIgnoreCase("fh")) {
-				if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".fasthealing") == true) {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
+				if(save.getBoolean("magic." + player.getUniqueId() + ".fasthealing") == true) {
+					save.set("magic." + player.getUniqueId() + ".fasthealing", false);
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", true);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
-				settings.saveRaces();
+				save.set("magic." + player.getUniqueId() + ".fireball", false);
+				save.set("magic." + player.getUniqueId() + ".iceblast", false);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", true);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
+				save.set("magic." + player.getUniqueId() + ".thundershock", false);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				save.set("magic." + player.getUniqueId() + ".firerune", false);
+				save.set("magic." + player.getUniqueId() + ".icerune", false);
+				save.set("magic." + player.getUniqueId() + ".shockrune", false);
+				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FASTHEALING " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("golemsummon") || args[0].equalsIgnoreCase("gs")) {
-				if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".golemsummon") == true) {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
+				if(save.getBoolean("magic." + player.getUniqueId() + ".golemsummon") == true) {
+					save.set("magic." + player.getUniqueId() + ".golemsummon", false);
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", true);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
-				settings.saveRaces();
+				save.set("magic." + player.getUniqueId() + ".fireball", false);
+				save.set("magic." + player.getUniqueId() + ".iceblast", false);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", true);
+				save.set("magic." + player.getUniqueId() + ".thundershock", false);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				save.set("magic." + player.getUniqueId() + ".firerune", false);
+				save.set("magic." + player.getUniqueId() + ".icerune", false);
+				save.set("magic." + player.getUniqueId() + ".shockrune", false);
+				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "GOLEMSUMMON " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("thundershock") || args[0].equalsIgnoreCase("ts")) {
-				if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".thundershock") == true) {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
+				if(save.getBoolean("magic." + player.getUniqueId() + ".thundershock") == true) {
+					save.set("magic." + player.getUniqueId() + ".thundershock", false);
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", true);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
-				settings.saveRaces();
+				save.set("magic." + player.getUniqueId() + ".fireball", false);
+				save.set("magic." + player.getUniqueId() + ".iceblast", false);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
+				save.set("magic." + player.getUniqueId() + ".thundershock", true);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				save.set("magic." + player.getUniqueId() + ".firerune", false);
+				save.set("magic." + player.getUniqueId() + ".icerune", false);
+				save.set("magic." + player.getUniqueId() + ".shockrune", false);
+				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "THUNDERSHOCK " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("familiarsummon") || args[0].equalsIgnoreCase("fs")) {
-				if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".familiarsummon") == true) {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				if(save.getBoolean("magic." + player.getUniqueId() + ".familiarsummon") == true) {
+					save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", true);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
-				settings.saveRaces();
+				save.set("magic." + player.getUniqueId() + ".fireball", false);
+				save.set("magic." + player.getUniqueId() + ".iceblast", false);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
+				save.set("magic." + player.getUniqueId() + ".thundershock", false);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", true);
+				save.set("magic." + player.getUniqueId() + ".firerune", false);
+				save.set("magic." + player.getUniqueId() + ".icerune", false);
+				save.set("magic." + player.getUniqueId() + ".shockrune", false);
+				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FAMILIAR " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("firerune") || args[0].equalsIgnoreCase("fr"))  {
-				if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".firerune") == true) {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
+				if(save.getBoolean("magic." + player.getUniqueId() + ".firerune") == true) {
+					save.set("magic." + player.getUniqueId() + ".firerune", false);
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", true);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
-				settings.saveRaces();
+				save.set("magic." + player.getUniqueId() + ".fireball", false);
+				save.set("magic." + player.getUniqueId() + ".iceblast", false);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
+				save.set("magic." + player.getUniqueId() + ".thundershock", false);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				save.set("magic." + player.getUniqueId() + ".firerune", true);
+				save.set("magic." + player.getUniqueId() + ".icerune", false);
+				save.set("magic." + player.getUniqueId() + ".shockrune", false);
+				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FIRERUNE " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("icerune") || args[0].equalsIgnoreCase("ir")) {
-				if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".icerune") == true) {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
+				if(save.getBoolean("magic." + player.getUniqueId() + ".icerune") == true) {
+					save.set("magic." + player.getUniqueId() + ".icerune", false);
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", true);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
-				settings.saveRaces();
+				save.set("magic." + player.getUniqueId() + ".fireball", false);
+				save.set("magic." + player.getUniqueId() + ".iceblast", false);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
+				save.set("magic." + player.getUniqueId() + ".thundershock", false);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				save.set("magic." + player.getUniqueId() + ".firerune", false);
+				save.set("magic." + player.getUniqueId() + ".icerune", true);
+				save.set("magic." + player.getUniqueId() + ".shockrune", false);
+				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "ICERUNE " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("shockrune") || args[0].equalsIgnoreCase("sr")) {
-				if(settings.getRaces().getBoolean("magic." + player.getUniqueId() + ".shockrune") == true) {
-					settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", false);
+				if(save.getBoolean("magic." + player.getUniqueId() + ".shockrune") == true) {
+					save.set("magic." + player.getUniqueId() + ".shockrune", false);
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fireball", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".iceblast", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".fasthealing", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".golemsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".thundershock", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".familiarsummon", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".firerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".icerune", false);
-				settings.getRaces().set("magic." + player.getUniqueId() + ".shockrune", true);
-				settings.saveRaces();
+				save.set("magic." + player.getUniqueId() + ".fireball", false);
+				save.set("magic." + player.getUniqueId() + ".iceblast", false);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
+				save.set("magic." + player.getUniqueId() + ".thundershock", false);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				save.set("magic." + player.getUniqueId() + ".firerune", false);
+				save.set("magic." + player.getUniqueId() + ".icerune", false);
+				save.set("magic." + player.getUniqueId() + ".shockrune", true);
+				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "SHOCKRUNE " + ChatColor.GOLD + "spell");
 				
 			} else {
 				player.sendMessage(ChatColor.RED + "Usage: /spell <spell name>");
 			} 
 		}
+		
+		//TODO finish /class command
+		if(cmd.getName().equalsIgnoreCase("class") || cmd.getName().equalsIgnoreCase("c")) {
+			if(args.length != 1) {
+				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
+				player.sendMessage(ChatColor.RED + "Dwarf: " + "..."); //TODO NO IDEA WHAT YOU WANT FOR THIS SO I'LL JUST LEAVE IT UP TO YOU!
+			} else {
+				if(args[0].equalsIgnoreCase("dwarf") || args[0].equalsIgnoreCase("dwarves") || /* just in case someone doesn't know how to spell ^_^ */ args[0].equalsIgnoreCase("dwarfs")) {
+					save.set(id + ".class", "dwarf");
+				} else if(args[0].equalsIgnoreCase("<racename>")) {
+					
+					
+				}
+				
+				
+				
+				/*  else if(args[0].equalsIgnoreCase("list") {
+				 *  
+				 *  
+				 *  }
+				 * 
+				 */
+			}
+		}
+		
 		
 		if(cmd.getName().equalsIgnoreCase("race") || cmd.getName().equalsIgnoreCase("r")) {
 			//TODO remove when done testing!
@@ -322,59 +353,68 @@ public class Commands implements CommandExecutor{
 				return true;
 			} else {
 				if(args[0].equalsIgnoreCase("nords") || args[0].equalsIgnoreCase("nord")) {
-					settings.getRaces().set("nords." + player.getUniqueId(), player.getName().toString());
-					settings.getRaces().set(player.getUniqueId() + "", true);
+					save.set("nords." + player.getUniqueId(), player.getName().toString());
+					save.set(player.getUniqueId() + "", true);
+					//TODO settings.getRaces().set(id + "." + race, "nord");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Nord" + ChatColor.GOLD + "!");
-					settings.saveRaces();
+					settings.saveSave();
 					return true;
 				} else if(args[0].equalsIgnoreCase("orcs") || args[0].equalsIgnoreCase("orc")) {
-					settings.getRaces().set("orcs." + player.getUniqueId(), player.getName().toString());
-					settings.getRaces().set(player.getUniqueId() + "", true);
+					save.set("orcs." + player.getUniqueId(), player.getName().toString());
+					save.set(player.getUniqueId() + "", true);
+					//TODO settings.getRaces().set(id + "." + race, "orc");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Orc" + ChatColor.GOLD + "!");
 					player.setMaxHealth(24);
-					settings.saveRaces();
+					settings.saveSave();
 					return true;
 				} else if(args[0].equalsIgnoreCase("argonians") || args[0].equalsIgnoreCase("argonian")) {
-					settings.getRaces().set("argonians." + player.getUniqueId(), player.getName().toString());
-					settings.getRaces().set(player.getUniqueId() + "", true);
+					save.set("argonians." + player.getUniqueId(), player.getName().toString());
+					save.set(player.getUniqueId() + "", true);
+					//TODO settings.getRaces().set(id + "." + race, "argonian");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Argonian" + ChatColor.GOLD + "!");
-					settings.saveRaces();
+					settings.saveSave();
 					return true;
 				} else if(args[0].equalsIgnoreCase("bretons") || args[0].equalsIgnoreCase("breton")) {
-					settings.getRaces().set("bretons." + player.getUniqueId(), player.getName().toString());
-					settings.getRaces().set(player.getUniqueId() + "", true);
+					save.set("bretons." + player.getUniqueId(), player.getName().toString());
+					save.set(player.getUniqueId() + "", true);
+					//TODO settings.getRaces().set(id + "." + race, "breton");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Breton" + ChatColor.GOLD + "!");
-					settings.saveRaces();
+					settings.saveSave();
 					return true;
 				} else if(args[0].equalsIgnoreCase("darkelves") || args[0].equalsIgnoreCase("darkelf")) {
-					settings.getRaces().set("darkelves." + player.getUniqueId(), player.getName().toString());
-					settings.getRaces().set(player.getUniqueId() + "", true);
+					save.set("darkelves." + player.getUniqueId(), player.getName().toString());
+					save.set(player.getUniqueId() + "", true);
+					//TODO settings.getRaces().set(id + "." + race, "darkelf");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "DarkElf" + ChatColor.GOLD + "!");
-					settings.saveRaces();
+					settings.saveSave();
 					return true;
 				} else if(args[0].equalsIgnoreCase("highelves") || args[0].equalsIgnoreCase("highelf")) {
-					settings.getRaces().set("highelves." + player.getUniqueId(), player.getName().toString());
-					settings.getRaces().set(player.getUniqueId() + "", true);
+					save.set("highelves." + player.getUniqueId(), player.getName().toString());
+					save.set(player.getUniqueId() + "", true);
+					//TODO settings.getRaces().set(id + "." + race, "highelf");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "HighElf" + ChatColor.GOLD + "!");
-					settings.saveRaces();
+					settings.saveSave();
 					return true;	
 				} else if(args[0].equalsIgnoreCase("imperials") || args[0].equalsIgnoreCase("imperial")) {
-					settings.getRaces().set("imperials." + player.getUniqueId(), player.getName().toString());
-					settings.getRaces().set(player.getUniqueId() + "", true);
+					save.set("imperials." + player.getUniqueId(), player.getName().toString());
+					save.set(player.getUniqueId() + "", true);
+					//TODO settings.getRaces().set(id + "." + race, "imperial");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Imperial" + ChatColor.GOLD + "!");
-					settings.saveRaces();
+					settings.saveSave();
 					return true;
 				} else if(args[0].equalsIgnoreCase("khajiits") || args[0].equalsIgnoreCase("khajiit")) {
-					settings.getRaces().set("khajiits." + player.getUniqueId(), player.getName().toString());
-					settings.getRaces().set(player.getUniqueId() + "", true);
+					save.set("khajiits." + player.getUniqueId(), player.getName().toString());
+					save.set(player.getUniqueId() + "", true);
+					//TODO settings.getRaces().set(id + "." + race, "khajiit");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Khajiit" + ChatColor.GOLD + "!");
-					settings.saveRaces();
+					settings.saveSave();
 					return true;
 				} else if(args[0].equalsIgnoreCase("redguards") || args[0].equalsIgnoreCase("redguard")) {
-					settings.getRaces().set("redguards." + player.getUniqueId(), player.getName().toString());
-					settings.getRaces().set(player.getUniqueId() + "", true);
+					save.set("redguards." + player.getUniqueId(), player.getName().toString());
+					save.set(player.getUniqueId() + "", true);
+					//TODO settings.getRaces().set(id + "." + race, "redguard");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "RedGuard" + ChatColor.GOLD + "!");
-					Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+					Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() { //TODO MAKE SURE THERE IS A WAY TO DISABLE THIS
 						@Override
 						public void run() {
 							if(player.getFoodLevel() < 8) {
@@ -383,13 +423,14 @@ public class Commands implements CommandExecutor{
 							}
 						}	
 					}, 10, 10);
-					settings.saveRaces();
+					settings.saveSave();
 					return true;
 				} else if(args[0].equalsIgnoreCase("woodelves") || args[0].equalsIgnoreCase("woodelf")) {
-					settings.getRaces().set("woodelves." + player.getUniqueId(), player.getName().toString());
-					settings.getRaces().set(player.getUniqueId() + "", true);
+					save.set("woodelves." + player.getUniqueId(), player.getName().toString());
+					save.set(player.getUniqueId() + "", true);
+					//TODO settings.getRaces().set(id + "." + race, "woodelf");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "WoodElf" + ChatColor.GOLD + "!");
-					settings.saveRaces();
+					settings.saveSave();
 					return true;
 				} else if(args[0].equalsIgnoreCase("list")) {
 				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
@@ -422,8 +463,8 @@ public class Commands implements CommandExecutor{
 				Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() { //REGENS MAGIC
 					@Override
 					public void run() {
-					if(settings.getRaces().get("bretons." + player.getUniqueId()) != null
-							|| settings.getRaces().get("highelves." + player.getUniqueId()) != null) {
+					if(settings.getSave().get("bretons." + player.getUniqueId()) != null
+							|| settings.getSave().get("highelves." + player.getUniqueId()) != null) {
 					if(score.getScore() <= 149) {	
 					score.setScore(score.getScore() + 1);
 					}

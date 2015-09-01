@@ -29,12 +29,12 @@ public class Main extends JavaPlugin implements Listener {
 		settings.setup(this);
 		settings.getConfig().options().copyDefaults(false);
 		settings.saveConfig();
-		settings.getRaces().options().copyDefaults(false);
-		settings.saveRaces();
+		settings.getSave().options().copyDefaults(false);
+		settings.saveSave();
+		
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		Bukkit.getServer().getPluginManager().registerEvents(new Magic(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new LeavingListener(), this);
-		
 		Bukkit.getServer().getPluginManager().registerEvents(new EventListener(this, settings), this);
 		
 		getLogger().info("Enabling Elder Scroll Races");

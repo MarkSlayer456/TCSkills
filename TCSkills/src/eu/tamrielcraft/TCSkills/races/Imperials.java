@@ -32,7 +32,7 @@ public class Imperials extends Race implements Listener {
 	@EventHandler
 	public void playerBreakBlockEvent(BlockBreakEvent e) {
 		Player player = (Player) e.getPlayer();
-		if(settings.getRaces().get("imperials." + player.getUniqueId()) != null) {
+		if(settings.getSave().get("imperials." + player.getUniqueId()) != null) {
 			if(e.getBlock().getType() == Material.DIAMOND_ORE || e.getBlock().getType() == Material.LAPIS_ORE
 					|| e.getBlock().getType() == Material.EMERALD_ORE || e.getBlock().getType() == Material.QUARTZ_ORE 
 					|| e.getBlock().getType() == Material.REDSTONE_ORE || e.getBlock().getType() == Material.COAL_ORE) {
