@@ -3,13 +3,13 @@ package eu.tamrielcraft.TCSkills.races;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class HighElves extends Race{
+public class HighElf extends Race{
 
 	public ArrayList<UUID> HighElves = new ArrayList<UUID>();
 	
-	static HighElves instance = new HighElves();
+	static HighElf instance = new HighElf();
     
-    public static HighElves getInstance() {
+    public static HighElf getInstance() {
             return instance;
     }
 	

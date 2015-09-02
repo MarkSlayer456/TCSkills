@@ -3,13 +3,13 @@ package eu.tamrielcraft.TCSkills.races;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Nords extends Race {
+public class Nord extends Race {
 
 	public ArrayList<UUID> Nords = new ArrayList<UUID>();
 	
-	static Nords instance = new Nords();
+	static Nord instance = new Nord();
     
-    public static Nords getInstance() {
+    public static Nord getInstance() {
             return instance;
     }
 	

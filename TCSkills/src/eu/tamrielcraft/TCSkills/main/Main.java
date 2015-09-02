@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
 
+import eu.tamrielcraft.TCSkills.event.Commands;
 import eu.tamrielcraft.TCSkills.event.EventListener;
 import eu.tamrielcraft.TCSkills.event.LeavingListener;
 
@@ -36,6 +37,14 @@ public class Main extends JavaPlugin implements Listener {
 		Bukkit.getServer().getPluginManager().registerEvents(new Magic(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new LeavingListener(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new EventListener(this, settings), this);
+		this.getCommand("race").setExecutor(new Commands(this, settings));
+		this.getCommand("r").setExecutor(new Commands(this, settings));
+		this.getCommand("favorite").setExecutor(new Commands(this, settings));
+		this.getCommand("fav").setExecutor(new Commands(this, settings));
+		this.getCommand("spell").setExecutor(new Commands(this, settings));
+		this.getCommand("s").setExecutor(new Commands(this, settings));
+		this.getCommand("magicregen").setExecutor(new Commands(this, settings));
+		this.getCommand("mr").setExecutor(new Commands(this, settings));
 		
 		getLogger().info("Enabling Elder Scroll Races");
 		settings.getConfig().addDefault("Header", "---===[TamerialCraft]===---");
@@ -48,11 +57,11 @@ public class Main extends JavaPlugin implements Listener {
 	
 	static ScoreboardManager manager = Bukkit.getScoreboardManager();
 	
-	ArrayList<String> sneaking = new ArrayList<String>();
-	ArrayList<String> sneakCoolDown = new ArrayList<String>();
-	ArrayList<String> sneakMessage = new ArrayList<String>();
+	//ArrayList<String> sneaking = new ArrayList<String>();
+	//ArrayList<String> sneakCoolDown = new ArrayList<String>();
+	//ArrayList<String> sneakMessage = new ArrayList<String>();
 	
-	ArrayList<Block> blocks = new ArrayList<Block>();
-	final HashMap<BlockState, Material> material = new HashMap<BlockState, Material>();
+	//ArrayList<Block> blocks = new ArrayList<Block>();
+	//final HashMap<BlockState, Material> material = new HashMap<BlockState, Material>();
 	
 }

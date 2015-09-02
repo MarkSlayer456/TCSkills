@@ -13,13 +13,13 @@ import org.bukkit.inventory.ItemStack;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 
-public class Imperials extends Race implements Listener {
+public class Imperial extends Race implements Listener {
 	
 	static SettingsManager settings = SettingsManager.getInstance();
 	
-	static Imperials instance = new Imperials();
+	static Imperial instance = new Imperial();
     
-    public static Imperials getInstance() {
+    public static Imperial getInstance() {
             return instance;
     }
 	

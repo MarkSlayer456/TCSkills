@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Argonian extends Race {
 	
-	public ArrayList<UUID> Argonian = new ArrayList<UUID>();
+	public ArrayList<UUID> Argonians = new ArrayList<UUID>();
 	
 	static Argonian instance = new Argonian();
     

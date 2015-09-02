@@ -1,6 +1,6 @@
 name: Elder_Scrolls_Races
 version: 1.0.0
-main: races.Main
+main: eu.tamrielcraft.TCSkills.main.Main
 author: MarkSlayer456
 description: A race plugin!
 

@@ -4,13 +4,13 @@ import org.bukkit.event.Listener;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 
-public class Orcs extends Race implements Listener {
+public class Orc extends Race implements Listener {
 
 	static SettingsManager settings = SettingsManager.getInstance();
 	
-	static Orcs instance = new Orcs();
+	static Orc instance = new Orc();
     
-    public static Orcs getInstance() {
+    public static Orc getInstance() {
             return instance;
     }
 	

@@ -3,6 +3,8 @@ package eu.tamrielcraft.TCSkills.main;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -129,29 +131,25 @@ public class Magic implements Listener {
 	@EventHandler
 	public void playerInteractEvent(PlayerInteractEvent e) {
 		final Player player = (Player) e.getPlayer();
+		UUID id = player.getUniqueId();
 		FileConfiguration save = settings.getSave();
 		if(e.getAction() == Action.RIGHT_CLICK_AIR && player.getItemInHand().getType() == Material.STICK || e.getAction() == Action.RIGHT_CLICK_BLOCK && player.getItemInHand().getType() == Material.STICK) {
-			if(save.get("magic." + player.getUniqueId() + ".favorites.holder." + 1) == null) {
+			if(save.get(id + ".magic.favorites.holder.1") == null) {
 				player.sendMessage(ChatColor.RED + "You have no spells favorited! Do /favorite spell <spell name> to favorite some!");
 			} else {
-					if(save.getInt("magic." + player.getUniqueId() + ".favorites.on") >= 3) {
-						save.set("magic." + player.getUniqueId() + ".favorites.on", 0);
+					if(save.getInt(id + ".magic.favorites.on") >= 3) {
+						save.set(id + ".magic.favorites.on", 0);
 					}
-				save.set("magic." + player.getUniqueId() + ".fireball", false);
-				save.set("magic." + player.getUniqueId() + ".iceblast", false);
-				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
-				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
-				save.set("magic." + player.getUniqueId() + ".thundershock", false);
-				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
-				save.set("magic." + player.getUniqueId() + ".firerune", false);
-				save.set("magic." + player.getUniqueId() + ".icerune", false);
-				save.set("magic." + player.getUniqueId() + ".shockrune", false);
-				save.set("magic." + player.getUniqueId() + ".favorites.on", save.getInt("magic." + player.getUniqueId() + ".favorites.on") + 1);
-				if(save.getInt("magic." + player.getUniqueId() + ".favorites.amount") < save.getInt("magic." + player.getUniqueId() + ".favorites.on")) {
-					save.set("magic." + player.getUniqueId() + ".favorites.on", 1);
+					if(save.get(id + ".magic.favorites.on") == null) {
+						save.set(id + ".magic.favorites.on", 0);
+					}
+				save.set(id + ".magic.activeSpell", null);
+				save.set(id + ".magic.favorites.on", save.getInt(id + ".magic.favorites.on") + 1);
+				if(save.getInt(id + ".magic.favorites.amount") < save.getInt(id + ".magic.favorites.on")) {
+					save.set(id + "magic.favorites.on", 1);
 					settings.saveSave();
 				}
-				String spell = save.getString("magic." + player.getUniqueId() + ".favorites.holder." + save.get("magic." + player.getUniqueId() + ".favorites.on"));
+				String spell = save.getString(id + ".magic.favorites.holder." + save.get(id + ".magic.favorites.on"));
 				settings.saveSave();
 				Bukkit.dispatchCommand(player, "spell " + spell);
 			}
@@ -161,21 +159,21 @@ public class Magic implements Listener {
 				Scoreboard board = player.getScoreboard();
 				Objective magic = board.getObjective("Magic");
 				Score score = magic.getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + "Magic:"));
-			if(save.getBoolean("magic." + player.getUniqueId() + ".fireball") != false) {
+			if(save.getString(id + ".magic.activeSpell").equalsIgnoreCase("fireball")) {
 				if(score.getScore() >= 10) {
 					player.launchProjectile(SmallFireball.class);
 					score.setScore(score.getScore() - 10);
 				} else {
 					player.sendMessage(ChatColor.RED + "You need 10 magic to cast FIREBALL!");
 				}
-			} else if(save.getBoolean("magic." + player.getUniqueId() + ".iceblast") != false) {
+			} else if(save.getString(id + ".magic.activeSpell").equalsIgnoreCase("iceblast")) {
 				if(score.getScore() >= 8) {
 					player.launchProjectile(Snowball.class);
 					score.setScore(score.getScore() - 8);
 				} else {
 					player.sendMessage(ChatColor.RED + "You need 8 magic to cast ICEBLAST!");
 				}
-			} else if(save.getBoolean("magic." + player.getUniqueId() + ".fasthealing") != false) {
+			} else if(save.getString(id + ".magic.activeSpell").equalsIgnoreCase("fasthealing")) {
 				if(score.getScore() >= 25) {
 					player.setHealth(player.getHealth() + 2);
 					score.setScore(score.getScore() - 25);
@@ -183,7 +181,7 @@ public class Magic implements Listener {
 					player.sendMessage(ChatColor.RED + "You need 25 magic to cast FASTHEALING!");
 				}
 				
-			} else if(save.getBoolean("magic." + player.getUniqueId() + ".golemsummon") != false) {
+			} else if(save.getString(id + ".magic.activeSpell").equalsIgnoreCase("golemsummon")) {
 				if(score.getScore() >= 100) {
 					if(golemHM.get(golemP.get(player)) == player) {
 						player.sendMessage(ChatColor.RED + "You can only have one golem spawned at a time!");
@@ -298,7 +296,7 @@ public class Magic implements Listener {
 			} else {
 				player.sendMessage(ChatColor.RED + "You need 100 magic to cast GOLEMSUMMON!");
 			}
-			} else if(save.getBoolean("magic." + player.getUniqueId() + ".thundershock") != false) {
+			} else if(save.getString(id + ".magic.activeSpell").equalsIgnoreCase("thundershock")) {
 				if(score.getScore() >= 75) {
 				Block block = player.getTargetBlock((HashSet<Byte>)null, 200);
 				Location blockL = block.getLocation();
@@ -307,7 +305,7 @@ public class Magic implements Listener {
 				} else {
 					player.sendMessage(ChatColor.RED + "You need 75 magic to cast THUNDERSHOCK!");
 				}
-			} else if(save.getBoolean("magic." + player.getUniqueId() + ".familiarsummon") != false) {
+			} else if(save.getString(id + ".magic.activeSpell").equalsIgnoreCase("familiarsummon")) {
 				if(score.getScore() >= 25) {
 					if(wolfHM.get(wolfP.get(player)) == player) {
 						player.sendMessage(ChatColor.RED + "You can only have one familiar spawned at a time!");
@@ -435,7 +433,7 @@ public class Magic implements Listener {
 				} else {
 					player.sendMessage(ChatColor.RED + "You need 25 magic to summon a familiar");
 				}
-			} else if(save.getBoolean("magic." + player.getUniqueId() + ".firerune") != false) { //TODO setup commands for this!
+			} else if(save.getString(id + ".magic.activeSpell").equalsIgnoreCase("firerune")) { //TODO setup commands for this!
 				Block block1 = player.getTargetBlock((HashSet<Byte>)null, 200);
 				Location blockL1 = block1.getLocation();
 				ItemStack rune = new ItemStack(Material.FIREBALL);
@@ -475,7 +473,7 @@ public class Magic implements Listener {
 					player.sendMessage(ChatColor.RED + "You need 35 magic to cast a fire rune!");
 				}
 				
-			} else if(save.getBoolean("magic." + player.getUniqueId() + ".icerune") != false) {
+			} else if(save.getString(id + ".magic.activeSpell").equalsIgnoreCase("icerune")) {
 				if(runeP.containsKey(player)) {
 					player.sendMessage(ChatColor.RED + "You can only have one rune active at a time!");
 					return;
@@ -514,7 +512,7 @@ public class Magic implements Listener {
 				} else {
 					player.sendMessage(ChatColor.RED + "You need 35 magic to cast a ice rune!");
 				}
-			} else if(save.getBoolean("magic." + player.getUniqueId() + ".shockrune") != false) {
+			} else if(save.getString(id + ".magic.activeSpell").equalsIgnoreCase("shockrune")) {
 				if(runeP.containsKey(player)) {
 					player.sendMessage(ChatColor.RED + "You can only have one rune active at a time!");
 					return;

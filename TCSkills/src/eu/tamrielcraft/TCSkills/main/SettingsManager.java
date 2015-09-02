@@ -12,19 +12,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
+import com.sun.scenario.Settings;
+
+import eu.tamrielcraft.TCKills.Spells.FamiliarSummon;
+import eu.tamrielcraft.TCKills.Spells.FastHealing;
+import eu.tamrielcraft.TCKills.Spells.FireBall;
+import eu.tamrielcraft.TCKills.Spells.FireRune;
+import eu.tamrielcraft.TCKills.Spells.GolemSummon;
+import eu.tamrielcraft.TCKills.Spells.IceBlast;
+import eu.tamrielcraft.TCKills.Spells.IceRune;
+import eu.tamrielcraft.TCKills.Spells.ShockRune;
+import eu.tamrielcraft.TCKills.Spells.Spells;
+import eu.tamrielcraft.TCKills.Spells.ThunderShock;
 import eu.tamrielcraft.TCSkills.classes.Classes;
 import eu.tamrielcraft.TCSkills.classes.Dwarf;
 import eu.tamrielcraft.TCSkills.races.Argonian;
 import eu.tamrielcraft.TCSkills.races.Breton;
-import eu.tamrielcraft.TCSkills.races.DarkElves;
-import eu.tamrielcraft.TCSkills.races.HighElves;
-import eu.tamrielcraft.TCSkills.races.Imperials;
+import eu.tamrielcraft.TCSkills.races.DarkElf;
+import eu.tamrielcraft.TCSkills.races.HighElf;
+import eu.tamrielcraft.TCSkills.races.Imperial;
 import eu.tamrielcraft.TCSkills.races.Khajiit;
-import eu.tamrielcraft.TCSkills.races.Nords;
-import eu.tamrielcraft.TCSkills.races.Orcs;
+import eu.tamrielcraft.TCSkills.races.Nord;
+import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
-import eu.tamrielcraft.TCSkills.races.WoodElves;
+import eu.tamrielcraft.TCSkills.races.WoodElf;
 
 public class SettingsManager {
 	 private SettingsManager() { }
@@ -45,32 +57,58 @@ public class SettingsManager {
     
      public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
- 		if(getSave().get("argonians." + id) != null) {
- 			return Argonian.getInstance();
- 		} else if(getSave().get("bretons." + id) != null) {
- 			return Breton.getInstance();
- 		} else if(getSave().get("darkelves." + id) != null) {
- 			return DarkElves.getInstance();
- 		} else if(getSave().get("highelves." + id) != null) {
- 			return HighElves.getInstance();
- 		} else if(getSave().get("imperials." + id) != null) {
- 			return Imperials.getInstance();
- 		} else if(getSave().get("khajiits." + id) != null) {
- 			return Khajiit.getInstance();
- 		} else if(getSave().get("nords." + id) != null) {
- 			return Nords.getInstance();
- 		} else if(getSave().get("orcs." + id) != null) {
- 			return Orcs.getInstance();
- 		} else if(getSave().get("redguards." + id) != null) {
- 			return RedGuard.getInstance();
- 		} else if(getSave().get("woodelves." + id) != null) {
- 			return WoodElves.getInstance();
- 		} else {
- 			return null;
+ 		if(getSave().getString(id + ".race") == null) {
+ 			getSave().set(id + ".race", null);
  		}
+ 		if(getSave().getString(id + ".race") == "argonian") {
+ 			return Argonian.getInstance();
+ 		} else if(getSave().getString(id + ".race") == "breton") {
+ 			return Breton.getInstance();
+ 		} else if(getSave().getString(id + ".race") == "darkelf") {
+ 			return DarkElf.getInstance();
+ 		} else if(getSave().getString(id + ".race") == "highelf") {
+ 			return HighElf.getInstance();
+ 		} else if(getSave().getString(id + ".race") == "imperial") {
+ 			return Imperial.getInstance();
+ 		} else if(getSave().getString(id + ".race") == "khajiit") {
+ 			return Khajiit.getInstance();
+ 		} else if(getSave().getString(id + ".race") == "nord") {
+ 			return Nord.getInstance();
+ 		} else if(getSave().getString(id + ".race") == "orc") {
+ 			return Orc.getInstance();
+ 		} else if(getSave().getString(id + ".race") == "redguard") {
+ 			return RedGuard.getInstance();
+ 		} else if(getSave().getString(id + ".race") == "woodelf") {
+ 			return WoodElf.getInstance();
+ 		}
+ 		/*switch(getSave().getString(id + ".race")) { TODO this gives an error so i had to use a else and if statement
+ 		case "argonian":
+ 			return Argonian.getInstance();
+ 		case "breton":
+ 			return Breton.getInstance();
+ 		case "darkelf":
+ 			return DarkElf.getInstance();
+ 		case "highelf":
+ 			return HighElf.getInstance();
+ 		case "imperial":
+ 			return Imperial.getInstance();
+ 		case "khajiit":
+ 			return Khajiit.getInstance();
+ 		case "nord":
+ 			return Nord.getInstance();
+ 		case "orcs":
+ 			return Orc.getInstance();
+ 		case "redguard":
+ 			return RedGuard.getInstance();
+ 		case "woodelf":
+ 			return WoodElf.getInstance();
+ 		case "":
+ 			return null;
+ 		}*/
+ 		return null;
      }
-     
-	public Classes getClass(Player player) {
+
+	public Classes getClass(Player player) { //TODO UPDATE
     	 UUID id = player.getUniqueId();
     	 if(getSave().get(id + ".class").equals("dwarf")) {
     		 return Dwarf.getInstance();
@@ -78,7 +116,70 @@ public class SettingsManager {
     		 return null;
     	 }
      }
-     
+	
+	public Integer getMagic(Player player) {
+		UUID id = player.getUniqueId();
+		return getSave().getInt(id + ".magic.amount");
+		
+	}
+	
+	public Spells getSpell(Player player) {
+		UUID id = player.getUniqueId();
+		if(Settings.get(id + "magic.activeSpell") == null) {
+			Settings.set(id + ".magic.activeSpell", null);
+			return null;
+		}
+		if(Settings.get(id + ".magic.activeSpell") == "familiarsummon") {
+			return FamiliarSummon.getInstance();
+		} else if(Settings.get(id + ".magic.activeSpell") == "fasthealing") {
+			return FastHealing.getInstance();
+		} else if(Settings.get(id + ".magic.activeSpell") == "fireball") {
+			return FireBall.getInstance();
+		} else if(Settings.get(id + ".magic.activeSpell") == "firerune") {
+			return FireRune.getInstance();
+		} else if(Settings.get(id + ".magic.activeSpell") == "golemsummon") {
+			return GolemSummon.getInstance();
+		} else if(Settings.get(id + ".magic.activeSpell") == "iceblast") {
+			return IceBlast.getInstance();
+		} else if(Settings.get(id + ".magic.activeSpell") == "icerune") {
+			return IceRune.getInstance();
+		} else if(Settings.get(id + ".magic.activeSpell") == "shockrune") {
+			return ShockRune.getInstance();
+		} else if(Settings.get(id + ".magic.activeSpell") == "thundershock") {
+			return ThunderShock.getInstance();
+		}
+		
+		
+		/*switch(Settings.get(id + ".magic.activeSpell")) { TODO also created errors
+		case "familiarsummon":
+			return FamiliarSummon.getInstance();
+		case "fasthealing":
+			return FastHealing.getInstance();
+		case "fireball":
+			return FireBall.getInstance();
+		case "firerune":
+			return FireRune.getInstance();
+		case "golemsummon":
+			return GolemSummon.getInstance();
+		case "iceblast":
+			return IceBlast.getInstance();
+		case "icerune":
+			return IceRune.getInstance();
+		case "shockrune":
+			return ShockRune.getInstance();
+		case "thundershock":
+			return ThunderShock.getInstance();
+		}*/
+		return null;
+	}
+	
+	public boolean hasMagic(Player player) {
+		UUID id = player.getUniqueId();
+		if(getSave().getBoolean(id + "magic.hasMagic") == true) {
+			return true;
+		}	
+		return false;
+	} 
      
      
      public void setup(Plugin p) {

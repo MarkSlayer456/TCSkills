@@ -4,12 +4,12 @@ import org.bukkit.event.Listener;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 
-public class DarkElves extends Race implements Listener {
+public class DarkElf extends Race implements Listener {
 	static SettingsManager settings = SettingsManager.getInstance();
 	
-	static DarkElves instance = new DarkElves();
+	static DarkElf instance = new DarkElf();
     
-    public static DarkElves getInstance() {
+    public static DarkElf getInstance() {
             return instance;
     }
 	

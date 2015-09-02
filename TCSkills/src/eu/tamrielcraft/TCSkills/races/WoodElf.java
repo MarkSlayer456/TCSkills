@@ -3,13 +3,13 @@ package eu.tamrielcraft.TCSkills.races;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class WoodElves extends Race{
+public class WoodElf extends Race{
 
 	public ArrayList<UUID> WoodElves = new ArrayList<UUID>();
 	
-	static WoodElves instance = new WoodElves();
+	static WoodElf instance = new WoodElf();
     
-    public static WoodElves getInstance() {
+    public static WoodElf getInstance() {
             return instance;
     }
 	
