@@ -1,13 +1,8 @@
 package eu.tamrielcraft.TCSkills.main;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -56,12 +51,5 @@ public class Main extends JavaPlugin implements Listener {
 	}
 	
 	static ScoreboardManager manager = Bukkit.getScoreboardManager();
-	
-	//ArrayList<String> sneaking = new ArrayList<String>();
-	//ArrayList<String> sneakCoolDown = new ArrayList<String>();
-	//ArrayList<String> sneakMessage = new ArrayList<String>();
-	
-	//ArrayList<Block> blocks = new ArrayList<Block>();
-	//final HashMap<BlockState, Material> material = new HashMap<BlockState, Material>();
 	
 }

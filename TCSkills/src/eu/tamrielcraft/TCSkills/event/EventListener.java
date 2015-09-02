@@ -34,7 +34,6 @@ import eu.tamrielcraft.TCSkills.races.Argonian;
 import eu.tamrielcraft.TCSkills.races.Breton;
 import eu.tamrielcraft.TCSkills.races.DarkElf;
 import eu.tamrielcraft.TCSkills.races.HighElf;
-import eu.tamrielcraft.TCSkills.races.Imperial;
 import eu.tamrielcraft.TCSkills.races.Khajiit;
 import eu.tamrielcraft.TCSkills.races.Nord;
 import eu.tamrielcraft.TCSkills.races.Orc;
@@ -58,8 +57,6 @@ public class EventListener implements Listener {
 		this.settings = settings;
 		this.plugin = plugin;
 	}
-	
-	
 	
 	@EventHandler
 	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
@@ -91,8 +88,11 @@ public class EventListener implements Listener {
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		String format = e.getFormat();
 		Player player = e.getPlayer();
-		Race race = settings.getRace(player);
-		if(race == Argonian.getInstance()) {
+		Race race = settings.getRace(player); 
+		//TODO: check what I did: how making all the races extending the abstract race helped clean up the code
+		//TODO: this code should be removed by Mark
+		// Previous code
+		/*if(race == Argonian.getInstance()) {
 			format = Argonian.getInstance().formatChat(format);
 		} else if(race == Breton.getInstance()) {
 			format = Breton.getInstance().formatChat(format);
@@ -112,16 +112,25 @@ public class EventListener implements Listener {
 			format = RedGuard.getInstance().formatChat(format);
 		} else if(race == WoodElf.getInstance()) {
 			format = WoodElf.getInstance().formatChat(format);
-		}
+		}*/
+
+		// New code (waaaay shorter!)
+		// If we ever add a race -> nothing changes here!
+		race.formatChat(format);
+		
 		e.setFormat(format);
 	}
 	
 	@EventHandler
 	public void playerHitEvent(EntityDamageByEntityEvent e) {
+		//TODO: move all to corresponding race classes
 		if(e.getDamager() instanceof Player) {
 			final Player attacker = (Player) e.getDamager();
 			Race race = settings.getRace(attacker);
-			 if(race == Khajiit.getInstance()) {
+			// New code
+			race.playerHitByPlayer(e, attacker, plugin);
+			// Old Code
+			 /*if(race == Khajiit.getInstance()) {
 				 if(attacker.getItemInHand().getType() == Material.AIR) {
 					Random r = new Random();
 					int numb = r.nextInt(4) + 1;
@@ -140,8 +149,8 @@ public class EventListener implements Listener {
 			 }
 			 if(race == RedGuard.getInstance()) {
 				 e.setDamage(e.getDamage() * 0.05 + e.getDamage());
-			 }
-			 if(race == Khajiit.getInstance() || race == WoodElf.getInstance()) {
+			 }*/
+			 /*if(race == Khajiit.getInstance() || race == WoodElf.getInstance()) {
 						if(attacker.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
 							attacker.removePotionEffect(PotionEffectType.INVISIBILITY);
 							attacker.removePotionEffect(PotionEffectType.SPEED);
@@ -162,7 +171,7 @@ public class EventListener implements Listener {
 									attacker.sendMessage(ChatColor.GOLD + "You can sneak again!");
 							}
 							},  100);
-				}
+				}*/
 		} else if(e.getDamager() instanceof Projectile) {
 				Projectile project = (Projectile) e.getDamager();
 				if(project.getShooter() instanceof Player) {
@@ -296,9 +305,11 @@ public class EventListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerJoin(PlayerJoinEvent e) {
-		Player player = (Player) e.getPlayer();
-		Race race = settings.getRace(player);
-		if(race == Argonian.getInstance()) {
+		final Player player = (Player) e.getPlayer();
+		final Race race = settings.getRace(player);
+		
+		//TODO: same here: only one method call!
+		/*if(race == Argonian.getInstance()) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Argonian] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
 		} else if(race == Breton.getInstance()) {
 			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Breton] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
@@ -331,7 +342,32 @@ public class EventListener implements Listener {
 		} else {
 			settings.getSave().set(player.getUniqueId() + ".race", null);
 			player.sendMessage(ChatColor.RED + "You might want to join a race it gives you abilities do /race list to see a list of all the races and there abilities");
+		}*/
+		
+		if(race != null){
+			// Player has a race
+			race.sendWelcome(player);
+			
+			//TODO If many more races have an initialize thingy, we should add this to each race class
+			if(race == Orc.getInstance()){
+				player.setMaxHealth(24);
+			}
+			if(race == RedGuard.getInstance()){
+				Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+					@Override
+					public void run() {
+						if(player.getFoodLevel() < 8) {
+							player.setFoodLevel(8);
+							player.updateInventory();
+						}
+					}	
+				}, 10, 10);
+			}
+		} else{
+			// Player has no race selected
+			player.sendMessage(ChatColor.RED + "You might want to join a race it gives you abilities do /race list to see a list of all the races and there abilities");
 		}
+		
 		if(settings.hasMagic(player) == false) {
 			settings.getSave().set(player.getUniqueId() + ".magic.hasMagic", 100);
 			settings.saveSave();

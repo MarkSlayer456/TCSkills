@@ -9,7 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 
@@ -25,7 +27,22 @@ public class Imperial extends Race implements Listener {
 	
     @Override
 	public String formatChat(String s) {
-    	return s.replace(s, "[Imperials]" + s);
+    	return s.replace(s, "[Imperial]" + s);
+	}
+    
+    @Override
+    public void sendWelcome(Player player){
+    	player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Imperial] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
+    }
+    
+    public static String details() {
+		return "More luck";
+	}
+    
+	// Events
+	// This is not a eventListener. The EventListener uses this methods
+	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin){
+			
 	}
 	
 	
@@ -49,9 +66,5 @@ public class Imperial extends Race implements Listener {
 			}
 			}
 		}
-	}
-	
-	public static String details() {
-		return "More luck";
 	}
 }

@@ -58,7 +58,7 @@ public class SettingsManager {
  		if(getSave().getString(id + ".race") == null) {
  			getSave().set(id + ".race", null);
  		}
- 		if(getSave().getString(id + ".race") == "argonian") {
+ 		/*if(getSave().getString(id + ".race") == "argonian") {
  			return Argonian.getInstance();
  		} else if(getSave().getString(id + ".race") == "breton") {
  			return Breton.getInstance();
@@ -78,8 +78,9 @@ public class SettingsManager {
  			return RedGuard.getInstance();
  		} else if(getSave().getString(id + ".race") == "woodelf") {
  			return WoodElf.getInstance();
- 		}
- 		/*switch(getSave().getString(id + ".race")) { TODO this gives an error so i had to use a else and if statement
+ 		}*/
+ 		
+ 		switch(getSave().getString(id + ".race")) {// TODO this gives an error so i had to use a else and if statement
  		case "argonian":
  			return Argonian.getInstance();
  		case "breton":
@@ -102,7 +103,7 @@ public class SettingsManager {
  			return WoodElf.getInstance();
  		case "":
  			return null;
- 		}*/
+ 		}
  		return null;
      }
 
