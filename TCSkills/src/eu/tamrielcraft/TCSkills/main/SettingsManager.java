@@ -12,8 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import com.sun.scenario.Settings;
-
 import eu.tamrielcraft.TCKills.Spells.FamiliarSummon;
 import eu.tamrielcraft.TCKills.Spells.FastHealing;
 import eu.tamrielcraft.TCKills.Spells.FireBall;
@@ -125,27 +123,27 @@ public class SettingsManager {
 	
 	public Spells getSpell(Player player) {
 		UUID id = player.getUniqueId();
-		if(Settings.get(id + "magic.activeSpell") == null) {
-			Settings.set(id + ".magic.activeSpell", null);
+		if(getSave().get(id + "magic.activeSpell") == null) {
+			getSave().set(id + ".magic.activeSpell", null);
 			return null;
 		}
-		if(Settings.get(id + ".magic.activeSpell") == "familiarsummon") {
+		if(getSave().get(id + ".magic.activeSpell") == "familiarsummon") {
 			return FamiliarSummon.getInstance();
-		} else if(Settings.get(id + ".magic.activeSpell") == "fasthealing") {
+		} else if(getSave().get(id + ".magic.activeSpell") == "fasthealing") {
 			return FastHealing.getInstance();
-		} else if(Settings.get(id + ".magic.activeSpell") == "fireball") {
+		} else if(getSave().get(id + ".magic.activeSpell") == "fireball") {
 			return FireBall.getInstance();
-		} else if(Settings.get(id + ".magic.activeSpell") == "firerune") {
+		} else if(getSave().get(id + ".magic.activeSpell") == "firerune") {
 			return FireRune.getInstance();
-		} else if(Settings.get(id + ".magic.activeSpell") == "golemsummon") {
+		} else if(getSave().get(id + ".magic.activeSpell") == "golemsummon") {
 			return GolemSummon.getInstance();
-		} else if(Settings.get(id + ".magic.activeSpell") == "iceblast") {
+		} else if(getSave().get(id + ".magic.activeSpell") == "iceblast") {
 			return IceBlast.getInstance();
-		} else if(Settings.get(id + ".magic.activeSpell") == "icerune") {
+		} else if(getSave().get(id + ".magic.activeSpell") == "icerune") {
 			return IceRune.getInstance();
-		} else if(Settings.get(id + ".magic.activeSpell") == "shockrune") {
+		} else if(getSave().get(id + ".magic.activeSpell") == "shockrune") {
 			return ShockRune.getInstance();
-		} else if(Settings.get(id + ".magic.activeSpell") == "thundershock") {
+		} else if(getSave().get(id + ".magic.activeSpell") == "thundershock") {
 			return ThunderShock.getInstance();
 		}
 		
