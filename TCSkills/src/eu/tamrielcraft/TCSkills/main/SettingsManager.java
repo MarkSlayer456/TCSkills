@@ -12,18 +12,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import eu.tamrielcraft.TCKills.Spells.FamiliarSummon;
-import eu.tamrielcraft.TCKills.Spells.FastHealing;
-import eu.tamrielcraft.TCKills.Spells.FireBall;
-import eu.tamrielcraft.TCKills.Spells.FireRune;
-import eu.tamrielcraft.TCKills.Spells.GolemSummon;
-import eu.tamrielcraft.TCKills.Spells.IceBlast;
-import eu.tamrielcraft.TCKills.Spells.IceRune;
-import eu.tamrielcraft.TCKills.Spells.ShockRune;
-import eu.tamrielcraft.TCKills.Spells.Spells;
-import eu.tamrielcraft.TCKills.Spells.ThunderShock;
+import eu.tamrielcraft.TCKills.spells.FamiliarSummon;
+import eu.tamrielcraft.TCKills.spells.FastHealing;
+import eu.tamrielcraft.TCKills.spells.FireBall;
+import eu.tamrielcraft.TCKills.spells.FireRune;
+import eu.tamrielcraft.TCKills.spells.GolemSummon;
+import eu.tamrielcraft.TCKills.spells.IceBlast;
+import eu.tamrielcraft.TCKills.spells.IceRune;
+import eu.tamrielcraft.TCKills.spells.ShockRune;
+import eu.tamrielcraft.TCKills.spells.Spells;
+import eu.tamrielcraft.TCKills.spells.ThunderShock;
+import eu.tamrielcraft.TCSkills.classes.Archer;
+import eu.tamrielcraft.TCSkills.classes.Barbarian;
 import eu.tamrielcraft.TCSkills.classes.Classes;
-import eu.tamrielcraft.TCSkills.classes.Dwarf;
+import eu.tamrielcraft.TCSkills.classes.Knight;
+import eu.tamrielcraft.TCSkills.classes.Mage;
+import eu.tamrielcraft.TCSkills.classes.Rogue;
 import eu.tamrielcraft.TCSkills.races.Argonian;
 import eu.tamrielcraft.TCSkills.races.Breton;
 import eu.tamrielcraft.TCSkills.races.DarkElf;
@@ -55,9 +59,9 @@ public class SettingsManager {
     
      public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
- 		if(getSave().getString(id + ".race") == null) {
+ 		/*if(getSave().getString(id + ".race") == null) {
  			getSave().set(id + ".race", null);
- 		}
+ 		}*/
  		/*if(getSave().getString(id + ".race") == "argonian") {
  			return Argonian.getInstance();
  		} else if(getSave().getString(id + ".race") == "breton") {
@@ -80,7 +84,7 @@ public class SettingsManager {
  			return WoodElf.getInstance();
  		}*/
  		
- 		switch(getSave().getString(id + ".race")) {// TODO this gives an error so i had to use a else and if statement
+ 		switch(getSave().getString(id + ".race")) {
  		case "argonian":
  			return Argonian.getInstance();
  		case "breton":
@@ -101,17 +105,26 @@ public class SettingsManager {
  			return RedGuard.getInstance();
  		case "woodelf":
  			return WoodElf.getInstance();
- 		case "":
+ 		default:
  			return null;
  		}
- 		return null;
      }
 
-	public Classes getClass(Player player) { //TODO UPDATE
+	public Classes getClass(Player player) {
     	 UUID id = player.getUniqueId();
-    	 if(getSave().get(id + ".class").equals("dwarf")) {
-    		 return Dwarf.getInstance();
-    	 } else {
+    	 
+    	 switch (getSave().getString(id + ".class")){
+    	 case "archer":
+    		 return Archer.getInstance();
+    	 case "barbarian":
+    		 return Barbarian.getInstance();
+    	 case "knigh":
+    		 return Knight.getInstance();
+    	 case "mage":
+    		 return Mage.getInstance();
+    	 case "Rogue":
+    		 return Rogue.getInstance();
+    	 default:
     		 return null;
     	 }
      }

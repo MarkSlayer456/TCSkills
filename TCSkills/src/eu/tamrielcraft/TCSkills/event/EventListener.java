@@ -1,8 +1,6 @@
 package eu.tamrielcraft.TCSkills.event;
 
 import java.util.ArrayList;
-import java.util.Random;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -43,8 +41,6 @@ import eu.tamrielcraft.TCSkills.races.WoodElf;
 
 public class EventListener implements Listener {
 	
-	//TODO: The getRace should be implemented in the settings and should give back an abstract Race object
-	
 	private Plugin plugin;
 	private SettingsManager settings;
 	static ScoreboardManager manager = Bukkit.getScoreboardManager();
@@ -84,7 +80,7 @@ public class EventListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		String format = e.getFormat();
 		Player player = e.getPlayer();
@@ -116,7 +112,9 @@ public class EventListener implements Listener {
 
 		// New code (waaaay shorter!)
 		// If we ever add a race -> nothing changes here!
-		race.formatChat(format);
+		if(race != null){
+			race.formatChat(format);
+		}
 		
 		e.setFormat(format);
 	}
@@ -128,6 +126,9 @@ public class EventListener implements Listener {
 			final Player attacker = (Player) e.getDamager();
 			Race race = settings.getRace(attacker);
 			// New code
+			if(race == null){
+				return;
+			}
 			race.playerHitByPlayer(e, attacker, plugin);
 			// Old Code
 			 /*if(race == Khajiit.getInstance()) {
