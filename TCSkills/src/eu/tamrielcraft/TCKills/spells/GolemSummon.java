@@ -28,9 +28,7 @@ public class GolemSummon extends Spells {
 		HashMap<IronGolem, Integer> golemTime = Magic.golemTime;
 		HashMap<Player, IronGolem> golemP = Magic.golemP;
 		HashMap<IronGolem, Player> golemHM = Magic.golemHM;
-		HashMap<Player, Boolean> golemB = Magic.golemB;
 		IronGolem golem = golemP.get(player);
-		golemB.replace(player, true);
 		Bukkit.getScheduler().cancelTask(Magic.golemSystemsIntHM.get(player));
 		Magic.golemSystemsIntHM.put(player, 0);
 		if(golem.isDead()) {
@@ -70,7 +68,6 @@ public class GolemSummon extends Spells {
 		HashMap<IronGolem, Integer> golemTime = Magic.golemTime;
 		HashMap<Player, IronGolem> golemP = Magic.golemP;
 		HashMap<IronGolem, Player> golemHM = Magic.golemHM;
-		HashMap<Player, Boolean> golemB = Magic.golemB;
 		IronGolem golem = golemP.get(player);
 		if(Magic.golemSystemsIntHM.get(player) == null || Magic.golemSystemsIntHM.get(player) == 0) {
 			Magic.golemSystemsIntHM.put(player, systems);
