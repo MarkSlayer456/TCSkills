@@ -37,7 +37,7 @@ public class Khajiit extends Race{
 	
 	// Events
 	// This is not a eventListener. The EventListener uses these methods
-	public void playerHitByPlayer(EntityDamageByEntityEvent e, final Player attacker, Plugin plugin){
+	public void playerHitByPlayer(EntityDamageByEntityEvent e, final Player attacker, Plugin plugin) {
 		if(attacker.getItemInHand().getType() == Material.AIR) {
 			Random r = new Random();
 			int numb = r.nextInt(4) + 1;
