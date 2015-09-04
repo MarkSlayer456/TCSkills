@@ -59,10 +59,10 @@ public class SettingsManager {
     
      public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
- 		/*if(getSave().getString(id + ".race") == null) {
+ 		if(getSave().getString(id + ".race") == null) {
  			getSave().set(id + ".race", null);
- 		}*/
- 		/*if(getSave().getString(id + ".race") == "argonian") {
+ 		}
+ 		if(getSave().getString(id + ".race") == "argonian") {
  			return Argonian.getInstance();
  		} else if(getSave().getString(id + ".race") == "breton") {
  			return Breton.getInstance();
@@ -82,9 +82,10 @@ public class SettingsManager {
  			return RedGuard.getInstance();
  		} else if(getSave().getString(id + ".race") == "woodelf") {
  			return WoodElf.getInstance();
- 		}*/
+ 		}
+ 		return null;
  		
- 		switch(getSave().getString(id + ".race")) {
+ 		/*switch(getSave().getString(id + ".race")) { //AS I SAID THIS CREATES ERRORS ON THE CONSOLES EVERY TIME YOU MOVE
  		case "argonian":
  			return Argonian.getInstance();
  		case "breton":
@@ -107,7 +108,7 @@ public class SettingsManager {
  			return WoodElf.getInstance();
  		default:
  			return null;
- 		}
+ 		}*/
      }
 
 	public Classes getClass(Player player) {

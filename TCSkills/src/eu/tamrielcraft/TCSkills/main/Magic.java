@@ -46,6 +46,8 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
+import eu.tamrielcraft.TCKills.spells.GolemSummon;
+
 public class Magic implements Listener {
 	
 	static SettingsManager settings = SettingsManager.getInstance();
@@ -55,6 +57,7 @@ public class Magic implements Listener {
 	public static HashMap<Player, Integer> golemTimerSystemIntHM = new HashMap<Player, Integer>();
 	public static HashMap<Player, Integer> golemHealthSystemIntHM = new HashMap<Player, Integer>();
 	public static HashMap<Player, Integer> golemTargetingSystemIntHM = new HashMap<Player, Integer>();
+	public static HashMap<Player, Integer> golemSystemsIntHM = new HashMap<Player, Integer>();
 	public static HashMap<Player, IronGolem> golemP = new HashMap<Player, IronGolem>();
 	public static HashMap<Player, Boolean> golemB = new HashMap<Player, Boolean>();
 	
@@ -102,6 +105,7 @@ public class Magic implements Listener {
 	private int golemTimerSystemInt;
 	private int golemHealthSystemInt;
 	private int golemTargetingSystemInt;
+	static int golemSystemsInt;
 	
 	private int wolfTimerSystemInt;
 	private int wolfHealthSystemInt;
@@ -187,7 +191,7 @@ public class Magic implements Listener {
 						player.sendMessage(ChatColor.RED + "You can only have one golem spawned at a time!");
 						return;
 					}
-					golemB.put(player, false);
+					/*golemB.put(player, false); OLD CODE
 					double ox = player.getLocation().getX();
 					double oy = player.getLocation().getY();
 					double oz = player.getLocation().getZ();
@@ -199,12 +203,22 @@ public class Magic implements Listener {
 					golemHM.put(golem, player);
 					golem.setMaxHealth(300);
 					golem.setHealth(300);
-					score.setScore(score.getScore() - 100);
+					score.setScore(score.getScore() - 100);*/
+					//NEW CODE
+					GolemSummon.setupGolem(player, score);
 					
-					golemTimerSystemInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() { //Timer
+					golemSystemsInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() {
 						@Override
 						public void run() {
-							/*if(golemTimerSystemIntHM.get(player) == null || golemTimerSystemIntHM.get(player) == 0) {
+							GolemSummon.runSystems(player, golemSystemsInt);
+						}
+					}, 0, 1);
+					
+					
+					/*golemTimerSystemInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() { //Timer
+						@Override
+						public void run() {
+							if(golemTimerSystemIntHM.get(player) == null || golemTimerSystemIntHM.get(player) == 0) {
 							golemTimerSystemIntHM.put(player, golemTimerSystemInt);
 							}
 							if(golemTime.get(golem) <= 0) {
@@ -232,13 +246,13 @@ public class Magic implements Listener {
 								}
 							} else {
 								golemTime.replace(golem, golemTime.get(golem) - 1);
-							}*/
+							}
 						}
 					}, 0, 20);
 					golemTargetingSystemInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() { //IRON GOLEM TARGETING SYSTEM
 						@Override
 						public void run() { //DOESN'T NEED TO RESET GOLEM BECASUE IT'S JUST THE TARGETING SYSTEM
-							/*if(golemTargetingSystemIntHM.get(player) == null || golemTargetingSystemIntHM.get(player) == 0) {
+							if(golemTargetingSystemIntHM.get(player) == null || golemTargetingSystemIntHM.get(player) == 0) {
 							golemTargetingSystemIntHM.put(player, golemTargetingSystemInt);
 							}
 							for(Entity entity : golem.getNearbyEntities(7, 7, 7)) {
@@ -254,13 +268,13 @@ public class Magic implements Listener {
 								}
 								if(golem.getTarget() == null) {
 								}
-							}*/
+							}
 						}
 					}, 0, 5);
 					golemHealthSystemInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() { //HEALTH TRACKING SYSTEM
 						@Override
 						public void run() {
-							/*if(golemHealthSystemIntHM.get(player) == null || golemHealthSystemIntHM.get(player) == 0) {
+							if(golemHealthSystemIntHM.get(player) == null || golemHealthSystemIntHM.get(player) == 0) {
 							golemHealthSystemIntHM.put(player, golemHealthSystemInt);
 							}
 							if(golem.getHealth() <= 200) {
@@ -289,9 +303,9 @@ public class Magic implements Listener {
 									}
 									return;
 								}
-							}*/
+							}
 						}
-					}, 0, 1);	
+					}, 0, 1);*/	
 					
 			} else {
 				player.sendMessage(ChatColor.RED + "You need 100 magic to cast GOLEMSUMMON!");

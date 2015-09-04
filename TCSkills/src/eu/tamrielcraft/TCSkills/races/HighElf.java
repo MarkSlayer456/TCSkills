@@ -24,7 +24,7 @@ public class HighElf extends Race{
 	}
     
     @Override
-    public void sendWelcome(Player player){
+    public void sendWelcome(Player player) {
     	player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[HighElf] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
     }
 	
@@ -34,7 +34,7 @@ public class HighElf extends Race{
 	
 	// Events
 	// This is not a eventListener. The EventListener uses this methods
-	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin){
+	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin) {
 			
 	}
 }
