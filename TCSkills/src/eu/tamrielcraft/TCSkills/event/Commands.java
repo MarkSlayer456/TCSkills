@@ -1,5 +1,6 @@
 package eu.tamrielcraft.TCSkills.event;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -47,7 +48,12 @@ public class Commands implements CommandExecutor {
 	RedGuard redguard = new RedGuard();
 	WoodElf woodelves = new WoodElf();
 	
-	public Commands(Plugin plugin, SettingsManager settings){
+	public static int redGuardFoodLoopInt;
+	
+	public static HashMap<Player, Integer> redGuardLoopHM = new HashMap<Player, Integer>();
+	
+	
+	public Commands(Plugin plugin, SettingsManager settings) {
 		this.plugin = plugin;
 		this.settings = settings;
 		Bukkit.getServer().getPluginManager().registerEvents(new Orc(), plugin);
@@ -58,8 +64,36 @@ public class Commands implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender Sender, Command cmd, String label, String[] args) {
 		final Player player = (Player) Sender;
-		UUID id = player.getUniqueId(); //TODO change all player.getUniqueId() to just id no idea why i didn't do this from the start -_-
-		FileConfiguration save = settings.getSave(); //lets just save ourselves from doing settings.getSave() a bunch XD
+		UUID id = player.getUniqueId();
+		FileConfiguration save = settings.getSave();
+		
+		if(cmd.getName().equalsIgnoreCase("class") || cmd.getName().equalsIgnoreCase("c")) {
+			if(args.length == 0) {
+				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header")); //TODO add/change descriptions to all of these i don't know if you want them to have a abilities 
+				player.sendMessage(ChatColor.RED + "Archer: " + ChatColor.GOLD + "");
+				player.sendMessage(ChatColor.RED + "Barbarian: " + ChatColor.GOLD + "");
+				player.sendMessage(ChatColor.RED + "Knight: " + ChatColor.GOLD + "");
+				player.sendMessage(ChatColor.RED + "Mage: " + ChatColor.GOLD + "");
+				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + "Now you see me... now you don't");
+			}
+			
+			if(cmd.getName().equalsIgnoreCase("archer") || cmd.getName().equalsIgnoreCase("archers")) {
+				save.set(id + ".class", "archer");
+			} else if(cmd.getName().equalsIgnoreCase("barbarian") || cmd.getName().equalsIgnoreCase("barbarians")) {
+				save.set(id + ".class", "barbarian");
+			} else if(cmd.getName().equalsIgnoreCase("knight") || cmd.getName().equalsIgnoreCase("knights")) {
+				save.set(id + ".class", "knight");
+			} else if(cmd.getName().equalsIgnoreCase("mage") || cmd.getName().equalsIgnoreCase("mages")) {
+				save.set(id + ".class", "mage");
+			} else if(cmd.getName().equalsIgnoreCase("rogue") || cmd.getName().equalsIgnoreCase("rogues")) {
+				save.set(id + ".class", "rogue");
+			} else {
+				player.sendMessage(ChatColor.RED + "UNKNOW CLASS!");
+			}
+			settings.saveSave();
+			
+		}
+		
 		
 		if(cmd.getName().equalsIgnoreCase("favorite") || cmd.getName().equalsIgnoreCase("fav")) {
 			if(args.length == 0) {
@@ -252,30 +286,6 @@ public class Commands implements CommandExecutor {
 			} 
 		}
 		
-		//TODO finish /class command
-		if(cmd.getName().equalsIgnoreCase("class") || cmd.getName().equalsIgnoreCase("c")) {
-			if(args.length != 1) {
-				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
-				player.sendMessage(ChatColor.RED + "Dwarf: " + "..."); //TODO NO IDEA WHAT YOU WANT FOR THIS SO I'LL JUST LEAVE IT UP TO YOU!
-			} else {
-				if(args[0].equalsIgnoreCase("dwarf") || args[0].equalsIgnoreCase("dwarves") || /* just in case someone doesn't know how to spell ^_^ */ args[0].equalsIgnoreCase("dwarfs")) {
-					save.set(id + ".class", "dwarf");
-				} else if(args[0].equalsIgnoreCase("<racename>")) {
-					
-					
-				}
-				
-				
-				
-				/*  else if(args[0].equalsIgnoreCase("list") {
-				 *  
-				 *  
-				 *  }
-				 * 
-				 */
-			}
-		}
-		
 		
 		if(cmd.getName().equalsIgnoreCase("race") || cmd.getName().equalsIgnoreCase("r")) {
 			//TODO remove when done testing!
@@ -343,7 +353,7 @@ public class Commands implements CommandExecutor {
 				} else if(args[0].equalsIgnoreCase("redguards") || args[0].equalsIgnoreCase("redguard")) {
 					save.set(id + ".race", "redguard");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "RedGuard" + ChatColor.GOLD + "!");
-					Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() { //TODO MAKE SURE THERE IS A WAY TO DISABLE THIS
+					redGuardFoodLoopInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 						@Override
 						public void run() {
 							if(player.getFoodLevel() < 8) {

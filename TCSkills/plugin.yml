@@ -8,24 +8,20 @@ commands:
   race:
     description: base race command!
     usage: /<command> <command>
-  r:
-    description: base race command!
-    usage: /<command> <command>
+    aliases: [r]
   spell:
     description: base spell command!
     usage: /<command> <command>
-  s:
-    description: base spell command!
-    usage: /<command> <command>
+    aliases: [s]
   magicregen:
     description: regens magic super fast
     usage: /<command>
-  mr:
-    description: regens magic magicly fast
-    usage: /<command>
+    aliases: [mr]    
   favorite:
     description: adds a favorite spell
     usage: /<command> <command>
-  fav:
-    description: adds a favorite spell
+    aliases: [fav]
+  class:
+    description: base class command
     usage: /<command> <command>
+    aliases: [c]

@@ -1,6 +1,8 @@
 package eu.tamrielcraft.TCSkills.event;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -87,7 +89,6 @@ public class EventListener implements Listener {
 		String format = e.getFormat();
 		Player player = e.getPlayer();
 		Race race = settings.getRace(player); 
-		//TODO: check what I did: how making all the races extending the abstract race helped clean up the code
 		//TODO: this code should be removed by Mark
 		// Previous code
 		/*if(race == Argonian.getInstance()) {
@@ -195,11 +196,15 @@ public class EventListener implements Listener {
 				if(project.getShooter() instanceof Player) {
 				Player shooter = (Player) project.getShooter();
 				Race race = settings.getRace(shooter);
-				if(race == WoodElf.getInstance()) { //TODO make this so the player doesn't always get a headshot
-					 if(shooter.getItemInHand().getType() == Material.BOW) {
-						 shooter.sendMessage(ChatColor.RED + "Headshot! 10% more bow damage!");
-						 e.setDamage(e.getDamage() * .10 + e.getDamage());
-					 }
+				if(race == WoodElf.getInstance()) {
+					Random r = new Random();
+					int ran = r.nextInt(6) + 1;
+					if(ran == 2) {
+						 if(shooter.getItemInHand().getType() == Material.BOW) { //TODO error here someone could shoot and swap really fast and not have a chance of getting a headshot
+							 shooter.sendMessage(ChatColor.RED + "Headshot! 10% more bow damage!");
+							 e.setDamage(e.getDamage() * .10 + e.getDamage());
+						 }
+					}
 				 }
 				}
 				if(e.getEntity() instanceof Player) {
@@ -351,9 +356,12 @@ public class EventListener implements Listener {
 				player.setMaxHealth(24);
 			}
 			if(race == RedGuard.getInstance()){
-				Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+				Commands.redGuardFoodLoopInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 					@Override
 					public void run() {
+						if(Commands.redGuardLoopHM.get(player) == null || Commands.redGuardLoopHM.get(player) == 1) {
+							Commands.redGuardLoopHM.put(player, Commands.redGuardFoodLoopInt);
+						}
 						if(player.getFoodLevel() < 8) {
 							player.setFoodLevel(8);
 							player.updateInventory();
@@ -361,7 +369,7 @@ public class EventListener implements Listener {
 					}	
 				}, 10, 10);
 			}
-		} else{
+		} else {
 			// Player has no race selected
 			player.sendMessage(ChatColor.RED + "You might want to join a race it gives you abilities do /race list to see a list of all the races and there abilities");
 		}
@@ -370,16 +378,41 @@ public class EventListener implements Listener {
 			settings.getSave().set(player.getUniqueId() + ".magic.hasMagic", 100);
 			settings.saveSave();
 		}
-		//TODO NEED SOMETHING HERE TO CHECK IF PLAYER HAS A SCOREBOARD ENABLED!
 		if(manager == null) {
 			manager = Bukkit.getScoreboardManager();
 		}
+		if(player.getScoreboard() != null) {
+			Scoreboard board = manager.getNewScoreboard();
+			Objective magic = board.registerNewObjective("Magic", "dummy");		
+			magic.setDisplayName("Magic");										
+			magic.setDisplaySlot(DisplaySlot.SIDEBAR);							
+			player.setScoreboard(board);
+			@SuppressWarnings("deprecation")
+			final Score score = magic.getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN +  "Magic:"));
+			score.setScore(settings.getMagic(player));
+			
+			Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() { //REGENS MAGIC
+				@Override
+				public void run() {
+				if(race == Breton.getInstance() || race == HighElf.getInstance()) {
+				if(score.getScore() <= 149) {	
+				score.setScore(score.getScore() + 1);
+				}
+				} else {
+					if(score.getScore() <= 99) {
+						score.setScore(score.getScore() + 1);
+					}
+				}
+				}
+			}, 10, 10);
+			
+		} else {
+		
 		Scoreboard board = manager.getNewScoreboard();						
 		Objective magic = board.registerNewObjective("Magic", "dummy");		
 		magic.setDisplayName("Magic");										
 		magic.setDisplaySlot(DisplaySlot.SIDEBAR);							
 		player.setScoreboard(board);										
-		
 		@SuppressWarnings("deprecation")
 		final Score score = magic.getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN +  "Magic:"));
 			score.setScore(settings.getMagic(player));
@@ -398,5 +431,6 @@ public class EventListener implements Listener {
 			}
 			}
 		}, 10, 10);
+		}
 	}
 }

@@ -14,12 +14,12 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import eu.tamrielcraft.TCSkills.main.Magic;
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
+import eu.tamrielcraft.TCSkills.races.RedGuard;
 
 public class LeavingListener implements Listener {
 
 	
 	static SettingsManager settings = SettingsManager.getInstance();
-	//TODO move this to magic doesn't need to be it's own class! maybe keep it here....
 	
 	@EventHandler
 	public void onPlayerDisconnect(PlayerQuitEvent e) {
@@ -34,6 +34,11 @@ public class LeavingListener implements Listener {
 		settings.getSave().set("magic.amount." + player.getUniqueId(), score.getScore());
 		settings.saveSave();
 		
+		if(settings.getRace(player) == RedGuard.getInstance()) { //cancels the redguard food regeneration
+			int task = Commands.redGuardLoopHM.get(player);
+			Bukkit.getScheduler().cancelTask(task);
+		}
+		
 		if(Magic.golemHM.containsValue(player)) {
 			IronGolem golem = Magic.golemP.get(player);
 			golem.setLeashHolder(null);
@@ -47,6 +52,7 @@ public class LeavingListener implements Listener {
 			Magic.golemTimerSystemIntHM.put(player, 0);
 			Magic.golemHealthSystemIntHM.put(player, 0);
 		}
+		
 		
 		if(Magic.runeP.containsKey(player)) {
 			Magic.runeP.remove(player);
