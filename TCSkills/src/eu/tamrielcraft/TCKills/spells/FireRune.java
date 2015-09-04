@@ -1,4 +1,4 @@
-package eu.tamrielcraft.TCKills.Spells;
+package eu.tamrielcraft.TCKills.spells;
 
 public class FireRune extends Spells {
 

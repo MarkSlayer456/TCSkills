@@ -1,4 +1,4 @@
-package eu.tamrielcraft.TCKills.Spells;
+package eu.tamrielcraft.TCKills.spells;
 
 public abstract class Spells {
 	

@@ -1,7 +1,6 @@
 package eu.tamrielcraft.TCSkills.event;
 
 import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
