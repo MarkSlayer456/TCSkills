@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="Resources/spigot-api-1.8.7-R0.1-SNAPSHOT-shaded.jar"/>
+	<classpathentry kind="lib" path="Resources/PlaceholderAPI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

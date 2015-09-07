@@ -17,10 +17,20 @@ public class HighElf extends Race{
     public static HighElf getInstance() {
             return instance;
     }
-	
+    
     @Override
+	public String raceName() {
+		return "HighElf";
+	}
+
+	@Override
+	public String raceNameChat() {
+		return "[" + raceName() +"]";
+	}
+	
+	@Override
 	public String formatChat(String s) {
-    	return s.replace(s, "[HighElf]" + s);
+		return s.replace(s, raceNameChat() + s);
 	}
     
     @Override

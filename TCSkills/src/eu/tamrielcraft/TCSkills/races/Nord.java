@@ -17,10 +17,20 @@ public class Nord extends Race {
     public static Nord getInstance() {
             return instance;
     }
-	
+    
     @Override
+	public String raceName() {
+		return "Nord";
+	}
+
+	@Override
+	public String raceNameChat() {
+		return "[" + raceName() +"]";
+	}
+	
+	@Override
 	public String formatChat(String s) {
-    	return s.replace(s, "[Nord]" + s);
+		return s.replace(s, raceNameChat() + s);
 	}
     
     @Override

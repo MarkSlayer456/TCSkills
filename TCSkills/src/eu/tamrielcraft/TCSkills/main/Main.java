@@ -3,6 +3,7 @@ package eu.tamrielcraft.TCSkills.main;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -10,6 +11,8 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import eu.tamrielcraft.TCSkills.event.Commands;
 import eu.tamrielcraft.TCSkills.event.EventListener;
 import eu.tamrielcraft.TCSkills.event.LeavingListener;
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderHook;
 
 public class Main extends JavaPlugin implements Listener {
 	Logger logger = Logger.getLogger("Minecraft");
@@ -41,13 +44,26 @@ public class Main extends JavaPlugin implements Listener {
 		this.getCommand("magicregen").setExecutor(new Commands(this, settings));
 		this.getCommand("mr").setExecutor(new Commands(this, settings));
 		
-		getLogger().info("Enabling Elder Scroll Races");
 		settings.getConfig().addDefault("Header", "---===[TamerialCraft]===---");
 		plugin = this;
+		
+		boolean hooked = PlaceholderAPI.registerPlaceholderHook(this, new PlaceholderHook() {
+            @Override
+            public String onPlaceholderRequest(Player p, String identifier) {
+                // placeholder: %tcskills_identifier%
+                if (identifier.equals("race")) {
+                    return settings.getRace(p).raceNameChat();
+                }
+                return null;
+            }
+        });
+
+		if (hooked) {
+			getLogger().info("Hooked into PlaceholderAPI!");
+		}
 	}
 	
 	public void onDisable() {
-		getLogger().info("Disabling Elder Scroll Races");
 	}
 	
 	static ScoreboardManager manager = Bukkit.getScoreboardManager();

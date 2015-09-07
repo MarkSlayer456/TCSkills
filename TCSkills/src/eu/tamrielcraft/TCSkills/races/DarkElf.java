@@ -17,9 +17,19 @@ public class DarkElf extends Race implements Listener {
             return instance;
     }
 	
+    @Override
+	public String raceName() {
+		return "DarkElf";
+	}
+
+	@Override
+	public String raceNameChat() {
+		return "[" + raceName() +"]";
+	}
+    
 	@Override
 	public String formatChat(String s) {
-		return s.replace(s, "[DarkElf]" + s);
+		return s.replace(s, raceNameChat() + s);
 	}
 	
 	@Override

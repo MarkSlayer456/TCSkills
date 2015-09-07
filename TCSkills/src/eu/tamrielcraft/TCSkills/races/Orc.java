@@ -17,10 +17,20 @@ public class Orc extends Race implements Listener {
     public static Orc getInstance() {
             return instance;
     }
-	
+    
     @Override
+	public String raceName() {
+		return "Orc";
+	}
+
+	@Override
+	public String raceNameChat() {
+		return "[" + raceName() +"]";
+	}
+	
+	@Override
 	public String formatChat(String s) {
-    	return s.replace(s, "[Orc]" + s);
+		return s.replace(s, raceNameChat() + s);
 	}
     
     @Override

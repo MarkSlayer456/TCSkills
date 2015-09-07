@@ -20,10 +20,20 @@ public class Khajiit extends Race{
     public static Khajiit getInstance() {
             return instance;
     }
-	
+    
     @Override
+	public String raceName() {
+		return "Khajiit";
+	}
+
+	@Override
+	public String raceNameChat() {
+		return "[" + raceName() +"]";
+	}
+	
+	@Override
 	public String formatChat(String s) {
-    	return s.replace(s, "[Khajiit]" + s);
+		return s.replace(s, raceNameChat() + s);
 	}
     
     @Override

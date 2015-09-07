@@ -78,7 +78,8 @@ public class GolemSummon extends Spells {
 			disableGolem(player);
 			return;
 		} else {
-			golemTime.replace(golem, golemTime.get(golem) -1);
+			//TODO: changed this golemTime.replace(golem, golemTime.get(golem) -1); to
+			golemTime.put(golem, golemTime.get(golem) - 1);
 		}
 		if(golem.getHealth() <= 200) {
 			golem.setLeashHolder(null);

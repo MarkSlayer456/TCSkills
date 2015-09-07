@@ -31,6 +31,7 @@ import eu.tamrielcraft.TCSkills.classes.Rogue;
 import eu.tamrielcraft.TCSkills.races.Argonian;
 import eu.tamrielcraft.TCSkills.races.Breton;
 import eu.tamrielcraft.TCSkills.races.DarkElf;
+import eu.tamrielcraft.TCSkills.races.EmptyRace;
 import eu.tamrielcraft.TCSkills.races.HighElf;
 import eu.tamrielcraft.TCSkills.races.Imperial;
 import eu.tamrielcraft.TCSkills.races.Khajiit;
@@ -60,9 +61,9 @@ public class SettingsManager {
      public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
  		if(getSave().getString(id + ".race") == null) {
- 			getSave().set(id + ".race", null);
+ 			getSave().set(id + ".race", "empty");
  		}
- 		if(getSave().getString(id + ".race") == "argonian") {
+ 		/*if(getSave().getString(id + ".race") == "argonian") {
  			return Argonian.getInstance();
  		} else if(getSave().getString(id + ".race") == "breton") {
  			return Breton.getInstance();
@@ -83,32 +84,39 @@ public class SettingsManager {
  		} else if(getSave().getString(id + ".race") == "woodelf") {
  			return WoodElf.getInstance();
  		}
- 		return null;
+ 		return null;*/
  		
- 		/*switch(getSave().getString(id + ".race")) { //AS I SAID THIS CREATES ERRORS ON THE CONSOLES EVERY TIME YOU MOVE
- 		case "argonian":
- 			return Argonian.getInstance();
- 		case "breton":
- 			return Breton.getInstance();
- 		case "darkelf":
- 			return DarkElf.getInstance();
- 		case "highelf":
- 			return HighElf.getInstance();
- 		case "imperial":
- 			return Imperial.getInstance();
- 		case "khajiit":
- 			return Khajiit.getInstance();
- 		case "nord":
- 			return Nord.getInstance();
- 		case "orcs":
- 			return Orc.getInstance();
- 		case "redguard":
- 			return RedGuard.getInstance();
- 		case "woodelf":
- 			return WoodElf.getInstance();
- 		default:
- 			return null;
- 		}*/
+ 		String race = getSave().getString(id + ".race");
+ 		if(race != null){
+ 			switch(race) {
+ 	 		case "argonian":
+ 	 			return Argonian.getInstance();
+ 	 		case "breton":
+ 	 			return Breton.getInstance();
+ 	 		case "darkelf":
+ 	 			return DarkElf.getInstance();
+ 	 		case "highelf":
+ 	 			return HighElf.getInstance();
+ 	 		case "imperial":
+ 	 			return Imperial.getInstance();
+ 	 		case "khajiit":
+ 	 			return Khajiit.getInstance();
+ 	 		case "nord":
+ 	 			return Nord.getInstance();
+ 	 		case "orcs":
+ 	 			return Orc.getInstance();
+ 	 		case "redguard":
+ 	 			return RedGuard.getInstance();
+ 	 		case "woodelf":
+ 	 			return WoodElf.getInstance();
+ 	 		case "empty":
+ 	 			return EmptyRace.getInstance();
+ 	 		default:
+ 	 			return null;
+ 	 		}
+  		} else {
+  			return null;
+  		}
      }
 
 	public Classes getClass(Player player) {
@@ -119,7 +127,7 @@ public class SettingsManager {
     		 return Archer.getInstance();
     	 case "barbarian":
     		 return Barbarian.getInstance();
-    	 case "knigh":
+    	 case "knight":
     		 return Knight.getInstance();
     	 case "mage":
     		 return Mage.getInstance();

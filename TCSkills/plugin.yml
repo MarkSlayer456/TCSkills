@@ -1,7 +1,8 @@
-name: Elder_Scrolls_Races
+name: TCSkills
 version: 1.0.0
 main: eu.tamrielcraft.TCSkills.main.Main
 author: MarkSlayer456
+depend: [PlaceholderAPI]
 description: A race plugin!
 
 commands:

@@ -13,6 +13,8 @@ public abstract class Race {
 	
 	public abstract String formatChat(String s);
 	public abstract void sendWelcome(Player player);
+	public abstract String raceName();
+	public abstract String raceNameChat();
 	
 	// Events
 	public abstract void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin);

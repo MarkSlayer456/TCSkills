@@ -24,10 +24,20 @@ public class Imperial extends Race implements Listener {
     public static Imperial getInstance() {
             return instance;
     }
-	
+    
     @Override
+	public String raceName() {
+		return "Imperial";
+	}
+
+	@Override
+	public String raceNameChat() {
+		return "[" + raceName() +"]";
+	}
+	
+	@Override
 	public String formatChat(String s) {
-    	return s.replace(s, "[Imperial]" + s);
+		return s.replace(s, raceNameChat() + s);
 	}
     
     @Override

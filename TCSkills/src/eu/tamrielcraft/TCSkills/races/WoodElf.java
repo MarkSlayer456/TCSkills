@@ -18,10 +18,20 @@ public class WoodElf extends Race{
     public static WoodElf getInstance() {
             return instance;
     }
-	
+    
     @Override
+	public String raceName() {
+		return "WoodElf";
+	}
+
+	@Override
+	public String raceNameChat() {
+		return "[" + raceName() +"]";
+	}
+	
+	@Override
 	public String formatChat(String s) {
-    	return s.replace(s, "[WoodElf]" + s);
+		return s.replace(s, raceNameChat() + s);
 	}
     
     @Override

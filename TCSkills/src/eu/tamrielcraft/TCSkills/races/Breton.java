@@ -16,10 +16,20 @@ public class Breton extends Race {
     public static Breton getInstance() {
             return instance;
     }
+    
+    @Override
+	public String raceName() {
+		return "Breton";
+	}
+
+	@Override
+	public String raceNameChat() {
+		return "[" + raceName() +"]";
+	}
 	
 	@Override
 	public String formatChat(String s) {
-		return s.replace(s, "[Breton]" + s);
+		return s.replace(s, raceNameChat() + s);
 	}
 	
 	@Override

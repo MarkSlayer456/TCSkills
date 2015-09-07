@@ -17,10 +17,20 @@ public class RedGuard extends Race{
     public static RedGuard getInstance() {
             return instance;
     }
-	
+    
     @Override
+	public String raceName() {
+		return "RedGuard";
+	}
+
+	@Override
+	public String raceNameChat() {
+		return "[" + raceName() +"]";
+	}
+	
+	@Override
 	public String formatChat(String s) {
-    	return s.replace(s, "[RedGuard]" + s);
+		return s.replace(s, raceNameChat() + s);
 	}
     
     @Override

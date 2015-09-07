@@ -11,7 +11,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -89,31 +88,7 @@ public class EventListener implements Listener {
 		String format = e.getFormat();
 		Player player = e.getPlayer();
 		Race race = settings.getRace(player); 
-		//TODO: this code should be removed by Mark
-		// Previous code
-		/*if(race == Argonian.getInstance()) {
-			format = Argonian.getInstance().formatChat(format);
-		} else if(race == Breton.getInstance()) {
-			format = Breton.getInstance().formatChat(format);
-		} else if(race == DarkElf.getInstance()) {
-			format = DarkElf.getInstance().formatChat(format);
-		} else if(race == HighElf.getInstance()) {
-			format = HighElf.getInstance().formatChat(format);
-		} else if(race == Imperial.getInstance()) {
-			format = Imperial.getInstance().formatChat(format);
-		} else if(race == Khajiit.getInstance()) {
-			format = Khajiit.getInstance().formatChat(format);
-		} else if(race == Nord.getInstance()) {
-			format = Nord.getInstance().formatChat(format);
-		} else if(race == Orc.getInstance()) {
-			format = Orc.getInstance().formatChat(format);
-		} else if(race == RedGuard.getInstance()) {
-			format = RedGuard.getInstance().formatChat(format);
-		} else if(race == WoodElf.getInstance()) {
-			format = WoodElf.getInstance().formatChat(format);
-		}*/
-
-		// New code (waaaay shorter!)
+		
 		// If we ever add a race -> nothing changes here!
 		race.formatChat(format);
 		
@@ -306,7 +281,7 @@ public class EventListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		final Player player = (Player) e.getPlayer();
 		final Race race = settings.getRace(player);

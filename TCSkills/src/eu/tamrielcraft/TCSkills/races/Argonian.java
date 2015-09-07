@@ -16,11 +16,21 @@ public class Argonian extends Race {
     
     public static Argonian getInstance() {
             return instance;
-    }	
+    }
+    
+    @Override
+	public String raceName() {
+		return "Argonian";
+	}
+
+	@Override
+	public String raceNameChat() {
+		return "[" + raceName() +"]";
+	}
 	
     @Override
 	public String formatChat(String s) {
-		return s.replace(s, "[Argonian]" + s);
+		return s.replace(s, raceNameChat() + s);
 	}
     
     @Override
@@ -37,5 +47,4 @@ public class Argonian extends Race {
 	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin){
 		
 	}
-	
 }
