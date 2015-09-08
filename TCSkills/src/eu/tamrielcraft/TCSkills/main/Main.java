@@ -46,20 +46,24 @@ public class Main extends JavaPlugin implements Listener {
 		
 		settings.getConfig().addDefault("Header", "---===[TamerialCraft]===---");
 		plugin = this;
-		
-		boolean hooked = PlaceholderAPI.registerPlaceholderHook(this, new PlaceholderHook() {
-            @Override
-            public String onPlaceholderRequest(Player p, String identifier) {
-                // placeholder: %tcskills_identifier%
-                if (identifier.equals("race")) {
-                    return settings.getRace(p).raceNameChat();
-                }
-                return null;
-            }
-        });
+		if(Bukkit.getPluginManager().isPluginEnabled(("PlaceholderAPI"))){
+			int counter = 0;
+			
+			boolean hooked = PlaceholderAPI.registerPlaceholderHook(this, new PlaceholderHook() {
+	            @Override
+	            public String onPlaceholderRequest(Player p, String identifier) {
+	                // placeholder: %tcskills_identifier%
+	                if (identifier.equals("race")) {
+	                    return settings.getRace(p).raceNameChat();
+	                }
+	                return null;
+	            }
+	        });
 
-		if (hooked) {
-			getLogger().info("Hooked into PlaceholderAPI!");
+			if (hooked) {
+				counter++;
+				getLogger().info("Hooked into PlaceholderAPI and registered " + counter + " placeholder(s)");
+			}
 		}
 	}
 	

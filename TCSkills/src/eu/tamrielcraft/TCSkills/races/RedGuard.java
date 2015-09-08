@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.plugin.Plugin;
 
 public class RedGuard extends Race{
@@ -46,5 +47,9 @@ public class RedGuard extends Race{
 	// This is not a eventListener. The EventListener uses this methods
 	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin){
 		e.setDamage(e.getDamage() * 0.05 + e.getDamage());
+	}
+	
+	@Override
+	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
 	}
 }

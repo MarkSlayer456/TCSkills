@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.plugin.Plugin;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
@@ -44,7 +45,10 @@ public class DarkElf extends Race implements Listener {
 	
 	// Events
 	// This is not a eventListener. The EventListener uses this methods
-	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin){
-			
+	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin){		
+	}
+	
+	@Override
+	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
 	}
 }

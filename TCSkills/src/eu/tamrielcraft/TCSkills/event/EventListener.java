@@ -61,13 +61,14 @@ public class EventListener implements Listener {
 	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
 		Player player = (Player) e.getPlayer();
 		Race race = settings.getRace(player);
-		if(race == Orc.getInstance()) {
+		race.playerEnchantEvent(e);
+		/*if(race == Orc.getInstance()) {
 			if(e.getNewLevel() < e.getOldLevel()) {
 			player.sendMessage(ChatColor.GOLD + "Your orc powers helped you keep a level!");
 			player.setLevel(player.getLevel() + 1);
 			player.updateInventory(); //TODO might not need this
 			}
-		}
+		}*/
 	}
 	
 	@EventHandler
@@ -88,10 +89,7 @@ public class EventListener implements Listener {
 		String format = e.getFormat();
 		Player player = e.getPlayer();
 		Race race = settings.getRace(player); 
-		
-		// If we ever add a race -> nothing changes here!
-		race.formatChat(format);
-		
+		race.formatChat(format);		
 		e.setFormat(format);
 	}
 	

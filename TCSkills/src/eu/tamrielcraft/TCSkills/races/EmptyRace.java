@@ -3,6 +3,7 @@ package eu.tamrielcraft.TCSkills.races;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.plugin.Plugin;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
@@ -18,8 +19,7 @@ public class EmptyRace extends Race{
 
 	@Override
 	public String formatChat(String s) {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
@@ -38,9 +38,11 @@ public class EmptyRace extends Race{
 	}
 
 	@Override
-	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin) {
-		// TODO Auto-generated method stub
-		
+	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin) {	
+	}
+	
+	@Override
+	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
 	}
 
 }

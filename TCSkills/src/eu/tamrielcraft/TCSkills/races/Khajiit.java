@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 
@@ -84,5 +85,9 @@ public class Khajiit extends Race{
 				attacker.sendMessage(ChatColor.GOLD + "You can sneak again!");
 			}
 		},  100);
+	}
+	
+	@Override
+	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
 	}
 }

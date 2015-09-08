@@ -61,6 +61,7 @@ public class SettingsManager {
      public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
  		if(getSave().getString(id + ".race") == null) {
+ 			getSave().set(id + ".name", player.getName());
  			getSave().set(id + ".race", "empty");
  		}
  		/*if(getSave().getString(id + ".race") == "argonian") {
@@ -112,7 +113,7 @@ public class SettingsManager {
  	 		case "empty":
  	 			return EmptyRace.getInstance();
  	 		default:
- 	 			return null;
+ 	 			return EmptyRace.getInstance();
  	 		}
   		} else {
   			return null;

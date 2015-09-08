@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -53,6 +54,10 @@ public class Imperial extends Race implements Listener {
 	// This is not a eventListener. The EventListener uses this methods
 	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin){
 			
+	}
+	
+	@Override
+	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
 	}
 	
 	
