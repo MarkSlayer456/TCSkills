@@ -43,6 +43,8 @@ public class Main extends JavaPlugin implements Listener {
 		this.getCommand("s").setExecutor(new Commands(this, settings));
 		this.getCommand("magicregen").setExecutor(new Commands(this, settings));
 		this.getCommand("mr").setExecutor(new Commands(this, settings));
+		this.getCommand("class").setExecutor(new Commands(this, settings));
+		this.getCommand("c").setExecutor(new Commands(this, settings));
 		
 		settings.getConfig().addDefault("Header", "---===[TamerialCraft]===---");
 		plugin = this;

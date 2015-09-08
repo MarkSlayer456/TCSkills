@@ -45,12 +45,8 @@ public class LeavingListener implements Listener {
 			golem.setHealth(0);
 			Magic.golemTime.remove(golem);
 			Magic.golemHM.remove(golem);
-			Bukkit.getScheduler().cancelTask(Magic.golemTimerSystemIntHM.get(player));
-			Bukkit.getScheduler().cancelTask(Magic.golemHealthSystemIntHM.get(player));
-			Bukkit.getScheduler().cancelTask(Magic.golemTargetingSystemIntHM.get(player));
-			Magic.golemTargetingSystemIntHM.put(player, 0);
-			Magic.golemTimerSystemIntHM.put(player, 0);
-			Magic.golemHealthSystemIntHM.put(player, 0);
+			Bukkit.getServer().getScheduler().cancelTask(Magic.golemSystemsIntHM.get(player));
+			Magic.golemSystemsIntHM.replace(player, 0);
 		}
 		
 		

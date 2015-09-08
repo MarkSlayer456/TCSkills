@@ -9,6 +9,20 @@ public class ThunderShock extends Spells {
 	public static ThunderShock getInstance() {
 		return instance;
 	}
+
+
+	@Override
+	public void cast() {
+		
+		
+	}
+
+
+	@Override
+	public void setActive() {
+		
+		
+	}
 	
 	
 }

@@ -3,7 +3,11 @@ package eu.tamrielcraft.TCSkills.races;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
@@ -43,6 +47,21 @@ public class EmptyRace extends Race{
 	
 	@Override
 	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
+	}
+
+	@Override
+	public void potionThrowEvent(PotionSplashEvent e, Player player) { }
+
+	@Override
+	public void playerMoveEvent(PlayerMoveEvent e, Player player) { }
+
+	@Override
+	public void onPlayerJoinEvent(PlayerJoinEvent e, Player player) { }
+
+	@Override
+	public void playerBurnEvent(EntityDamageEvent e, Player player) {
+		
+		
 	}
 
 }

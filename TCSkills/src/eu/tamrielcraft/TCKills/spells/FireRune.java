@@ -9,5 +9,19 @@ public class FireRune extends Spells {
 	public static FireRune getInstance() {
 		return instance;
 	}
+
+
+	@Override
+	public void cast() {
+		
+		
+	}
+
+
+	@Override
+	public void setActive() {
+		
+		
+	}
 	
 }

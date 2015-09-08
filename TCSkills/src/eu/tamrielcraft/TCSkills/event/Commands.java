@@ -75,22 +75,39 @@ public class Commands implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "Knight: " + ChatColor.GOLD + "");
 				player.sendMessage(ChatColor.RED + "Mage: " + ChatColor.GOLD + "");
 				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + "Now you see me... now you don't");
+				return true;
+			} else if(args.length >= 2) {
+				player.sendMessage(ChatColor.RED + "Usage: /class <class name>");
 			}
 			
-			if(cmd.getName().equalsIgnoreCase("archer") || cmd.getName().equalsIgnoreCase("archers")) {
+			if(args[0].equalsIgnoreCase("archer") || args[0].equalsIgnoreCase("archers")) {
 				save.set(id + ".class", "archer");
-			} else if(cmd.getName().equalsIgnoreCase("barbarian") || cmd.getName().equalsIgnoreCase("barbarians")) {
+				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Archer" + ChatColor.GOLD + "!");
+			} else if(args[0].equalsIgnoreCase("barbarian") || args[0].equalsIgnoreCase("barbarians")) {
 				save.set(id + ".class", "barbarian");
-			} else if(cmd.getName().equalsIgnoreCase("knight") || cmd.getName().equalsIgnoreCase("knights")) {
+				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Barbarian " + ChatColor.GOLD + "!");
+			} else if(args[0].equalsIgnoreCase("knight") || args[0].equalsIgnoreCase("knights")) {
 				save.set(id + ".class", "knight");
-			} else if(cmd.getName().equalsIgnoreCase("mage") || cmd.getName().equalsIgnoreCase("mages")) {
+				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Knight" + ChatColor.GOLD + "!");
+			} else if(args[0].equalsIgnoreCase("mage") || args[0].equalsIgnoreCase("mages")) {
 				save.set(id + ".class", "mage");
-			} else if(cmd.getName().equalsIgnoreCase("rogue") || cmd.getName().equalsIgnoreCase("rogues")) {
+				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Mage" + ChatColor.GOLD + "!");
+			} else if(args[0].equalsIgnoreCase("rogue") || args[0].equalsIgnoreCase("rogues")) {
 				save.set(id + ".class", "rogue");
+				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Rogues" + ChatColor.GOLD + "!");
+			} else if(args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("l")) {
+				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header")); //TODO add/change descriptions to all of these i don't know if you want them to have a abilities 
+				player.sendMessage(ChatColor.RED + "Archer: " + ChatColor.GOLD + "");
+				player.sendMessage(ChatColor.RED + "Barbarian: " + ChatColor.GOLD + "");
+				player.sendMessage(ChatColor.RED + "Knight: " + ChatColor.GOLD + "");
+				player.sendMessage(ChatColor.RED + "Mage: " + ChatColor.GOLD + "");
+				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + "Now you see me... now you don't");
 			} else {
-				player.sendMessage(ChatColor.RED + "UNKNOW CLASS!");
+				player.sendMessage(ChatColor.RED + "Usage: /class <class name>");
+				return true;
 			}
 			settings.saveSave();
+			return true;
 			
 		}
 		
@@ -241,7 +258,7 @@ public class Commands implements CommandExecutor {
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				save.set(id + ".magic.activeSpell", "iceblast");
+				save.set(id + ".magic.activeSpell", "thundershock");
 				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "THUNDERSHOCK " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("familiarsummon") || args[0].equalsIgnoreCase("fs")) {
@@ -259,7 +276,7 @@ public class Commands implements CommandExecutor {
 					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
 					return true;
 				}
-				save.set(id + ".magic.activeSpell", "iceblast");
+				save.set(id + ".magic.activeSpell", "firerune");
 				settings.saveSave();
 				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FIRERUNE " + ChatColor.GOLD + "spell");
 			} else if(args[0].equalsIgnoreCase("icerune") || args[0].equalsIgnoreCase("ir")) {
