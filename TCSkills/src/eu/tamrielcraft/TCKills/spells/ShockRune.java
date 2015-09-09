@@ -8,6 +8,18 @@ public class ShockRune extends Spells {
 	public static ShockRune getInstance() {
 		return instance;
 	}
+
+	@Override
+	public void cast() {
+		
+		
+	}
+
+	@Override
+	public void setActive() {
+		
+		
+	}
 	
 	
 }

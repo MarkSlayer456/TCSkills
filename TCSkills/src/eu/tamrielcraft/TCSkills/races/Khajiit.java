@@ -8,11 +8,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class Khajiit extends Race{
+
+public class Khajiit extends Race {
 	
 	public ArrayList<UUID> Khajiit = new ArrayList<UUID>();
 	
@@ -90,4 +96,38 @@ public class Khajiit extends Race{
 	@Override
 	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
 	}
+
+	@Override
+	public void potionThrowEvent(PotionSplashEvent e, Player player) {
+		
+		
+	}
+
+	@Override
+	public void playerMoveEvent(PlayerMoveEvent e, Player player) {
+		if(player.isSneaking()) {
+			if(sneakCoolDown.contains(player.getName().toString())) {
+				return;
+			}
+			player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 3600, 0));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 3600, 1));
+			sneaking.add(player.getName().toString());
+		} else {
+			if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+			player.removePotionEffect(PotionEffectType.INVISIBILITY);
+			player.removePotionEffect(PotionEffectType.SPEED);
+			sneaking.remove(player.getName().toString());
+			}
+		}
+		
+	}
+
+	@Override
+	public void onPlayerJoinEvent(PlayerJoinEvent e, Player player) {
+		
+		
+	}
+
+	@Override
+	public void playerBurnEvent(EntityDamageEvent e, Player player) { }
 }

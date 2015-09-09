@@ -1,11 +1,8 @@
 package eu.tamrielcraft.TCSkills.event;
 
-import java.util.ArrayList;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -29,16 +26,11 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
-import eu.tamrielcraft.TCSkills.races.Argonian;
 import eu.tamrielcraft.TCSkills.races.Breton;
-import eu.tamrielcraft.TCSkills.races.DarkElf;
 import eu.tamrielcraft.TCSkills.races.HighElf;
-import eu.tamrielcraft.TCSkills.races.Khajiit;
-import eu.tamrielcraft.TCSkills.races.Nord;
 import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
-import eu.tamrielcraft.TCSkills.races.WoodElf;
 
 public class EventListener implements Listener {
 	
@@ -48,9 +40,9 @@ public class EventListener implements Listener {
 	private SettingsManager settings;
 	static ScoreboardManager manager = Bukkit.getScoreboardManager();
 	
-	private ArrayList<String> sneaking = new ArrayList<String>();
-	private ArrayList<String> sneakCoolDown = new ArrayList<String>();
-	private ArrayList<String> sneakMessage = new ArrayList<String>();
+	//public static ArrayList<String> sneaking = new ArrayList<String>();
+	//private ArrayList<String> sneakCoolDown = new ArrayList<String>();
+	//private ArrayList<String> sneakMessage = new ArrayList<String>();
 	
 	public EventListener(Plugin plugin, SettingsManager settings) {
 		this.settings = settings;
@@ -66,7 +58,7 @@ public class EventListener implements Listener {
 			if(e.getNewLevel() < e.getOldLevel()) {
 			player.sendMessage(ChatColor.GOLD + "Your orc powers helped you keep a level!");
 			player.setLevel(player.getLevel() + 1);
-			player.updateInventory(); //TODO might not need this
+			player.updateInventory(); //TODO might not need this line
 			}
 		}*/
 	}
@@ -76,11 +68,12 @@ public class EventListener implements Listener {
 		if(e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
 			Race race = settings.getRace(player);
-			if(race == DarkElf.getInstance()) {
+			race.playerBurnEvent(e, player);
+			/*if(race == DarkElf.getInstance()) {
 				if(player.getFireTicks() != 0) {
 					e.setDamage(e.getDamage() / 2);
 				}
-			}
+			}*/
 		}
 	}
 	
@@ -147,26 +140,11 @@ public class EventListener implements Listener {
 		} else if(e.getDamager() instanceof Projectile) {
 				Projectile project = (Projectile) e.getDamager();
 				if(project.getShooter() instanceof Player) {
-					final Player shooter = (Player) project.getShooter();
-					Race race = settings.getRace(shooter);
-					if(race == Khajiit.getInstance() || race == WoodElf.getInstance()) {
-						if(shooter.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-							shooter.removePotionEffect(PotionEffectType.INVISIBILITY);
-							shooter.removePotionEffect(PotionEffectType.SPEED);
-						}
-						if(!sneakCoolDown.contains(shooter.getName().toString())) {
-							sneakCoolDown.add(shooter.getName().toString());
-						}
-							plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-								@Override
-							     public void run() {
-									sneakCoolDown.remove(shooter.getName().toString());
-									shooter.sendMessage(ChatColor.GOLD + "You can sneak again!");
-							}
-							},  100);
-					}
+					final Player player = (Player) project.getShooter(); //change this from shooter to player to make it work 
+					Race race = settings.getRace(player);
+					race.playerHitByPlayer(e, player, plugin);
 				}
-				if(project.getShooter() instanceof Player) {
+				/*if(project.getShooter() instanceof Player) { //TODO I think there is a bow hit event
 				Player shooter = (Player) project.getShooter();
 				Race race = settings.getRace(shooter);
 				if(race == WoodElf.getInstance()) {
@@ -179,7 +157,7 @@ public class EventListener implements Listener {
 						 }
 					}
 				 }
-				}
+				}*/
 				if(e.getEntity() instanceof Player) {
 				if(project.getType() == EntityType.SNOWBALL) {
 				Player defender = (Player) e.getEntity();
@@ -203,7 +181,8 @@ public class EventListener implements Listener {
 			if(e.getEntity() instanceof Player) {
 			final Player player = (Player) e.getEntity();
 			Race race = settings.getRace(player);
-			if(race == Khajiit.getInstance() || race == WoodElf.getInstance()) {
+			race.playerHitByPlayer(e, player, plugin);
+			/*if(race == Khajiit.getInstance() || race == WoodElf.getInstance()) {
 					
 					if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
 						player.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -225,7 +204,7 @@ public class EventListener implements Listener {
 								player.sendMessage(ChatColor.GOLD + "You can sneak again!");
 						}
 						},  100);
-			}
+			}*/
 		} else {
 			return;
 		}
@@ -237,7 +216,8 @@ public class EventListener implements Listener {
 		if(entity instanceof Player) {
 			 Player player = (Player) entity;
 			 Race race = settings.getRace(player);
-			 if(race == Argonian.getInstance() || race == Nord.getInstance()) {
+			 race.potionThrowEvent(e, player);
+			 /*if(race == Argonian.getInstance() || race == Nord.getInstance()) {
 				 for(PotionEffect p : e.getPotion().getEffects()) {
 					 if(p.getType().equals(PotionEffectType.POISON) || p.getType().equals(PotionEffectType.CONFUSION) 
 							 || p.getType().equals(PotionEffectType.SLOW) || p.getType().equals(PotionEffectType.HUNGER)
@@ -247,7 +227,7 @@ public class EventListener implements Listener {
 							 e.setIntensity(player, e.getIntensity(player) * 0.5); 
 					 }
 				 }
-			 }
+			 }*/ //TODO LEFT THIS BECAUSE I DON'T KNOW IF I DID IT CORRECTLY 
 		}
 		}
 	}
@@ -255,13 +235,15 @@ public class EventListener implements Listener {
 	@EventHandler
 	public void playerMoveEvent(PlayerMoveEvent e) {
 		Player player = (Player) e.getPlayer();
-		if(settings.getRace(player) == Argonian.getInstance()) {
+		Race race = settings.getRace(player);
+		race.playerMoveEvent(e, player);
+		/*if(settings.getRace(player) == Argonian.getInstance()) {
 		if(e.getTo().getBlock().getType() == Material.WATER || e.getTo().getBlock().getType() == Material.STATIONARY_WATER) {
 			player.addPotionEffect(new PotionEffect (PotionEffectType.WATER_BREATHING, 3600, 0));
 		}
 		
-		}
-		if(settings.getRace(player) == Khajiit.getInstance() || settings.getRace(player) == WoodElf.getInstance()) {
+		}*/
+		/*if(settings.getRace(player) == Khajiit.getInstance() || settings.getRace(player) == WoodElf.getInstance()) {
 			if(player.isSneaking()) {
 				if(sneakCoolDown.contains(player.getName().toString())) {
 					return;
@@ -276,7 +258,7 @@ public class EventListener implements Listener {
 				sneaking.remove(player.getName().toString());
 				}
 			}
-		}
+		}*/
 	}
 	
 	@EventHandler
@@ -320,15 +302,15 @@ public class EventListener implements Listener {
 			player.sendMessage(ChatColor.RED + "You might want to join a race it gives you abilities do /race list to see a list of all the races and there abilities");
 		}*/
 		
-		if(race != null){
+		if(race != null) {
 			// Player has a race
 			race.sendWelcome(player);
 			
 			//TODO If many more races have an initialize thingy, we should add this to each race class
-			if(race == Orc.getInstance()){
+			if(race == Orc.getInstance()) {
 				player.setMaxHealth(24);
 			}
-			if(race == RedGuard.getInstance()){
+			if(race == RedGuard.getInstance()) {
 				Commands.redGuardFoodLoopInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 					@Override
 					public void run() {

@@ -7,6 +7,18 @@ public class FireBall extends Spells {
 	public static FireBall getInstance() {
 		return instance;
 	}
+
+	@Override
+	public void cast() {
+		
+		
+	}
+
+	@Override
+	public void setActive() {
+		
+		
+	}
 	
 
 }

@@ -8,6 +8,18 @@ public class IceRune extends Spells {
 	public static IceRune getInstance() {
 		return instance;
 	}
+
+	@Override
+	public void cast() {
+		
+		
+	}
+
+	@Override
+	public void setActive() {
+		
+		
+	}
 	
 	
 }

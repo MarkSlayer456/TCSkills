@@ -6,8 +6,14 @@ import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Nord extends Race {
 
@@ -50,6 +56,34 @@ public class Nord extends Race {
 	}
 	
 	@Override
-	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
+	public void playerEnchantEvent(PlayerLevelChangeEvent e) { }
+
+	@Override
+	public void potionThrowEvent(PotionSplashEvent e, Player player) {
+		 for(PotionEffect p : e.getPotion().getEffects()) {
+			 if(p.getType().equals(PotionEffectType.POISON) || p.getType().equals(PotionEffectType.CONFUSION) 
+					 || p.getType().equals(PotionEffectType.SLOW) || p.getType().equals(PotionEffectType.HUNGER)
+					 || p.getType().equals(PotionEffectType.SLOW_DIGGING) || p.getType().equals(PotionEffectType.WEAKNESS)
+							 || p.getType().equals(PotionEffectType.WITHER)) {
+				 player.sendMessage(ChatColor.RED + "You feel your skin trying to block the potion effect");
+					 e.setIntensity(player, e.getIntensity(player) * 0.5); 
+			 }
+		 }
+		
 	}
+
+	@Override
+	public void playerMoveEvent(PlayerMoveEvent e, Player player) {
+		
+		
+	}
+
+	@Override
+	public void onPlayerJoinEvent(PlayerJoinEvent e, Player player) {
+		
+		
+	}
+
+	@Override
+	public void playerBurnEvent(EntityDamageEvent e, Player player) { }
 }

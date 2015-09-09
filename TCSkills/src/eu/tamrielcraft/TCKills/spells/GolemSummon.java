@@ -29,6 +29,7 @@ public class GolemSummon extends Spells {
 		HashMap<Player, IronGolem> golemP = Magic.golemP;
 		HashMap<IronGolem, Player> golemHM = Magic.golemHM;
 		IronGolem golem = golemP.get(player);
+		golem.setLeashHolder(null);
 		Bukkit.getScheduler().cancelTask(Magic.golemSystemsIntHM.get(player));
 		Magic.golemSystemsIntHM.put(player, 0);
 		if(golem.isDead()) {
@@ -48,6 +49,8 @@ public class GolemSummon extends Spells {
 		HashMap<IronGolem, Integer> golemTime = Magic.golemTime;
 		HashMap<Player, IronGolem> golemP = Magic.golemP;
 		HashMap<IronGolem, Player> golemHM = Magic.golemHM;
+		
+		
 		Magic.golemB.put(player, false);
 		double ox = player.getLocation().getX();
 		double oy = player.getLocation().getY();
@@ -84,6 +87,7 @@ public class GolemSummon extends Spells {
 		if(golem.getHealth() <= 200) {
 			golem.setLeashHolder(null);
 			player.sendMessage(ChatColor.RED + "Your golem was slain!");
+			disableGolem(player);
 		}
 		for(Entity entity : golem.getNearbyEntities(7, 7, 7)) {
 			if(entity instanceof Player) {
@@ -97,6 +101,18 @@ public class GolemSummon extends Spells {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void cast() {
+		
+		
+	}
+
+	@Override
+	public void setActive() {
+		
+		
 	}
 	
 }

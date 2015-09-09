@@ -10,7 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -82,4 +86,22 @@ public class Imperial extends Race implements Listener {
 			}
 		}
 	}
+
+	@Override
+	public void potionThrowEvent(PotionSplashEvent e, Player player) { }
+
+	@Override
+	public void playerMoveEvent(PlayerMoveEvent e, Player player) {
+		
+		
+	}
+
+	@Override
+	public void onPlayerJoinEvent(PlayerJoinEvent e, Player player) {
+		
+		
+	}
+
+	@Override
+	public void playerBurnEvent(EntityDamageEvent e, Player player) { }
 }

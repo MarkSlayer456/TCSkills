@@ -9,4 +9,16 @@ public class FastHealing extends Spells {
 		return instance;
 	}
 
+	@Override
+	public void cast() {
+		
+		
+	}
+
+	@Override
+	public void setActive() {
+		
+		
+	}
+
 }
