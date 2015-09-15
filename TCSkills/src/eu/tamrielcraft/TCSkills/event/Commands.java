@@ -113,6 +113,9 @@ public class Commands implements CommandExecutor {
 		
 		
 		if(cmd.getName().equalsIgnoreCase("favorite") || cmd.getName().equalsIgnoreCase("fav")) {
+			if(settings.getConfig().getBoolean("enableSpells") == false) {
+				player.sendMessage(ChatColor.RED + "Spells are disabled on this server, this could be due to the fact that they are not working!");
+			}
 			if(args.length == 0) {
 				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
 				player.sendMessage(ChatColor.GREEN + "These are the commands you can do with /favorite");
@@ -188,6 +191,9 @@ public class Commands implements CommandExecutor {
 				return true;
 			}
 		} else if(cmd.getName().equalsIgnoreCase("spell") || cmd.getName().equalsIgnoreCase("s")) {
+			if(settings.getConfig().getBoolean("enableSpells") == false) {
+				player.sendMessage(ChatColor.RED + "Spells are disabled on this server, this could be due to the fact that they are not working!");
+			}
 			if(args.length == 0 || args[0].equalsIgnoreCase("1")) {
 				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
 				player.sendMessage(ChatColor.GOLD + "You can cast the following spells:");
