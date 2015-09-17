@@ -34,15 +34,9 @@ import eu.tamrielcraft.TCSkills.races.RedGuard;
 
 public class EventListener implements Listener {
 	
-	//TODO: The getRace should be implemented in the settings and should give back an abstract Race object
-	
 	private Plugin plugin;
 	private SettingsManager settings;
 	static ScoreboardManager manager = Bukkit.getScoreboardManager();
-	
-	//public static ArrayList<String> sneaking = new ArrayList<String>();
-	//private ArrayList<String> sneakCoolDown = new ArrayList<String>();
-	//private ArrayList<String> sneakMessage = new ArrayList<String>();
 	
 	public EventListener(Plugin plugin, SettingsManager settings) {
 		this.settings = settings;
@@ -54,13 +48,6 @@ public class EventListener implements Listener {
 		Player player = (Player) e.getPlayer();
 		Race race = settings.getRace(player);
 		race.playerEnchantEvent(e);
-		/*if(race == Orc.getInstance()) {
-			if(e.getNewLevel() < e.getOldLevel()) {
-			player.sendMessage(ChatColor.GOLD + "Your orc powers helped you keep a level!");
-			player.setLevel(player.getLevel() + 1);
-			player.updateInventory(); //TODO might not need this line
-			}
-		}*/
 	}
 	
 	@EventHandler
@@ -69,11 +56,6 @@ public class EventListener implements Listener {
 			Player player = (Player) e.getEntity();
 			Race race = settings.getRace(player);
 			race.playerBurnEvent(e, player);
-			/*if(race == DarkElf.getInstance()) {
-				if(player.getFireTicks() != 0) {
-					e.setDamage(e.getDamage() / 2);
-				}
-			}*/
 		}
 	}
 	
@@ -92,51 +74,7 @@ public class EventListener implements Listener {
 		if(e.getDamager() instanceof Player) {
 			final Player attacker = (Player) e.getDamager();
 			Race race = settings.getRace(attacker);
-			// New code
 			race.playerHitByPlayer(e, attacker, plugin);
-			// Old Code
-			 /*if(race == Khajiit.getInstance()) {
-				 if(attacker.getItemInHand().getType() == Material.AIR) {
-					Random r = new Random();
-					int numb = r.nextInt(4) + 1;
-					switch(numb) {
-					case 1:
-						e.setDamage(4);
-						attacker.sendMessage(ChatColor.RED + "You claw your enemy in the face!");
-					case 2:
-						e.setDamage(2);
-					case 3:
-						e.setDamage(2);
-					case 4:
-						e.setDamage(2);
-					}
-				 }
-			 }
-			 if(race == RedGuard.getInstance()) {
-				 e.setDamage(e.getDamage() * 0.05 + e.getDamage());
-			 }*/
-			 /*if(race == Khajiit.getInstance() || race == WoodElf.getInstance()) {
-						if(attacker.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-							attacker.removePotionEffect(PotionEffectType.INVISIBILITY);
-							attacker.removePotionEffect(PotionEffectType.SPEED);
-						}
-						if(sneakCoolDown.contains(attacker.getName().toString())) {
-							return;
-						}
-							sneakCoolDown.add(attacker.getName().toString());
-							if(!sneakMessage.contains(attacker.getName().toString())) {
-							attacker.sendMessage(ChatColor.RED + "You are in combat please wait 5 seconds before trying to turn invisible again!");
-							attacker.sendMessage(ChatColor.RED + "This will happen every time you get hit!");
-							sneakMessage.add(attacker.getName().toString());
-							}
-							plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-								@Override
-							     public void run() {
-									sneakCoolDown.remove(attacker.getName().toString());
-									attacker.sendMessage(ChatColor.GOLD + "You can sneak again!");
-							}
-							},  100);
-				}*/
 		} else if(e.getDamager() instanceof Projectile) {
 				Projectile project = (Projectile) e.getDamager();
 				if(project.getShooter() instanceof Player) {
@@ -182,29 +120,6 @@ public class EventListener implements Listener {
 			final Player player = (Player) e.getEntity();
 			Race race = settings.getRace(player);
 			race.playerHitByPlayer(e, player, plugin);
-			/*if(race == Khajiit.getInstance() || race == WoodElf.getInstance()) {
-					
-					if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-						player.removePotionEffect(PotionEffectType.INVISIBILITY);
-						player.removePotionEffect(PotionEffectType.SPEED);
-					}
-					if(sneakCoolDown.contains(player.getName().toString())) {
-						return;
-					}
-						sneakCoolDown.add(player.getName().toString());
-						if(!sneakMessage.contains(player.getName().toString())) {
-							player.sendMessage(ChatColor.RED + "You are in combat please wait 5 seconds before trying to turn invisible again!");
-							player.sendMessage(ChatColor.RED + "This will happen every time you get hit!");
-							sneakMessage.add(player.getName().toString());
-							}
-						plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-							@Override
-						     public void run() {
-								sneakCoolDown.remove(player.getName().toString());
-								player.sendMessage(ChatColor.GOLD + "You can sneak again!");
-						}
-						},  100);
-			}*/
 		} else {
 			return;
 		}
@@ -237,70 +152,12 @@ public class EventListener implements Listener {
 		Player player = (Player) e.getPlayer();
 		Race race = settings.getRace(player);
 		race.playerMoveEvent(e, player);
-		/*if(settings.getRace(player) == Argonian.getInstance()) {
-		if(e.getTo().getBlock().getType() == Material.WATER || e.getTo().getBlock().getType() == Material.STATIONARY_WATER) {
-			player.addPotionEffect(new PotionEffect (PotionEffectType.WATER_BREATHING, 3600, 0));
-		}
-		
-		}*/
-		/*if(settings.getRace(player) == Khajiit.getInstance() || settings.getRace(player) == WoodElf.getInstance()) {
-			if(player.isSneaking()) {
-				if(sneakCoolDown.contains(player.getName().toString())) {
-					return;
-				}
-				player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 3600, 0));
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 3600, 1));
-				sneaking.add(player.getName().toString());
-			} else {
-				if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-				player.removePotionEffect(PotionEffectType.INVISIBILITY);
-				player.removePotionEffect(PotionEffectType.SPEED);
-				sneaking.remove(player.getName().toString());
-				}
-			}
-		}*/
 	}
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		final Player player = (Player) e.getPlayer();
 		final Race race = settings.getRace(player);
-		
-		//TODO: same here: only one method call!
-		/*if(race == Argonian.getInstance()) {
-			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Argonian] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(race == Breton.getInstance()) {
-			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Breton] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(race == DarkElf.getInstance()) {
-			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[DarkElf] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(race == HighElf.getInstance()) {
-			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[HighElf] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(race == Imperial.getInstance()) {
-			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Imperial] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(race == Khajiit.getInstance()) {
-			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Khajiit] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(race == Nord.getInstance()) {
-			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Nord] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else if(race == Orc.getInstance()) {
-			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[Orc] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-			player.setMaxHealth(24);
-		} else if(race == RedGuard.getInstance()) {
-			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[RedGuard] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-			Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-				@Override
-				public void run() {
-					if(player.getFoodLevel() < 8) {
-						player.setFoodLevel(8);
-						player.updateInventory();
-					}
-				}	
-			}, 10, 10);
-		} else if(race == WoodElf.getInstance()) {
-			player.sendMessage(ChatColor.GOLD + "Welcome back " + ChatColor.DARK_RED + "[WoodElf] " + player.getName().toString() + ChatColor.GOLD + " to " + ChatColor.AQUA + "TamerialCraft!");
-		} else {
-			settings.getSave().set(player.getUniqueId() + ".race", null);
-			player.sendMessage(ChatColor.RED + "You might want to join a race it gives you abilities do /race list to see a list of all the races and there abilities");
-		}*/
 		
 		if(race != null) {
 			// Player has a race
