@@ -1,17 +1,23 @@
 package eu.tamrielcraft.TCSkills.event;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
@@ -31,6 +37,7 @@ import eu.tamrielcraft.TCSkills.races.HighElf;
 import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
+import eu.tamrielcraft.TCSkills.skills.Smithing;
 
 public class EventListener implements Listener {
 	
@@ -38,9 +45,43 @@ public class EventListener implements Listener {
 	private SettingsManager settings;
 	static ScoreboardManager manager = Bukkit.getScoreboardManager();
 	
+	// Material collections
+	private List<Material> smithing = new ArrayList<Material>();
+
 	public EventListener(Plugin plugin, SettingsManager settings) {
 		this.settings = settings;
 		this.plugin = plugin;
+		addSmithingMaterials();
+	}
+	
+	private void addSmithingMaterials(){
+		smithing.add(Material.LEATHER_BOOTS);
+		smithing.add(Material.LEATHER_CHESTPLATE);
+		smithing.add(Material.LEATHER_HELMET);
+		smithing.add(Material.LEATHER_LEGGINGS);
+		smithing.add(Material.CHAINMAIL_BOOTS);
+		smithing.add(Material.CHAINMAIL_CHESTPLATE);
+		smithing.add(Material.CHAINMAIL_HELMET);
+		smithing.add(Material.CHAINMAIL_LEGGINGS);
+		smithing.add(Material.IRON_BOOTS);
+		smithing.add(Material.IRON_CHESTPLATE);
+		smithing.add(Material.IRON_HELMET);
+		smithing.add(Material.IRON_LEGGINGS);
+		smithing.add(Material.GOLD_BOOTS);
+		smithing.add(Material.GOLD_CHESTPLATE);
+		smithing.add(Material.GOLD_HELMET);
+		smithing.add(Material.GOLD_LEGGINGS);
+		smithing.add(Material.DIAMOND_BOOTS);
+		smithing.add(Material.DIAMOND_CHESTPLATE);
+		smithing.add(Material.DIAMOND_HELMET);
+		smithing.add(Material.DIAMOND_LEGGINGS);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onCraftItem(CraftItemEvent event){
+		if(smithing.contains(event.getInventory().getResult().getType())){
+			Smithing.getInstance().onCraftEvent(event);
+		}
 	}
 	
 	@EventHandler
