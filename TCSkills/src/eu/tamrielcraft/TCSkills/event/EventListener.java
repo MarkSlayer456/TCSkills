@@ -51,6 +51,9 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
+		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+			return;
+		}
 		Player player = (Player) e.getPlayer();
 		Race race = settings.getRace(player);
 		race.playerEnchantEvent(e);
@@ -65,6 +68,9 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void playerBurnEvent(EntityDamageEvent e) {
+		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+			return;
+		}
 		if(e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
 			Race race = settings.getRace(player);
@@ -79,6 +85,9 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
+		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+			return;
+		}
 		String format = e.getFormat();
 		Player player = e.getPlayer();
 		Race race = settings.getRace(player); 
@@ -88,6 +97,9 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void playerHitEvent(EntityDamageByEntityEvent e) {
+		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+			return;
+		}
 		//TODO: move all to corresponding race classes
 		if(e.getDamager() instanceof Player) {
 			final Player attacker = (Player) e.getDamager();
@@ -212,6 +224,9 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void potionThrowEvent(PotionSplashEvent e) {
+		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+			return;
+		}
 		for(LivingEntity entity : e.getAffectedEntities()) {
 		if(entity instanceof Player) {
 			 Player player = (Player) entity;
@@ -234,6 +249,9 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void playerMoveEvent(PlayerMoveEvent e) {
+		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+			return;
+		}
 		Player player = (Player) e.getPlayer();
 		Race race = settings.getRace(player);
 		race.playerMoveEvent(e, player);
@@ -263,6 +281,9 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
+		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+			return;
+		}
 		final Player player = (Player) e.getPlayer();
 		final Race race = settings.getRace(player);
 		

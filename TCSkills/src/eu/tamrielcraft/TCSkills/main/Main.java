@@ -48,6 +48,7 @@ public class Main extends JavaPlugin implements Listener {
 		
 		settings.getConfig().addDefault("Header", "---===[TamerialCraft]===---");
 		settings.getConfig().addDefault("enableSpells", true);
+		settings.getConfig().addDefault("enableAbilities", true); //TODO set this up
 		plugin = this;
 		if(Bukkit.getPluginManager().isPluginEnabled(("PlaceholderAPI"))){
 			int counter = 0;
