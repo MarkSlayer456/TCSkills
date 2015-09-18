@@ -57,12 +57,17 @@ public class SettingsManager {
     
      FileConfiguration save;
      File sfile;
+     
+    public Boolean createPlayer(Player player, Race race, Classes classy){
+    	UUID id = player.getUniqueId();
+    	
+    	return false;
+	}
     
      public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
  		if(getSave().getString(id + ".race") == null) {
- 			getSave().set(id + ".name", player.getName());
- 			getSave().set(id + ".race", "empty");
+ 			return EmptyRace.getInstance();
  		}
  		
  		// Updates the player name to its latest
