@@ -50,24 +50,9 @@ public class Main extends JavaPlugin implements Listener {
 		settings.getConfig().addDefault("enableSpells", true);
 		settings.getConfig().addDefault("enableAbilities", true); //TODO set this up
 		plugin = this;
+		
 		if(Bukkit.getPluginManager().isPluginEnabled(("PlaceholderAPI"))){
-			int counter = 0;
-			
-			boolean hooked = PlaceholderAPI.registerPlaceholderHook(this, new PlaceholderHook() {
-	            @Override
-	            public String onPlaceholderRequest(Player p, String identifier) {
-	                // placeholder: %tcskills_identifier%
-	                if (identifier.equals("race")) {
-	                    return settings.getRace(p).raceNameChat();
-	                }
-	                return null;
-	            }
-	        });
-
-			if (hooked) {
-				counter++;
-				getLogger().info("Hooked into PlaceholderAPI and registered " + counter + " placeholder(s)");
-			}
+			addPlaceholderHooks();
 		}
 	}
 	
@@ -75,5 +60,44 @@ public class Main extends JavaPlugin implements Listener {
 	}
 	
 	static ScoreboardManager manager = Bukkit.getScoreboardManager();
+	
+	private void addPlaceholderHooks(){
+		int counter = 0;
+		
+		boolean hooked = PlaceholderAPI.registerPlaceholderHook(this, new PlaceholderHook() {
+            @Override
+            public String onPlaceholderRequest(Player p, String identifier) {
+                // placeholder: %tcskills_identifier%
+                if (identifier.equals("race")) {
+                    return settings.getRace(p).raceNameChat();
+                }
+                return null;
+            }
+        });
+
+		if (hooked) {
+			counter++;
+		}
+		
+		hooked = PlaceholderAPI.registerPlaceholderHook(this, new PlaceholderHook() {
+            @Override
+            public String onPlaceholderRequest(Player p, String identifier) {
+                // placeholder: %tcskills_identifier%
+                if (identifier.equals("class")) {
+                    return settings.getClass(p).classNameChat();
+                }
+                return null;
+            }
+        });
+
+		if (hooked) {
+			counter++;
+		}
+		
+		// Finally, report to console
+		if(counter > 0){
+			getLogger().info("Hooked into PlaceholderAPI and registered " + counter + " placeholder(s)");
+		}
+	}
 	
 }

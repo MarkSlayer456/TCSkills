@@ -11,4 +11,19 @@ public class Archer extends Classes{
     public static Archer getInstance() {
             return instance;
     }
+    
+    @Override
+	public String className() {
+		return "Archer";
+	}
+
+	@Override
+	public String classNameChat() {
+		return "[" + className() + "]";
+	}
+
+	@Override
+	public String getDetails() {
+		return "An archer is a specialized in using a bow and arrows in a fight. This means his attacks are mostly from a long distance";
+	}
 }

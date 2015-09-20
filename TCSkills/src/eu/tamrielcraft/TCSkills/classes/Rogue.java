@@ -11,4 +11,19 @@ public class Rogue extends Classes{
     public static Rogue getInstance() {
             return instance;
     }
+    
+    @Override
+	public String className() {
+		return "Rogue";
+	}
+
+	@Override
+	public String classNameChat() {
+		return "[" + className() + "]";
+	}
+
+	@Override
+	public String getDetails() {
+		return "A rogue is a class that uses stealth attacks to sneak upon his opponent";
+	}
 }

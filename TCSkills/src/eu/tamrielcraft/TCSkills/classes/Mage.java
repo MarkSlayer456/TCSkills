@@ -11,4 +11,19 @@ public class Mage extends Classes{
     public static Mage getInstance() {
             return instance;
     }
+    
+    @Override
+	public String className() {
+		return "Mage";
+	}
+
+	@Override
+	public String classNameChat() {
+		return "[" + className() + "]";
+	}
+
+	@Override
+	public String getDetails() {
+		return "A mage is a class that uses magic spells as his main tool for attacking or defending";
+	}
 }

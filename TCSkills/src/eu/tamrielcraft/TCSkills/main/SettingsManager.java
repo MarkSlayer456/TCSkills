@@ -57,35 +57,23 @@ public class SettingsManager {
     
      FileConfiguration save;
      File sfile;
+     
+    public Boolean createPlayer(Player player, Race race, Classes classy){
+    	UUID id = player.getUniqueId();
+    	
+    	return false;
+	}
     
      public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
  		if(getSave().getString(id + ".race") == null) {
+ 			return EmptyRace.getInstance();
+ 		}
+ 		
+ 		// Updates the player name to its latest
+ 		if(!getSave().getString(id + ".name").equals(player.getName())){
  			getSave().set(id + ".name", player.getName());
- 			getSave().set(id + ".race", "empty");
  		}
- 		/*if(getSave().getString(id + ".race") == "argonian") {
- 			return Argonian.getInstance();
- 		} else if(getSave().getString(id + ".race") == "breton") {
- 			return Breton.getInstance();
- 		} else if(getSave().getString(id + ".race") == "darkelf") {
- 			return DarkElf.getInstance();
- 		} else if(getSave().getString(id + ".race") == "highelf") {
- 			return HighElf.getInstance();
- 		} else if(getSave().getString(id + ".race") == "imperial") {
- 			return Imperial.getInstance();
- 		} else if(getSave().getString(id + ".race") == "khajiit") {
- 			return Khajiit.getInstance();
- 		} else if(getSave().getString(id + ".race") == "nord") {
- 			return Nord.getInstance();
- 		} else if(getSave().getString(id + ".race") == "orc") {
- 			return Orc.getInstance();
- 		} else if(getSave().getString(id + ".race") == "redguard") {
- 			return RedGuard.getInstance();
- 		} else if(getSave().getString(id + ".race") == "woodelf") {
- 			return WoodElf.getInstance();
- 		}
- 		return null;*/
  		
  		String race = getSave().getString(id + ".race");
  		if(race != null){

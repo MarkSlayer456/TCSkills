@@ -6,5 +6,8 @@ public abstract class Classes { //TODO sorry had to change the name of this clas
 	
 	public static ArrayList<String> classes = new ArrayList<String>();
 	
+	public abstract String className();
+	public abstract String classNameChat();
+	public abstract String getDetails();
 	
 }
