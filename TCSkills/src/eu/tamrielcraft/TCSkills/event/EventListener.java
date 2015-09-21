@@ -54,29 +54,6 @@ public class EventListener implements Listener {
 		addSmithingMaterials();
 	}
 	
-	private void addSmithingMaterials(){
-		smithing.add(Material.LEATHER_BOOTS);
-		smithing.add(Material.LEATHER_CHESTPLATE);
-		smithing.add(Material.LEATHER_HELMET);
-		smithing.add(Material.LEATHER_LEGGINGS);
-		smithing.add(Material.CHAINMAIL_BOOTS);
-		smithing.add(Material.CHAINMAIL_CHESTPLATE);
-		smithing.add(Material.CHAINMAIL_HELMET);
-		smithing.add(Material.CHAINMAIL_LEGGINGS);
-		smithing.add(Material.IRON_BOOTS);
-		smithing.add(Material.IRON_CHESTPLATE);
-		smithing.add(Material.IRON_HELMET);
-		smithing.add(Material.IRON_LEGGINGS);
-		smithing.add(Material.GOLD_BOOTS);
-		smithing.add(Material.GOLD_CHESTPLATE);
-		smithing.add(Material.GOLD_HELMET);
-		smithing.add(Material.GOLD_LEGGINGS);
-		smithing.add(Material.DIAMOND_BOOTS);
-		smithing.add(Material.DIAMOND_CHESTPLATE);
-		smithing.add(Material.DIAMOND_HELMET);
-		smithing.add(Material.DIAMOND_LEGGINGS);
-	}
-	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onCraftItem(CraftItemEvent event){
 		if(smithing.contains(event.getInventory().getResult().getType())){
@@ -285,5 +262,48 @@ public class EventListener implements Listener {
 			}
 		}, 10, 10);
 		}
+	}
+	
+	private void addSmithingMaterials(){
+		smithing.add(Material.LEATHER_BOOTS);
+		smithing.add(Material.LEATHER_CHESTPLATE);
+		smithing.add(Material.LEATHER_HELMET);
+		smithing.add(Material.LEATHER_LEGGINGS);
+		smithing.add(Material.CHAINMAIL_BOOTS);
+		smithing.add(Material.CHAINMAIL_CHESTPLATE);
+		smithing.add(Material.CHAINMAIL_HELMET);
+		smithing.add(Material.CHAINMAIL_LEGGINGS);
+		smithing.add(Material.IRON_BOOTS);
+		smithing.add(Material.IRON_CHESTPLATE);
+		smithing.add(Material.IRON_HELMET);
+		smithing.add(Material.IRON_LEGGINGS);
+		smithing.add(Material.GOLD_BOOTS);
+		smithing.add(Material.GOLD_CHESTPLATE);
+		smithing.add(Material.GOLD_HELMET);
+		smithing.add(Material.GOLD_LEGGINGS);
+		smithing.add(Material.DIAMOND_BOOTS);
+		smithing.add(Material.DIAMOND_CHESTPLATE);
+		smithing.add(Material.DIAMOND_HELMET);
+		smithing.add(Material.DIAMOND_LEGGINGS);
+		smithing.add(Material.WOOD_AXE);
+		smithing.add(Material.WOOD_SPADE);
+		smithing.add(Material.WOOD_SWORD);
+		smithing.add(Material.WOOD_HOE);
+		smithing.add(Material.GOLD_AXE);
+		smithing.add(Material.GOLD_SPADE);
+		smithing.add(Material.GOLD_SWORD);
+		smithing.add(Material.GOLD_HOE);
+		smithing.add(Material.STONE_AXE);
+		smithing.add(Material.STONE_SPADE);
+		smithing.add(Material.STONE_SWORD);
+		smithing.add(Material.STONE_HOE);
+		smithing.add(Material.IRON_AXE);
+		smithing.add(Material.IRON_AXE);
+		smithing.add(Material.IRON_AXE);
+		smithing.add(Material.IRON_AXE);
+		smithing.add(Material.DIAMOND_AXE);
+		smithing.add(Material.DIAMOND_SPADE);
+		smithing.add(Material.DIAMOND_SWORD);
+		smithing.add(Material.DIAMOND_HOE);
 	}
 }

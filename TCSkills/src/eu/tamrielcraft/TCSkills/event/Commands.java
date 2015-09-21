@@ -24,6 +24,12 @@ import eu.tamrielcraft.TCKills.spells.IceBlast;
 import eu.tamrielcraft.TCKills.spells.IceRune;
 import eu.tamrielcraft.TCKills.spells.ShockRune;
 import eu.tamrielcraft.TCKills.spells.ThunderShock;
+import eu.tamrielcraft.TCSkills.classes.Archer;
+import eu.tamrielcraft.TCSkills.classes.Barbarian;
+import eu.tamrielcraft.TCSkills.classes.Classes;
+import eu.tamrielcraft.TCSkills.classes.Knight;
+import eu.tamrielcraft.TCSkills.classes.Mage;
+import eu.tamrielcraft.TCSkills.classes.Rogue;
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 import eu.tamrielcraft.TCSkills.races.Argonian;
 import eu.tamrielcraft.TCSkills.races.Breton;
@@ -33,6 +39,7 @@ import eu.tamrielcraft.TCSkills.races.Imperial;
 import eu.tamrielcraft.TCSkills.races.Khajiit;
 import eu.tamrielcraft.TCSkills.races.Nord;
 import eu.tamrielcraft.TCSkills.races.Orc;
+import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
 import eu.tamrielcraft.TCSkills.races.WoodElf;
 
@@ -60,12 +67,84 @@ public class Commands implements CommandExecutor {
 		Bukkit.getServer().getPluginManager().registerEvents(new DarkElf(), plugin);
 		Bukkit.getServer().getPluginManager().registerEvents(new Imperial(), plugin);
 	}
+	
+	private Race getTCRace(String s){
+		String race = s.toLowerCase();
+		if(race != null){
+ 			switch(race) {
+ 	 		case "argonian":
+ 	 			return Argonian.getInstance();
+ 	 		case "breton":
+ 	 			return Breton.getInstance();
+ 	 		case "darkelf":
+ 	 			return DarkElf.getInstance();
+ 	 		case "highelf":
+ 	 			return HighElf.getInstance();
+ 	 		case "imperial":
+ 	 			return Imperial.getInstance();
+ 	 		case "khajiit":
+ 	 			return Khajiit.getInstance();
+ 	 		case "nord":
+ 	 			return Nord.getInstance();
+ 	 		case "orcs":
+ 	 			return Orc.getInstance();
+ 	 		case "redguard":
+ 	 			return RedGuard.getInstance();
+ 	 		case "woodelf":
+ 	 			return WoodElf.getInstance();
+ 	 		default:
+ 	 			return null;
+ 	 		}
+  		} else {
+  			return null;
+  		}
+	}
+	
+	private Classes getTCClass(String s){
+		String classy = s.toLowerCase();
+		switch (classy){
+		case "archer":
+			return Archer.getInstance();
+   	 	case "barbarian":
+   	 		return Barbarian.getInstance();
+   	 	case "knight":
+   	 		return Knight.getInstance();
+   	 	case "mage":
+   	 		return Mage.getInstance();
+   	 	case "Rogue":
+   	 		return Rogue.getInstance();
+   	 	default:
+   	 		return null;
+   	 	}
+	}
 
 	@Override
-	public boolean onCommand(CommandSender Sender, Command cmd, String label, String[] args) {
-		final Player player = (Player) Sender;
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		final Player player = (Player) sender;  //TODO: should not do this as you do not know it is a player!!!
 		UUID id = player.getUniqueId();
 		FileConfiguration save = settings.getSave();
+		String command = cmd.getName().toLowerCase();
+		
+		// TODO: put all in switch statement, not if-else
+		
+		switch (command){
+		case "starttc":
+			if(args.length == 2 && sender instanceof Player){
+				Race race = getTCRace(args[0]);
+				Classes classy = getTCClass(args[1]);
+				if(race != null && classy != null){
+					if(settings.createPlayer((Player)sender, race, classy)){
+						sender.sendMessage("Welcome " + race.raceNameChat() + classy.classNameChat() + ((Player) sender).getName());
+					}
+					return true;
+				}else{
+					sender.sendMessage("The given race and/or class does not exist");
+					return false;
+				}
+			}else{
+				sender.sendMessage("You've got to be a player to use this command");
+			}
+		}
 		
 		if(cmd.getName().equalsIgnoreCase("class") || cmd.getName().equalsIgnoreCase("c")) {
 			if(args.length == 0) {
@@ -77,10 +156,11 @@ public class Commands implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + "Now you see me... now you don't");
 				return true;
 			} else if(args.length >= 2) {
-				player.sendMessage(ChatColor.RED + "Usage: /class <class name>");
+				return false;
+				//player.sendMessage(ChatColor.RED + "Usage: /class <class name>");
 			}
 			
-			if(args[0].equalsIgnoreCase("archer") || args[0].equalsIgnoreCase("archers")) {
+			/*if(args[0].equalsIgnoreCase("archer") || args[0].equalsIgnoreCase("archers")) {
 				save.set(id + ".class", "archer");
 				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Archer" + ChatColor.GOLD + "!");
 			} else if(args[0].equalsIgnoreCase("barbarian") || args[0].equalsIgnoreCase("barbarians")) {
@@ -106,7 +186,7 @@ public class Commands implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "Usage: /class <class name>");
 				return true;
 			}
-			settings.saveSave();
+			settings.saveSave();*/
 			return true;
 			
 		}
@@ -331,7 +411,7 @@ public class Commands implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "RedGuard: " + ChatColor.GOLD + redguard.details() + "!");
 				player.sendMessage(ChatColor.RED + "WoodElves: " + ChatColor.GOLD + woodelves.details() + "!");
 				return true;
-			} else {
+			/*} else {
 				if(args[0].equalsIgnoreCase("nords") || args[0].equalsIgnoreCase("nord")) {
 					save.set(id + ".race", "nord");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Nord" + ChatColor.GOLD + "!");
@@ -408,7 +488,7 @@ public class Commands implements CommandExecutor {
 				return true;
 				} else {
 					player.sendMessage(ChatColor.RED + "Usage: /race <racename> or /race list");
-				}
+				}*/
 			}
 			
 		}

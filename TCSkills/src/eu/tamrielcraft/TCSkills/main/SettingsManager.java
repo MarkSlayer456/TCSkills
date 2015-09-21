@@ -59,14 +59,28 @@ public class SettingsManager {
      File sfile;
      
     public Boolean createPlayer(Player player, Race race, Classes classy){
-    	UUID id = player.getUniqueId();
-    	
-    	return false;
+    	try{
+    		UUID id = player.getUniqueId();
+    		getSave().set(id + ".race", race.raceName().toLowerCase());
+        	getSave().set(id + ".class", classy.className().toLowerCase());
+        	getSave().set(id + ".name", player.getName());
+        	setSkills(id);
+        	return true;
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
 	}
+    
+    private void setSkills(UUID id){
+    	getSave().set(id + ".skills.smithing", 0);
+    }
     
      public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
  		if(getSave().getString(id + ".race") == null) {
+ 			// This way no player record is created but the plugin doesn't crash
  			return EmptyRace.getInstance();
  		}
  		
@@ -75,7 +89,7 @@ public class SettingsManager {
  			getSave().set(id + ".name", player.getName());
  		}
  		
- 		String race = getSave().getString(id + ".race");
+ 		String race = getSave().getString(id + ".race").toLowerCase();
  		if(race != null){
  			switch(race) {
  	 		case "argonian":
@@ -126,6 +140,16 @@ public class SettingsManager {
     		 return null;
     	 }
      }
+	
+	public void setSkill(Player player, String skillName, int amount){
+		UUID id = player.getUniqueId();
+		getSave().set(id + ".skills." + skillName, amount);
+	}
+	
+	public Integer getSmithingExp(Player player){
+		UUID id = player.getUniqueId();
+		return getSave().getInt(id + ".skills.smithing");
+	}
 	
 	public Integer getMagic(Player player) {
 		UUID id = player.getUniqueId();
