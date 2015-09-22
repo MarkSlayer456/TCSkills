@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.ScoreboardManager;
 
 import eu.tamrielcraft.TCSkills.event.Commands;
 import eu.tamrielcraft.TCSkills.event.EventListener;
@@ -59,7 +58,7 @@ public class Main extends JavaPlugin implements Listener {
 	public void onDisable() {
 	}
 	
-	static ScoreboardManager manager = Bukkit.getScoreboardManager();
+	//static ScoreboardManager manager = Bukkit.getScoreboardManager();
 	
 	private void addPlaceholderHooks(){
 		
