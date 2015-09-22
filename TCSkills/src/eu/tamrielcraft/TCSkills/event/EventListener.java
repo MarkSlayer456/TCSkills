@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
@@ -37,6 +38,7 @@ import eu.tamrielcraft.TCSkills.races.HighElf;
 import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
+import eu.tamrielcraft.TCSkills.skills.SkillTreeGUI;
 import eu.tamrielcraft.TCSkills.skills.Smithing;
 
 public class EventListener implements Listener {
@@ -54,7 +56,7 @@ public class EventListener implements Listener {
 		addSmithingMaterials();
 	}
 	
-	private void addSmithingMaterials(){
+	private void addSmithingMaterials() {
 		smithing.add(Material.LEATHER_BOOTS);
 		smithing.add(Material.LEATHER_CHESTPLATE);
 		smithing.add(Material.LEATHER_HELMET);
@@ -77,9 +79,29 @@ public class EventListener implements Listener {
 		smithing.add(Material.DIAMOND_LEGGINGS);
 	}
 	
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent e) {
+		if(!ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("SkillTree") ||
+				ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("OneHanded")) {
+			return;
+		}
+		Player player = (Player) e.getWhoClicked();
+		e.setCancelled(true);
+		if(e.getCurrentItem().getType() == null || e.getCurrentItem().getType() == Material.AIR) {
+			return;
+		}
+		switch(e.getCurrentItem().getItemMeta().toString()) {
+			case "OneHanded":
+				SkillTreeGUI.skillTreeOpenOneHanded(player);
+				break;
+		}
+		
+	}
+			
+			
 	@EventHandler(priority = EventPriority.HIGH)
-	public void onCraftItem(CraftItemEvent event){
-		if(smithing.contains(event.getInventory().getResult().getType())){
+	public void onCraftItem(CraftItemEvent event) {
+		if(smithing.contains(event.getInventory().getResult().getType())) {
 			Smithing.getInstance().onCraftEvent(event);
 		}
 	}

@@ -26,3 +26,6 @@ commands:
     description: base class command
     usage: /<command> <command>
     aliases: [c]
+  skills:
+    description: shows skill tree
+    usage: /<command>

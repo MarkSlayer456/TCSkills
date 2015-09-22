@@ -35,6 +35,7 @@ import eu.tamrielcraft.TCSkills.races.Nord;
 import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
 import eu.tamrielcraft.TCSkills.races.WoodElf;
+import eu.tamrielcraft.TCSkills.skills.SkillTreeGUI;
 
 public class Commands implements CommandExecutor {
 	
@@ -63,9 +64,17 @@ public class Commands implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender Sender, Command cmd, String label, String[] args) {
+		if(!(Sender instanceof Player)) {
+			
+		}
 		final Player player = (Player) Sender;
 		UUID id = player.getUniqueId();
 		FileConfiguration save = settings.getSave();
+		
+		if(cmd.getName().equalsIgnoreCase("skills") || cmd.getName().equalsIgnoreCase("s")) {
+			SkillTreeGUI.skillTreeOpen(player);
+			return true;
+		}
 		
 		if(cmd.getName().equalsIgnoreCase("class") || cmd.getName().equalsIgnoreCase("c")) {
 			if(args.length == 0) {

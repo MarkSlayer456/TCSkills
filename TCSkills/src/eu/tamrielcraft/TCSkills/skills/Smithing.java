@@ -2,11 +2,11 @@ package eu.tamrielcraft.TCSkills.skills;
 
 import org.bukkit.event.inventory.CraftItemEvent;
 
-public class Smithing extends Skill{
+public class Smithing extends Skill {
 	
 	private static Smithing instance = new Smithing();
 	
-	public static Smithing getInstance(){
+	public static Smithing getInstance() {
 		return instance;
 	}
 
