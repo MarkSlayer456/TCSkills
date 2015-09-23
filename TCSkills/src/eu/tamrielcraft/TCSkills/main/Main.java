@@ -47,6 +47,7 @@ public class Main extends JavaPlugin implements Listener {
 		this.getCommand("class").setExecutor(new Commands(this, settings));
 		this.getCommand("c").setExecutor(new Commands(this, settings));
 		this.getCommand("starttc").setExecutor(new Commands(this,settings));
+		this.getCommand("skills").setExecutor(new Commands(this, settings));
 		
 		settings.getConfig().addDefault("Header", "---===[TamerialCraft]===---");
 		settings.getConfig().addDefault("enableSpells", true);

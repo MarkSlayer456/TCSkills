@@ -71,7 +71,7 @@ public class OneHanded extends Skill {
 			int skillLvl = settings.getSave().getInt(id + ".skills.onehanded.armsman");
 			int skillMax = settings.getSave().getInt(id + ".skills.onehanded.armsman");
 			
-			if(skillLvl < skillMax) {
+			if(skillLvl < skillMax) { //TODO ALSO ADD A LVL CHECK HERE!
 				return true;
 			}
 			return true;
@@ -86,6 +86,7 @@ public class OneHanded extends Skill {
 		} else if(perkName.equalsIgnoreCase("")) {
 			
 		}
+		settings.saveSave();
 	}
 	
 	

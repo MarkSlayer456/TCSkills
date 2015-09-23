@@ -30,7 +30,6 @@ commands:
     description: start command for the server RP
     usage: /<command> <race> <class>
   skills:
-    description: Displays all available classes
+    description: Displays skill tree
     usage: /<command>
-    aliases: [c]
   

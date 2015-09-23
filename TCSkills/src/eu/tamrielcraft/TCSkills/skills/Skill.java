@@ -14,7 +14,7 @@ public abstract class Skill {
 	public abstract void onCraftEvent(CraftItemEvent event);
 	public abstract String getSkillName();
 	
-	protected int getLevel(int experience){ //TODO what is this?
+	protected int getLevel(int experience){
 		int start = 0;
 		int temp = start;
 		int count = 0;
