@@ -15,6 +15,12 @@ public class OneHanded extends Skill {
 		
 		
 	}
+
+	@Override
+	public String getSkillName() {
+		
+		return null;
+	}
 	
 	
 }

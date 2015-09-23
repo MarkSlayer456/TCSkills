@@ -7,8 +7,8 @@ description: A race plugin!
 
 commands:
   race:
-    description: base race command!
-    usage: /<command> <command>
+    description: Displays all available races
+    usage: /<command>
     aliases: [r]
   spell:
     description: base spell command!
@@ -23,9 +23,14 @@ commands:
     usage: /<command> <command>
     aliases: [fav]
   class:
-    description: base class command
+    description: Displays all available classes
     usage: /<command> <command>
     aliases: [c]
+  starttc:
+    description: start command for the server RP
+    usage: /<command> <race> <class>
   skills:
-    description: shows skill tree
+    description: Displays all available classes
     usage: /<command>
+    aliases: [c]
+  
