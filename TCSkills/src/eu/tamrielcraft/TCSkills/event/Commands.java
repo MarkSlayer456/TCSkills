@@ -24,6 +24,12 @@ import eu.tamrielcraft.TCKills.spells.IceBlast;
 import eu.tamrielcraft.TCKills.spells.IceRune;
 import eu.tamrielcraft.TCKills.spells.ShockRune;
 import eu.tamrielcraft.TCKills.spells.ThunderShock;
+import eu.tamrielcraft.TCSkills.classes.Archer;
+import eu.tamrielcraft.TCSkills.classes.Barbarian;
+import eu.tamrielcraft.TCSkills.classes.Classes;
+import eu.tamrielcraft.TCSkills.classes.Knight;
+import eu.tamrielcraft.TCSkills.classes.Mage;
+import eu.tamrielcraft.TCSkills.classes.Rogue;
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 import eu.tamrielcraft.TCSkills.races.Argonian;
 import eu.tamrielcraft.TCSkills.races.Breton;
@@ -33,6 +39,7 @@ import eu.tamrielcraft.TCSkills.races.Imperial;
 import eu.tamrielcraft.TCSkills.races.Khajiit;
 import eu.tamrielcraft.TCSkills.races.Nord;
 import eu.tamrielcraft.TCSkills.races.Orc;
+import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
 import eu.tamrielcraft.TCSkills.races.WoodElf;
 import eu.tamrielcraft.TCSkills.skills.SkillTreeGUI;
@@ -60,6 +67,55 @@ public class Commands implements CommandExecutor {
 		Bukkit.getServer().getPluginManager().registerEvents(new Orc(), plugin);
 		Bukkit.getServer().getPluginManager().registerEvents(new DarkElf(), plugin);
 		Bukkit.getServer().getPluginManager().registerEvents(new Imperial(), plugin);
+	}
+	private Race getTCRace(String s){
+		String race = s.toLowerCase();
+		if(race != null){
+ 			switch(race) {
+ 	 		case "argonian":
+ 	 			return Argonian.getInstance();
+ 	 		case "breton":
+ 	 			return Breton.getInstance();
+ 	 		case "darkelf":
+ 	 			return DarkElf.getInstance();
+ 	 		case "highelf":
+ 	 			return HighElf.getInstance();
+ 	 		case "imperial":
+ 	 			return Imperial.getInstance();
+ 	 		case "khajiit":
+ 	 			return Khajiit.getInstance();
+ 	 		case "nord":
+ 	 			return Nord.getInstance();
+ 	 		case "orcs":
+ 	 			return Orc.getInstance();
+ 	 		case "redguard":
+ 	 			return RedGuard.getInstance();
+ 	 		case "woodelf":
+ 	 			return WoodElf.getInstance();
+ 	 		default:
+ 	 			return null;
+ 	 		}
+  		} else {
+  			return null;
+  		}
+	}
+	
+	private Classes getTCClass(String s){
+		String classy = s.toLowerCase();
+		switch (classy){
+		case "archer":
+			return Archer.getInstance();
+   	 	case "barbarian":
+   	 		return Barbarian.getInstance();
+   	 	case "knight":
+   	 		return Knight.getInstance();
+   	 	case "mage":
+   	 		return Mage.getInstance();
+   	 	case "Rogue":
+   	 		return Rogue.getInstance();
+   	 	default:
+   	 		return null;
+   	 	}
 	}
 
 	@Override

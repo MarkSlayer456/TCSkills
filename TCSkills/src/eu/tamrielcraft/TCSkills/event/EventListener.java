@@ -53,31 +53,16 @@ public class EventListener implements Listener {
 	public EventListener(Plugin plugin, SettingsManager settings) {
 		this.settings = settings;
 		this.plugin = plugin;
-		addSmithingMaterials();
+		//addSmithingMaterials();
+	}
+		
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onCraftItem(CraftItemEvent event){
+		if(smithing.contains(event.getInventory().getResult().getType())){
+			Smithing.getInstance().onCraftEvent(event);
+		}
 	}
 	
-	private void addSmithingMaterials() {
-		smithing.add(Material.LEATHER_BOOTS);
-		smithing.add(Material.LEATHER_CHESTPLATE);
-		smithing.add(Material.LEATHER_HELMET);
-		smithing.add(Material.LEATHER_LEGGINGS);
-		smithing.add(Material.CHAINMAIL_BOOTS);
-		smithing.add(Material.CHAINMAIL_CHESTPLATE);
-		smithing.add(Material.CHAINMAIL_HELMET);
-		smithing.add(Material.CHAINMAIL_LEGGINGS);
-		smithing.add(Material.IRON_BOOTS);
-		smithing.add(Material.IRON_CHESTPLATE);
-		smithing.add(Material.IRON_HELMET);
-		smithing.add(Material.IRON_LEGGINGS);
-		smithing.add(Material.GOLD_BOOTS);
-		smithing.add(Material.GOLD_CHESTPLATE);
-		smithing.add(Material.GOLD_HELMET);
-		smithing.add(Material.GOLD_LEGGINGS);
-		smithing.add(Material.DIAMOND_BOOTS);
-		smithing.add(Material.DIAMOND_CHESTPLATE);
-		smithing.add(Material.DIAMOND_HELMET);
-		smithing.add(Material.DIAMOND_LEGGINGS);
-	}
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
@@ -96,14 +81,6 @@ public class EventListener implements Listener {
 				break;
 		}
 		
-	}
-			
-			
-	@EventHandler(priority = EventPriority.HIGH)
-	public void onCraftItem(CraftItemEvent event) {
-		if(smithing.contains(event.getInventory().getResult().getType())) {
-			Smithing.getInstance().onCraftEvent(event);
-		}
 	}
 	
 	@EventHandler

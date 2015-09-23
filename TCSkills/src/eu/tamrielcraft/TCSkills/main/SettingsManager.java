@@ -57,121 +57,30 @@ public class SettingsManager {
     
      FileConfiguration save;
      File sfile;
-     
-    public Boolean createPlayer(Player player, Race race, Classes classy) {
-    	UUID id = player.getUniqueId();
-    	
-    	
-    	//ONE HANDED
-    	getSave().set(id + ".skills.onehanded", 15);
-    	
-    	getSave().set(id + ".skills.onehanded.armsman", 0);
-    	
-    	getSave().set(id + ".skills.onehanded.hackandslash", 0);
-    	
-    	getSave().set(id + ".skills.onehanded.bonebreaker", 0);
-    	
-    	getSave().set(id + ".skills.onehanded.dualflurry", 0);
     
-    	getSave().set(id + ".skills.onehanded.fightingstance", 0);
-    	
-    	getSave().set(id + ".skills.onehanded.bladesman", 0);
-    	
-    	getSave().set(id + ".skills.onehanded.dualsavagery", 0);
-    	
-    	getSave().set(id + ".skills.onehanded.savagestrike", 0);
-    	
-    	getSave().set(id + ".skills.onehanded.criticalcharge", 0);
-    	
-    	getSave().set(id + ".skills.onehanded.paralyzingstrike", 0);
-    	
-    	
-    	
-    	//TOOD put required lvls next to each skill
-    	//TODO move this somewhere else!
-    	//SORRY ABOUT THE WIERD TABBING HERE I DID THIS SO I KNOW WHAT SKILLS UNLOCK WHAT
-    	getSave().set("oneHanded.armsman.max", 5);
-    	/*
-    	 * lvls
-    	 * 1: n/a
-    	 * 2: 20
-    	 * 3: 40
-    	 * 4: 60
-    	 * 5: 80
-    	 */
-    	
-    		getSave().set("onehanded.hackandslash.max", 3);
-    		/*
-    		 * lvls
-    		 * 1: 30
-    		 * 2: 60
-    		 * 3: 90
-    		 */
-    	
-    		getSave().set("onehanded.bonebreaker.max", 3);
-    		/*
-    		 * lvls
-    		 * 1: 30
-    		 */
-    	
-    		getSave().set("onehanded.dualflurry.max", 3);
-    		/*
-    		 * lvls
-    		 * 1: 30
-    		 */
-    			getSave().set("onehanded.daulsavagery.max", 1);
-    			/*
-    			 * lvls
-    			 * 1: 70
-    			 */
-    	
-    		getSave().set("onehanded.fightingstance.max", 1);
-    		/*
-    		 * lvls
-    		 * 1: 20
-    		 */
-    			getSave().set("onehanded.savagestrike.max", 1);
-    			/*
-    			 * lvls
-    			 * 1: 50
-    			 */
-    			getSave().set("onehanded.criticalcharge.max", 1);
-    			/*
-    			 * lvls
-    			 * 1: 50
-    			 */
-    				getSave().set("onehanded.paralyzingstrike.max", 1); //need both tier 3 perks
-    				/*
-    				 * lvls
-    				 * 1: 100
-    				 */
-    	
-    	
-    	
-    	getSave().set(id + ".skills.smithing", 15);
-    	getSave().set(id + ".skills.blocking", 15);
-    	getSave().set(id + ".skills.archery", 15);
-    	getSave().set(id + ".skill.sneak", 15);
-    	getSave().set(id + ".skills.lightarmor", 15);
-    	getSave().set(id + ".skills.heavyarmor", 15);
-    	getSave().set(id + ".skills.Illusion", 15);
-    	
-    	/*
-    	 * TODO
-    	 * aliteration
-    	 * restoration
-    	 * conjuration
-    	 * destrcution
-    	 * lockpicking
-    	 * alchemy
-    	 */
-    	
-    	return false;
+    public Boolean createPlayer(Player player, Race race, Classes classy){
+    	try{
+    		UUID id = player.getUniqueId();
+    		getSave().set(id + ".race", race.raceName().toLowerCase());
+        	getSave().set(id + ".class", classy.className().toLowerCase());
+        	getSave().set(id + ".name", player.getName());
+        	setSkills(id);
+        	return true;
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
 	}
+    
+    private void setSkills(UUID id){
+    	getSave().set(id + ".skills.smithing", 0);
+    }
     
      public Race getRace(Player player) {
  		UUID id = player.getUniqueId();
  		if(getSave().getString(id + ".race") == null) {
+ 			// This way no player record is created but the plugin doesn't crash
  			return EmptyRace.getInstance();
  		}
  		
@@ -181,8 +90,8 @@ public class SettingsManager {
  			saveSave();
  		}*/
  		
- 		String race = getSave().getString(id + ".race");
- 		if(race != null) {
+ 		String race = getSave().getString(id + ".race").toLowerCase();
+ 		if(race != null){
  			switch(race) {
  	 		case "argonian":
  	 			return Argonian.getInstance();
@@ -232,6 +141,16 @@ public class SettingsManager {
     		 return null;
     	 }
      }
+	
+	public void setSkill(Player player, String skillName, int amount){
+		UUID id = player.getUniqueId();
+		getSave().set(id + ".skills." + skillName, amount);
+	}
+	
+	public Integer getSmithingExp(Player player){
+		UUID id = player.getUniqueId();
+		return getSave().getInt(id + ".skills.smithing");
+	}
 	
 	public Integer getMagic(Player player) {
 		UUID id = player.getUniqueId();
