@@ -38,6 +38,7 @@ import eu.tamrielcraft.TCSkills.races.HighElf;
 import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
+import eu.tamrielcraft.TCSkills.skills.OneHanded;
 import eu.tamrielcraft.TCSkills.skills.SkillTreeGUI;
 import eu.tamrielcraft.TCSkills.skills.Smithing;
 
@@ -79,6 +80,11 @@ public class EventListener implements Listener {
 			case "OneHanded":
 				SkillTreeGUI.skillTreeOpenOneHanded(player);
 				break;
+			case "armsman":
+				
+				if(OneHanded.canUpgradePerk("armsman", player) == true) {
+					OneHanded.upgradePerk("armsman", player);
+				}
 		}
 		
 	}
