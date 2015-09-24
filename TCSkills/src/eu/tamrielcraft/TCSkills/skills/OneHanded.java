@@ -36,15 +36,12 @@ public class OneHanded extends Skill {
 		skillLevels.put(Material.WOOD_AXE, 0);
 		skillLevels.put(Material.WOOD_SPADE, 0);
 		skillLevels.put(Material.WOOD_SWORD, 0);
-		skillLevels.put(Material.WOOD_HOE, 0);
 		skillLevels.put(Material.GOLD_AXE, 30);
 		skillLevels.put(Material.GOLD_SPADE, 30);
 		skillLevels.put(Material.GOLD_SWORD, 30);
-		skillLevels.put(Material.GOLD_HOE, 30);
 		skillLevels.put(Material.STONE_AXE, 50);
 		skillLevels.put(Material.STONE_SPADE, 50);
 		skillLevels.put(Material.STONE_SWORD, 50);
-		skillLevels.put(Material.STONE_HOE, 50);
 		skillLevels.put(Material.IRON_AXE, 70);
 		skillLevels.put(Material.IRON_AXE, 70);
 		skillLevels.put(Material.IRON_AXE, 70);
@@ -52,14 +49,13 @@ public class OneHanded extends Skill {
 		skillLevels.put(Material.DIAMOND_AXE, 90);
 		skillLevels.put(Material.DIAMOND_SPADE, 90);
 		skillLevels.put(Material.DIAMOND_SWORD, 90);
-		skillLevels.put(Material.DIAMOND_HOE, 90);
 	}
 	
 
 	@Override
 	public String getSkillName() {
 		
-		return null;
+		return "OneHanded";
 	}
 	
 	
