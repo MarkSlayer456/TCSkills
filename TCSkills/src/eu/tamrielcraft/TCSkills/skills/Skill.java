@@ -15,7 +15,7 @@ public abstract class Skill {
 	public abstract String getSkillName();
 	
 	protected int getLevel(int experience){
-		int start = 0;
+		int start = 0; 
 		int temp = start;
 		int count = 0;
 		

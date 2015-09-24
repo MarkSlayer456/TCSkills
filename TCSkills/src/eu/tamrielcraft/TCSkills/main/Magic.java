@@ -94,7 +94,7 @@ public class Magic implements Listener {
 		UUID id = player.getUniqueId();
 		FileConfiguration save = settings.getSave();
 		if(e.getAction() == Action.RIGHT_CLICK_AIR && player.getItemInHand().getType() == Material.STICK || e.getAction() == Action.RIGHT_CLICK_BLOCK && player.getItemInHand().getType() == Material.STICK) {
-			if(settings.getConfig().getBoolean("enableSpells") == false) {
+			if(settings.magicEnabled() == false) {
 				return;
 			}
 			if(save.get(id + ".magic.favorites.holder.1") == null) {
