@@ -132,6 +132,25 @@ public class Commands implements CommandExecutor {
 			return true;
 		}
 		
+		if(cmd.getName().equalsIgnoreCase("starttc")){
+			if(args.length == 2){
+				Race race = getTCRace(args[0]);
+				Classes classy = getTCClass(args[1]);
+				if(race != null){
+					if(classy != null){
+						settings.createPlayer(player, race, classy);
+						player.sendMessage("Your race and class are set and you are ready to play!");
+						return true;
+					}else{
+						player.sendMessage(ChatColor.RED + "This class does not exist. Check /class for all available classes");
+					}
+				}else{
+					player.sendMessage(ChatColor.RED + "This race does not exist. Check /race for all available races");
+				}
+			}
+			return false;
+		}
+		
 		if(cmd.getName().equalsIgnoreCase("class") || cmd.getName().equalsIgnoreCase("c")) {
 			if(args.length == 0) {
 				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header")); //TODO add/change descriptions to all of these i don't know if you want them to have a abilities 
@@ -141,11 +160,11 @@ public class Commands implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "Mage: " + ChatColor.GOLD + "");
 				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + "Now you see me... now you don't");
 				return true;
-			} else if(args.length >= 2) {
+			}/* else if(args.length >= 2) {
 				player.sendMessage(ChatColor.RED + "Usage: /class <class name>");
-			}
+			}*/
 			
-			if(args[0].equalsIgnoreCase("archer") || args[0].equalsIgnoreCase("archers")) {
+			/*if(args[0].equalsIgnoreCase("archer") || args[0].equalsIgnoreCase("archers")) {
 				save.set(id + ".class", "archer");
 				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Archer" + ChatColor.GOLD + "!");
 			} else if(args[0].equalsIgnoreCase("barbarian") || args[0].equalsIgnoreCase("barbarians")) {
@@ -170,10 +189,9 @@ public class Commands implements CommandExecutor {
 			} else {
 				player.sendMessage(ChatColor.RED + "Usage: /class <class name>");
 				return true;
-			}
-			settings.saveSave();
-			return true;
-			
+			}*/
+			//settings.saveSave();
+			return false;
 		}
 		
 		
@@ -396,7 +414,7 @@ public class Commands implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "RedGuard: " + ChatColor.GOLD + redguard.details() + "!");
 				player.sendMessage(ChatColor.RED + "WoodElves: " + ChatColor.GOLD + woodelves.details() + "!");
 				return true;
-			} else {
+			} /*else {
 				if(args[0].equalsIgnoreCase("nords") || args[0].equalsIgnoreCase("nord")) {
 					save.set(id + ".race", "nord");
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Nord" + ChatColor.GOLD + "!");
@@ -457,7 +475,7 @@ public class Commands implements CommandExecutor {
 					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "WoodElf" + ChatColor.GOLD + "!");
 					settings.saveSave();
 					return true;
-				} else if(args[0].equalsIgnoreCase("list")) {
+				} else */if(args[0].equalsIgnoreCase("list")) {
 				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
 				player.sendMessage(ChatColor.GOLD + "You can be any of these races:");
 				player.sendMessage(ChatColor.RED + "Argonian: " + ChatColor.GOLD + argonian.details() + "!");
@@ -473,7 +491,7 @@ public class Commands implements CommandExecutor {
 				return true;
 				} else {
 					player.sendMessage(ChatColor.RED + "Usage: /race <racename> or /race list");
-				}
+				//}
 			}
 			
 		}
@@ -503,9 +521,7 @@ public class Commands implements CommandExecutor {
 			} else {
 				player.sendMessage(ChatColor.RED + "You don't have permission to use this command");
 			}
-			
 		}
-		
 		return true;
 	}
 

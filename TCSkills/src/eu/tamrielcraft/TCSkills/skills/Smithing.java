@@ -6,10 +6,12 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.entity.*;
 
 public class Smithing extends Skill {
 
 	Map<Material,Integer> skillLevels, skillExp;
+	Map<Entity,Integer> test;
 	
 	private static Smithing instance = new Smithing();
 	
