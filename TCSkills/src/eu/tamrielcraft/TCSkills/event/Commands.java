@@ -48,13 +48,13 @@ public class Commands implements CommandExecutor {
 	
 	private Plugin plugin;
 	private SettingsManager settings;
-	Argonian argonian = new Argonian();
-	Breton breton = new Breton();
-	HighElf highelves = new HighElf();
-	Khajiit khajiit = new Khajiit();
-	Nord nords = new Nord();
-	RedGuard redguard = new RedGuard();
-	WoodElf woodelves = new WoodElf();
+	Argonian argonian = Argonian.getInstance();
+	Breton breton = Breton.getInstance();
+	HighElf highelves = HighElf.getInstance();
+	Khajiit khajiit = Khajiit.getInstance();
+	Nord nords = Nord.getInstance();
+	RedGuard redguard = RedGuard.getInstance();
+	WoodElf woodelves = WoodElf.getInstance();
 	
 	public static int redGuardFoodLoopInt;
 	
@@ -121,25 +121,27 @@ public class Commands implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender Sender, Command cmd, String label, String[] args) {
 		if(!(Sender instanceof Player)) {
-			
+			Sender.sendMessage("Console is not allowed to do any Skills related things");
+			return true;
 		}
 		final Player player = (Player) Sender;
 		UUID id = player.getUniqueId();
 		FileConfiguration save = settings.getSave();
+		String command = cmd.getName().toLowerCase();
 		
-		if(cmd.getName().equalsIgnoreCase("skills") || cmd.getName().equalsIgnoreCase("s")) {
+		switch(command){
+		case "skills":
 			SkillTreeGUI.skillTreeOpen(player);
 			return true;
-		}
-		
-		if(cmd.getName().equalsIgnoreCase("starttc")){
+		case "starttc":
 			if(args.length == 2){
 				Race race = getTCRace(args[0]);
 				Classes classy = getTCClass(args[1]);
 				if(race != null){
 					if(classy != null){
 						settings.createPlayer(player, race, classy);
-						player.sendMessage("Your race and class are set and you are ready to play!");
+						player.sendMessage(ChatColor.GOLD + "Your are now a " + ChatColor.RED + race.raceName() + " " 
+								+ classy.className() + ChatColor.GOLD + " and are ready to play. Have fun!");
 						return true;
 					}else{
 						player.sendMessage(ChatColor.RED + "This class does not exist. Check /class for all available classes");
@@ -151,14 +153,16 @@ public class Commands implements CommandExecutor {
 			return false;
 		}
 		
+		//TODO: should put it all into one switch statement
+		
 		if(cmd.getName().equalsIgnoreCase("class") || cmd.getName().equalsIgnoreCase("c")) {
 			if(args.length == 0) {
 				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header")); //TODO add/change descriptions to all of these i don't know if you want them to have a abilities 
-				player.sendMessage(ChatColor.RED + "Archer: " + ChatColor.GOLD + "");
-				player.sendMessage(ChatColor.RED + "Barbarian: " + ChatColor.GOLD + "");
-				player.sendMessage(ChatColor.RED + "Knight: " + ChatColor.GOLD + "");
-				player.sendMessage(ChatColor.RED + "Mage: " + ChatColor.GOLD + "");
-				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + "Now you see me... now you don't");
+				player.sendMessage(ChatColor.RED + "Archer: " + ChatColor.GOLD + Archer.getInstance().getDetails());
+				player.sendMessage(ChatColor.RED + "Barbarian: " + ChatColor.GOLD + Barbarian.getInstance().getDetails());
+				player.sendMessage(ChatColor.RED + "Knight: " + ChatColor.GOLD + Knight.getInstance().getDetails());
+				player.sendMessage(ChatColor.RED + "Mage: " + ChatColor.GOLD + Mage.getInstance().getDetails());
+				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + Rogue.getInstance().getDetails());
 				return true;
 			}/* else if(args.length >= 2) {
 				player.sendMessage(ChatColor.RED + "Usage: /class <class name>");

@@ -189,6 +189,7 @@ public class SettingsManager {
         	getSave().set(id + ".class", classy.className().toLowerCase());
         	getSave().set(id + ".name", player.getName());
         	setSkills(id);
+        	saveSave();
         	return true;
     	}
     	catch(Exception e){
