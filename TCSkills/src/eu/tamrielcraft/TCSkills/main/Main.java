@@ -50,7 +50,7 @@ public class Main extends JavaPlugin implements Listener {
 		this.getCommand("skills").setExecutor(new Commands(this, settings));
 		
 		settings.getConfig().addDefault("Header", "---===[TamerialCraft]===---");
-		settings.getConfig().addDefault("enableSpells", true);
+		settings.getConfig().addDefault("enableMagic", true);
 		settings.getConfig().addDefault("enableAbilities", true); //TODO set this up
 		
 		//TODO skilltree

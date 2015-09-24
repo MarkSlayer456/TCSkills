@@ -58,6 +58,22 @@ public class SettingsManager {
      FileConfiguration save;
      File sfile;
     
+     public Boolean abilitiesEnable() {
+    	 if(getConfig().getBoolean("enableAbilites") == true) {
+    		 return true;
+    	 }
+    	 return false;
+     }
+     
+     public Boolean magicEnabled() {
+    	 if(getConfig().getBoolean("enableMagic") == false) {
+    		 
+    	 }
+    	 return false;
+     }
+     
+     
+     
     public Boolean createPlayer(Player player, Race race, Classes classy){
     	UUID id = player.getUniqueId();
     	
@@ -180,6 +196,8 @@ public class SettingsManager {
     		return false;
     	}
 	}
+
+    
     
     private void setSkills(UUID id){
     	getSave().set(id + ".skills.smithing", 0);

@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.plugin.Plugin;
+
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 
@@ -27,7 +27,7 @@ public class OneHanded extends Skill {
 		
 	}
 	
-	Map<Entity, Integer> skillExp = new HashMap<Entity, Integer>();
+	Map<String, Integer> skillExp = new HashMap<String, Integer>();
 	Map<Material, Integer> skillLevels = new HashMap<Material, Integer>();
 	
 	
@@ -49,6 +49,15 @@ public class OneHanded extends Skill {
 		skillLevels.put(Material.DIAMOND_AXE, 90);
 		skillLevels.put(Material.DIAMOND_SPADE, 90);
 		skillLevels.put(Material.DIAMOND_SWORD, 90);
+		
+		//XP
+		skillExp.put("zombie", 5);
+		skillExp.put("skeleton", 5);
+		skillExp.put("spider", 5);
+		skillExp.put("creeper", 5);
+		skillExp.put("witch", 5);
+		skillExp.put("enderman", 10);
+		skillExp.put("slime", 10);
 	}
 	
 
@@ -68,6 +77,19 @@ public class OneHanded extends Skill {
 			int skillMax = settings.getSave().getInt(id + ".skills.onehanded.armsman");
 			
 			if(skillLvl < skillMax) { //TODO ALSO ADD A LVL CHECK HERE!
+				if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 0) {
+					
+				} else if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 1) {
+					
+				} else if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 2) {
+					
+				} else if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 3) {
+					
+				} else if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 4) {
+					
+				} else if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 5) {
+					
+				}
 				return true;
 			}
 			return true;

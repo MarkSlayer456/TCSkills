@@ -91,7 +91,7 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void playerEnchantEvent(PlayerLevelChangeEvent e) {
-		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+		if(settings.abilitiesEnable() == false) {
 			return;
 		}
 		Player player = (Player) e.getPlayer();
@@ -101,7 +101,7 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void playerBurnEvent(EntityDamageEvent e) {
-		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+		if(settings.abilitiesEnable() == false) {
 			return;
 		}
 		if(e.getEntity() instanceof Player) {
@@ -113,7 +113,7 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
-		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+		if(settings.abilitiesEnable() == false) {
 			return;
 		}
 		String format = e.getFormat();
@@ -125,7 +125,7 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void playerHitEvent(EntityDamageByEntityEvent e) {
-		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+		if(settings.abilitiesEnable() == false) {
 			return;
 		}
 		//TODO: move all to corresponding race classes
@@ -185,7 +185,7 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void potionThrowEvent(PotionSplashEvent e) {
-		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+		if(settings.abilitiesEnable() == false) {
 			return;
 		}
 		for(LivingEntity entity : e.getAffectedEntities()) {
@@ -210,7 +210,7 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void playerMoveEvent(PlayerMoveEvent e) {
-		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+		if(settings.abilitiesEnable() == false) {
 			return;
 		}
 		Player player = (Player) e.getPlayer();
@@ -220,7 +220,7 @@ public class EventListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
-		if(settings.getConfig().getBoolean("enableAbilities") == false) {
+		if(settings.abilitiesEnable() == false) {
 			return;
 		}
 		final Player player = (Player) e.getPlayer();
