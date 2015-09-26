@@ -2,7 +2,6 @@ package eu.tamrielcraft.TCSkills.skills;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -65,46 +64,6 @@ public class OneHanded extends Skill {
 	public String getSkillName() {
 		
 		return "OneHanded";
-	}
-	
-	
-	public static boolean canUpgradePerk(String perkName, Player player) {
-		UUID id = player.getUniqueId();
-		
-		
-		if(perkName.equalsIgnoreCase("armsman")) {
-			int skillLvl = settings.getSave().getInt(id + ".skills.onehanded.armsman");
-			int skillMax = settings.getSave().getInt(id + ".skills.onehanded.armsman");
-			
-			if(skillLvl < skillMax) { //TODO ALSO ADD A LVL CHECK HERE!
-				if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 0) {
-					
-				} else if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 1) {
-					
-				} else if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 2) {
-					
-				} else if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 3) {
-					
-				} else if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 4) {
-					
-				} else if(settings.getSave().getInt(id + ".skills.onehanded.armsman") == 5) {
-					
-				}
-				return true;
-			}
-			return true;
-		}	
-		return false;
-	}
-	
-	public static void upgradePerk(String perkName, Player player) {
-		UUID id = player.getUniqueId();
-		if(perkName.equalsIgnoreCase("armsman")) {
-		settings.getSave().set(id + ".skills.onehanded.armsman", settings.getSave().getInt(id + ".skills.onehanded.armsman") + 1);
-		} else if(perkName.equalsIgnoreCase("")) {
-			
-		}
-		settings.saveSave();
 	}
 	
 	

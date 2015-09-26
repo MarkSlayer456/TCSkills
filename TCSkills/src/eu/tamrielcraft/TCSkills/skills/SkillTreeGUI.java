@@ -1,9 +1,9 @@
 package eu.tamrielcraft.TCSkills.skills;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -18,7 +18,7 @@ public class SkillTreeGUI {
 	public static SettingsManager settings = SettingsManager.getInstance();
 	
 	public static ArrayList<String> diamondSwordLore = new ArrayList<String>(); //HAVE ONE OF THESE FOR EACH ITEM AND ADD THE DETAILS TO THE ON ENABLE	
-	
+	public static ArrayList<String> armsmanLore = new ArrayList<String>();
 	
 	public static void skillTreeOpen(Player player) {
 		Inventory inv = Bukkit.createInventory(null, 45, "SkillTree");
@@ -35,19 +35,28 @@ public class SkillTreeGUI {
 	}
 	
 	public static void skillTreeOpenOneHanded(Player player) {
-		UUID id = player.getUniqueId();
-	Inventory inv = Bukkit.createInventory(null, 54, "One Handed");
+	Inventory inv = Bukkit.createInventory(null, 54, "OneHanded");
 	ItemStack armsman = new ItemStack(Material.BOOK);
 	
 	ItemMeta armsmanMeta = armsman.getItemMeta();
 	
-	armsmanMeta.setDisplayName("armsman " + settings.getSave().getInt(id + ".skills.onehanded.armsman") + " / " + settings.getSave().getInt("oneHanded.armsman.max"));
+	armsmanMeta.setDisplayName("armsman");
+	setGUILore(armsman, player, "armsman");
+	armsmanMeta.setLore(armsmanLore);
 	armsman.setItemMeta(armsmanMeta);
 	
 	inv.setItem(49, armsman);
 	
 	player.openInventory(inv);
 	
+	
+	}
+	
+	public static void setGUILore(ItemStack item, Player player, String perkName) { //tells the player what level they are!
+		if(armsmanLore.contains(ChatColor.RED + "Level : " + settings.getPerkLevel(perkName, player) + " / " + settings.getPerkMaxLevel(perkName))) {
+			return;
+		}
+		armsmanLore.add(ChatColor.RED + "Level : " + settings.getPerkLevel(perkName, player) + " / " + settings.getPerkMaxLevel(perkName));
 	
 	}
 	

@@ -67,9 +67,70 @@ public class SettingsManager {
      
      public Boolean magicEnabled() {
     	 if(getConfig().getBoolean("enableMagic") == false) {
-    		 
+    		 return true;
     	 }
     	 return false;
+     }
+     
+     public boolean canUpgradePerk(String perkName, Player player) {
+ 		if(perkName.equalsIgnoreCase("armsman")) {
+ 			int skillLvl = getPerkLevel("armsman", player);
+ 			int skillMax = getPerkMaxLevel("armsman");
+ 			
+ 			if(skillLvl < skillMax) { //TODO ALSO ADD A LVL CHECK HERE!
+ 				if(skillLvl == 0 && skillLvl >= getRequiredLevel("armsman", 0)) {
+ 					
+ 				} else if(skillLvl == 4 && skillLvl >= getRequiredLevel("armsman", 4)) {
+ 					return true;
+ 				} else if(skillLvl == 3 && skillLvl >= getRequiredLevel("armsman", 3)) {
+ 					return true;
+ 				} else if(skillLvl == 2 && skillLvl >= getRequiredLevel("armsman", 2)) {
+ 					return true;
+ 				} else if(skillLvl == 1 && skillLvl >= getRequiredLevel("armsman", 1)) {
+ 					return true;
+ 				}
+ 				return false;
+ 			}
+ 			return false;
+ 		}	
+ 		return false;
+ 	}
+ 	
+ 	public void upgradePerk(String perkName, Player player) {
+ 		UUID id = player.getUniqueId();
+ 		if(perkName.equalsIgnoreCase("armsman")) {
+ 		getSave().set(id + ".skills.onehanded.armsman", getSave().getInt(id + ".skills.onehanded.armsman") + 1);
+ 		} else if(perkName.equalsIgnoreCase("")) {
+ 			
+ 		}
+ 		saveSave();
+ 	}
+     
+     
+     public int getRequiredLevel(String perkName, int perkNumber) {
+    	 if(perkName.equalsIgnoreCase("armsman")) {
+    		 if(perkNumber == 0) {
+    			 return 0;
+    		 } else if(perkNumber == 1) {
+    			 return 20;
+    		 } else if(perkNumber == 2) {
+    			 return 40;
+    		 } else if(perkNumber == 3) {
+    			 return 60;
+    		 } else if(perkNumber == 4) {
+    			 return 80;
+    		 }
+    	 }
+    	 return 0;
+     }
+     
+     public int getPerkLevel(String perkName, Player player) {
+    	 UUID id = player.getUniqueId();
+    	 return getSave().getInt(id + ".skills.onehanded." + perkName);
+     }
+     
+     public int getPerkMaxLevel(String perkName) {
+    	 return getSave().getInt("onehanded." + perkName + ".max");
      }
      
      
@@ -103,7 +164,7 @@ public class SettingsManager {
     	
     	
     	
-    	//TOOD put required lvls next to each skill
+    	//TODO put required lvls next to each skill
     	//TODO move this somewhere else!
     	//SORRY ABOUT THE WIERD TABBING HERE I DID THIS SO I KNOW WHAT SKILLS UNLOCK WHAT
     	getSave().set("oneHanded.armsman.max", 5);

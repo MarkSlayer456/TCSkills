@@ -38,7 +38,6 @@ import eu.tamrielcraft.TCSkills.races.HighElf;
 import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
-import eu.tamrielcraft.TCSkills.skills.OneHanded;
 import eu.tamrielcraft.TCSkills.skills.SkillTreeGUI;
 import eu.tamrielcraft.TCSkills.skills.Smithing;
 
@@ -66,25 +65,24 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
-		//TODO: This is not good code
-		if(!ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("SkillTree") ||
-				ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("OneHanded")) {
+		if(!(ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("SkillTree") ||
+				ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("OneHanded"))) {
+			return;
+		}
+		if(e.getCurrentItem().getType() == null || e.getCurrentItem().getType() == Material.AIR) {
 			return;
 		}
 		Player player = (Player) e.getWhoClicked();
 		e.setCancelled(true);
-		if(e.getCurrentItem().getType() == null || e.getCurrentItem().getType() == Material.AIR) {
-			return;
-		}
-		switch(e.getCurrentItem().getItemMeta().toString()) {
+		switch(e.getCurrentItem().getItemMeta().getDisplayName().toString()) {
 			case "OneHanded":
 				SkillTreeGUI.skillTreeOpenOneHanded(player);
 				break;
 			case "armsman":
-				
-				if(OneHanded.canUpgradePerk("armsman", player) == true) {
-					OneHanded.upgradePerk("armsman", player);
+				if(settings.canUpgradePerk("armsman", player) == true) {
+					settings.upgradePerk("armsman", player);
 				}
+				break;
 		}
 		
 	}
