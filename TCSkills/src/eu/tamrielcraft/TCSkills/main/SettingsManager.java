@@ -74,6 +74,10 @@ public class SettingsManager {
     	 return false;
      }
      
+     public void setSpell(String spellName) {
+    	 
+     }
+     
      public void addSkillPoint(Player player) {
     	 UUID id = player.getUniqueId();
     	 if(getSave().get(id + ".skillpoints") == null) {

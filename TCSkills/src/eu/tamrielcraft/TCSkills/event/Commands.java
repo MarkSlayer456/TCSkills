@@ -129,7 +129,7 @@ public class Commands implements CommandExecutor {
 		FileConfiguration save = settings.getSave();
 		String command = cmd.getName().toLowerCase();
 		
-		switch(command){
+		switch(command){ //TODO this is a bad idea because now you can't use shortcuts to do commands you have to type the full word not the biggest deal but still
 		case "skills":
 			SkillTreeGUI.skillTreeOpen(player);
 			return true;
@@ -150,7 +150,90 @@ public class Commands implements CommandExecutor {
 					player.sendMessage(ChatColor.RED + "This race does not exist. Check /race for all available races");
 				}
 			}
+		case "tcskills": //TODO RECODE THIS
 			return false;
+		case "favorite":
+				if(settings.getConfig().getBoolean("enableSpells") == false) {
+					player.sendMessage(ChatColor.RED + "Spells are disabled on this server, this could be due to the fact that they are not working!");
+				}
+				if(args.length == 0) {
+					player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
+					player.sendMessage(ChatColor.GREEN + "These are the commands you can do with /favorite");
+					player.sendMessage(ChatColor.GREEN + "fav = favorite || s = spell || r = replace || l = list");
+					player.sendMessage(ChatColor.RED + "/favorite list");
+					player.sendMessage(ChatColor.RED + "/favorite spell <full spell name>");
+					player.sendMessage(ChatColor.RED + "/favorite replace <number 1-3> <new full spell name>");
+					return true;
+				}
+				if(args[0].equalsIgnoreCase("spell") || args[0].equalsIgnoreCase("s")) {
+					if(args.length == 1) {
+						player.sendMessage(ChatColor.RED + "Invalid spell name make sure you used the whole spell name! /favorite spell <full spell name>");
+						return true;
+					}
+					
+					if(args[1].equalsIgnoreCase("fireball") || args[1].equalsIgnoreCase("iceblast") ||
+							args[1].equalsIgnoreCase("fasthealing") || args[1].equalsIgnoreCase("golemsummon") ||
+							args[1].equalsIgnoreCase("familiarsummon") || args[1].equalsIgnoreCase("thundershock") 
+							|| args[1].equalsIgnoreCase("firerune") || args[1].equalsIgnoreCase("icerune")
+							|| args[1].equalsIgnoreCase("shockrune")) {
+						if(save.get(id + ".magic.favorites.amount") == null) {
+							save.set(id + ".magic.favorites.amount", 1);
+							save.set(id + ".magic.favorites.holder." + save.getInt(id +  ".magic.favorites.amount"), args[1]);
+							player.sendMessage(ChatColor.GREEN + "Spell favorited, right click with a stick to cycle through your favorited spells!");
+							settings.saveSave();
+						} else {
+						save.set(id + ".magic.favorites.amount", save.getInt(id + ".magic.favorites.amount") + 1);
+						save.set(id + ".magic.favorites.holder." + save.getInt(id + ".magic.favorites.amount"), args[1]);
+						player.sendMessage(ChatColor.GREEN + "Spell favorited, right click with a stick to cycle through your favorited spells!");
+						settings.saveSave();
+						}
+						
+					} else {
+						player.sendMessage(ChatColor.RED + "Invalid spell name make sure you used the whole spell name! /favorite spell <full spell name>");
+					}
+				} else if(args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("l")) {
+					if(save.get(id + ".magic.favorites.holder.1") != null) {
+					player.sendMessage(ChatColor.AQUA + "----- Favorites -----");
+					player.sendMessage(ChatColor.GREEN + "1: " + save.get(id + ".magic.favorites.holder.1"));
+					} else {
+						player.sendMessage(ChatColor.RED + "You have no spells favorited /favorite spell <full spell name>");
+					}
+					if(save.get(id + ".magic.favorites.holder.2") != null) {
+					player.sendMessage(ChatColor.GREEN + "2: " + save.get(id + ".magic.favorites.holder.2"));
+					}
+					if(save.get(id + ".magic.favorites.holder.3") != null) {
+					player.sendMessage(ChatColor.GREEN + "3: " + save.get(id + ".magic.favorites.holder.3"));
+					}
+					return true;
+					
+				} else if(args[0].equalsIgnoreCase("replace") || args[0].equalsIgnoreCase("r")) { //maybe make this /fav spell replace blah blah blah
+					if(args[1].equalsIgnoreCase("1") || args[1].equalsIgnoreCase("2") || args[1].equalsIgnoreCase("3")) {
+						if(args[2].equalsIgnoreCase("fireball") || args[2].equalsIgnoreCase("iceblast") ||
+								args[2].equalsIgnoreCase("fasthealing") || args[2].equalsIgnoreCase("golemsummon") ||
+								args[2].equalsIgnoreCase("familiarsummon") || args[2].equalsIgnoreCase("thundershock") 
+								|| args[2].equalsIgnoreCase("firerune") || args[2].equalsIgnoreCase("icerune")
+								|| args[2].equalsIgnoreCase("shockrune")) {
+							save.set(id + ".magic.favorites.holder." + args[1], args[2]);
+							player.sendMessage(ChatColor.GREEN + "Spell replaced, right click with a stick to cycle through your favorited spells!");
+							settings.saveSave();
+							return true;
+							
+						} else {
+							player.sendMessage(ChatColor.RED + "Invalid spell name Usage: /favorite replace <number between 1 and 3> <new full spell name>");
+							return true;
+						}
+					} else {
+						player.sendMessage(ChatColor.RED + "Invalid number Usage: /favorite replace <number between 1 and 3> <new full spell name>");
+						return true;
+					}
+				} else {
+					player.sendMessage(ChatColor.RED + "Invaild Setup do /favorite to learn the setup!");
+					return true;
+				}
+		case "spell":
+			
+		case "magicregen":	
+			
 		}
 		
 		//TODO: should put it all into one switch statement
@@ -199,85 +282,7 @@ public class Commands implements CommandExecutor {
 		}
 		
 		
-		if(cmd.getName().equalsIgnoreCase("favorite") || cmd.getName().equalsIgnoreCase("fav")) {
-			if(settings.getConfig().getBoolean("enableSpells") == false) {
-				player.sendMessage(ChatColor.RED + "Spells are disabled on this server, this could be due to the fact that they are not working!");
-			}
-			if(args.length == 0) {
-				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
-				player.sendMessage(ChatColor.GREEN + "These are the commands you can do with /favorite");
-				player.sendMessage(ChatColor.GREEN + "fav = favorite || s = spell || r = replace || l = list");
-				player.sendMessage(ChatColor.RED + "/favorite list");
-				player.sendMessage(ChatColor.RED + "/favorite spell <full spell name>");
-				player.sendMessage(ChatColor.RED + "/favorite replace <number 1-3> <new full spell name>");
-				return true;
-			}
-			if(args[0].equalsIgnoreCase("spell") || args[0].equalsIgnoreCase("s")) {
-				if(args.length == 1) {
-					player.sendMessage(ChatColor.RED + "Invalid spell name make sure you used the whole spell name! /favorite spell <full spell name>");
-					return true;
-				}
-				
-				if(args[1].equalsIgnoreCase("fireball") || args[1].equalsIgnoreCase("iceblast") ||
-						args[1].equalsIgnoreCase("fasthealing") || args[1].equalsIgnoreCase("golemsummon") ||
-						args[1].equalsIgnoreCase("familiarsummon") || args[1].equalsIgnoreCase("thundershock") 
-						|| args[1].equalsIgnoreCase("firerune") || args[1].equalsIgnoreCase("icerune")
-						|| args[1].equalsIgnoreCase("shockrune")) {
-					if(save.get(id + ".magic.favorites.amount") == null) {
-						save.set(id + ".magic.favorites.amount", 1);
-						save.set(id + ".magic.favorites.holder." + save.getInt(id +  ".magic.favorites.amount"), args[1]);
-						player.sendMessage(ChatColor.GREEN + "Spell favorited, right click with a stick to cycle through your favorited spells!");
-						settings.saveSave();
-					} else {
-					save.set(id + ".magic.favorites.amount", save.getInt(id + ".magic.favorites.amount") + 1);
-					save.set(id + ".magic.favorites.holder." + save.getInt(id + ".magic.favorites.amount"), args[1]);
-					player.sendMessage(ChatColor.GREEN + "Spell favorited, right click with a stick to cycle through your favorited spells!");
-					settings.saveSave();
-					}
-					
-				} else {
-					player.sendMessage(ChatColor.RED + "Invalid spell name make sure you used the whole spell name! /favorite spell <full spell name>");
-				}
-			} else if(args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("l")) {
-				if(save.get(id + ".magic.favorites.holder.1") != null) {
-				player.sendMessage(ChatColor.AQUA + "----- Favorites -----");
-				player.sendMessage(ChatColor.GREEN + "1: " + save.get(id + ".magic.favorites.holder.1"));
-				} else {
-					player.sendMessage(ChatColor.RED + "You have no spells favorited /favorite spell <full spell name>");
-				}
-				if(save.get(id + ".magic.favorites.holder.2") != null) {
-				player.sendMessage(ChatColor.GREEN + "2: " + save.get(id + ".magic.favorites.holder.2"));
-				}
-				if(save.get(id + ".magic.favorites.holder.3") != null) {
-				player.sendMessage(ChatColor.GREEN + "3: " + save.get(id + ".magic.favorites.holder.3"));
-				}
-				return true;
-				
-			} else if(args[0].equalsIgnoreCase("replace") || args[0].equalsIgnoreCase("r")) { //maybe make this /fav spell replace blah blah blah
-				if(args[1].equalsIgnoreCase("1") || args[1].equalsIgnoreCase("2") || args[1].equalsIgnoreCase("3")) {
-					if(args[2].equalsIgnoreCase("fireball") || args[2].equalsIgnoreCase("iceblast") ||
-							args[2].equalsIgnoreCase("fasthealing") || args[2].equalsIgnoreCase("golemsummon") ||
-							args[2].equalsIgnoreCase("familiarsummon") || args[2].equalsIgnoreCase("thundershock") 
-							|| args[2].equalsIgnoreCase("firerune") || args[2].equalsIgnoreCase("icerune")
-							|| args[2].equalsIgnoreCase("shockrune")) {
-						save.set(id + ".magic.favorites.holder." + args[1], args[2]);
-						player.sendMessage(ChatColor.GREEN + "Spell replaced, right click with a stick to cycle through your favorited spells!");
-						settings.saveSave();
-						return true;
-						
-					} else {
-						player.sendMessage(ChatColor.RED + "Invalid spell name Usage: /favorite replace <number between 1 and 3> <new full spell name>");
-						return true;
-					}
-				} else {
-					player.sendMessage(ChatColor.RED + "Invalid number Usage: /favorite replace <number between 1 and 3> <new full spell name>");
-					return true;
-				}
-			} else {
-				player.sendMessage(ChatColor.RED + "Invaild Setup do /favorite to learn the setup!");
-				return true;
-			}
-		} else if(cmd.getName().equalsIgnoreCase("spell") || cmd.getName().equalsIgnoreCase("s")) {
+		  if(cmd.getName().equalsIgnoreCase("spell") || cmd.getName().equalsIgnoreCase("s")) {
 			if(settings.getConfig().getBoolean("enableSpells") == false) {
 				player.sendMessage(ChatColor.RED + "Spells are disabled on this server, this could be due to the fact that they are not working!");
 			}
