@@ -81,4 +81,10 @@ public class Orc extends Race implements Listener {
 
 	@Override
 	public void playerBurnEvent(EntityDamageEvent e, Player player) { }
+
+	@Override
+	public void addStartingBonusses(Player player) {
+		
+		
+	}
 }

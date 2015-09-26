@@ -3,6 +3,8 @@ package eu.tamrielcraft.TCSkills.classes;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.bukkit.entity.Player;
+
 public class Barbarian extends Classes{
 	public ArrayList<UUID> Barbarians = new ArrayList<UUID>();
 	
@@ -25,5 +27,11 @@ public class Barbarian extends Classes{
 	@Override
 	public String getDetails() {
 		return "A barbarian also has something unique!";
+	}
+
+	@Override
+	public void addStartingBonusses(Player player) {
+		
+		
 	}
 }

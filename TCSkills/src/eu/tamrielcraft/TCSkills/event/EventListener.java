@@ -66,7 +66,8 @@ public class EventListener implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
 		if(!(ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("SkillTree") ||
-				ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("OneHanded"))) {
+				ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("OneHanded")) ||
+			ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("Smithing")) {
 			return;
 		}
 		if(e.getCurrentItem().getType() == null || e.getCurrentItem().getType() == Material.AIR) {
@@ -83,6 +84,20 @@ public class EventListener implements Listener {
 					settings.upgradePerk("armsman", player);
 				}
 				break;
+				
+			case "hackandslash":
+				if(settings.canUpgradePerk("hackandslash", player)) {
+					settings.upgradePerk("hackandslash", player);
+				}
+				break;
+			case "dualflurry":
+				if(settings.canUpgradePerk("dualflurry", player)) {
+					settings.upgradePerk("dualflurry", player);
+				} 
+				break;
+			case "":
+				
+				
 		}
 		
 	}

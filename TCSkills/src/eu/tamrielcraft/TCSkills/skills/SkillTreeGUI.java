@@ -18,12 +18,23 @@ public class SkillTreeGUI {
 	public static SettingsManager settings = SettingsManager.getInstance();
 	
 	public static ArrayList<String> diamondSwordLore = new ArrayList<String>(); //HAVE ONE OF THESE FOR EACH ITEM AND ADD THE DETAILS TO THE ON ENABLE	
+	public static ArrayList<String> anvilLore = new ArrayList<String>();
+	
+	
 	public static ArrayList<String> armsmanLore = new ArrayList<String>();
 	
+	
 	public static void skillTreeOpen(Player player) {
-		Inventory inv = Bukkit.createInventory(null, 45, "SkillTree");
+		Inventory inv = Bukkit.createInventory(player, 45, "SkillTree");
 		ItemStack diamondSword = new ItemStack(Material.DIAMOND_SWORD);
 		ItemMeta diamondSwordMeta = diamondSword.getItemMeta();
+		ItemStack anvil = new ItemStack(Material.ANVIL);
+		ItemMeta anvilMeta = anvil.getItemMeta();
+		
+		
+		anvilMeta.setDisplayName("Smithing");
+		anvilMeta.setLore(anvilLore);
+		anvil.setItemMeta(anvilMeta);
 		
 		diamondSwordMeta.setDisplayName("OneHanded");
 		diamondSwordMeta.setLore(diamondSwordLore);
@@ -35,7 +46,7 @@ public class SkillTreeGUI {
 	}
 	
 	public static void skillTreeOpenOneHanded(Player player) {
-	Inventory inv = Bukkit.createInventory(null, 54, "OneHanded");
+	Inventory inv = Bukkit.createInventory(player, 54, "OneHanded");
 	ItemStack armsman = new ItemStack(Material.BOOK);
 	
 	ItemMeta armsmanMeta = armsman.getItemMeta();

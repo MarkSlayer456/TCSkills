@@ -3,6 +3,8 @@ package eu.tamrielcraft.TCSkills.classes;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.bukkit.entity.Player;
+
 public class Rogue extends Classes{
 	public ArrayList<UUID> Rogues = new ArrayList<UUID>();
 	
@@ -25,5 +27,11 @@ public class Rogue extends Classes{
 	@Override
 	public String getDetails() {
 		return "A rogue is a class that uses stealth attacks to sneak upon his opponent";
+	}
+
+	@Override
+	public void addStartingBonusses(Player player) {
+		
+		
 	}
 }

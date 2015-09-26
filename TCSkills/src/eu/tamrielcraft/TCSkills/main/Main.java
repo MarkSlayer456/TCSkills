@@ -54,7 +54,9 @@ public class Main extends JavaPlugin implements Listener {
 		settings.getConfig().addDefault("enableAbilities", true); //TODO set this up
 		
 		//TODO skilltree
+		settings.setupPerks();
 		SkillTreeGUI.diamondSwordLore.add(ChatColor.RED + "The OneHanded skill tree");
+		SkillTreeGUI.anvilLore.add(ChatColor.RED + "The Smithing skill tree");
 		
 		plugin = this;
 		

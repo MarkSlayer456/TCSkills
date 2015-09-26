@@ -86,4 +86,10 @@ public class Nord extends Race {
 
 	@Override
 	public void playerBurnEvent(EntityDamageEvent e, Player player) { }
+
+	@Override
+	public void addStartingBonusses(Player player) {
+		
+		
+	}
 }

@@ -64,4 +64,10 @@ public class EmptyRace extends Race{
 		
 	}
 
+	@Override
+	public void addStartingBonusses(Player player) {
+		
+		
+	}
+
 }

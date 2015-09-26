@@ -80,4 +80,10 @@ public class DarkElf extends Race implements Listener {
 		}
 		
 	}
+
+	@Override
+	public void addStartingBonusses(Player player) {
+		
+		
+	}
 }

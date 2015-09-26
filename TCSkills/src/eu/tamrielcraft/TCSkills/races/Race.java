@@ -21,6 +21,7 @@ public abstract class Race {
 	public abstract String raceNameChat();
 	public abstract String formatChat(String s);
 	public abstract void sendWelcome(Player player);
+	public abstract void addStartingBonusses(Player player);
 	
 	// Events
 	public abstract void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin);

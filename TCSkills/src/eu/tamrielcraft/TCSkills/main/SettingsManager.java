@@ -45,6 +45,9 @@ public class SettingsManager {
 	 private SettingsManager() { }
      
      static SettingsManager instance = new SettingsManager();
+     
+     
+     
     
      public static SettingsManager getInstance() {
              return instance;
@@ -58,6 +61,31 @@ public class SettingsManager {
      FileConfiguration save;
      File sfile;
     
+     public void playerLevelUp(Player player) {
+    	addSkillPoint(player);
+     }
+     
+     
+     private boolean hasSkillPoint(Player player) {
+    	 UUID id = player.getUniqueId();
+    	 if(getSave().getInt(id + ".skillpoints") >= 1) {
+    		 return true;
+    	 }
+    	 return false;
+     }
+     
+     public void addSkillPoint(Player player) {
+    	 UUID id = player.getUniqueId();
+    	 if(getSave().get(id + ".skillpoints") == null) {
+    		 getSave().set(id + ".skillpoints", 1);
+    		 return;
+    	 } else {
+    		 getSave().set(id + ".skillpoints", getSave().get(id + ".skillpoints"));
+    		 return;
+    	 }
+     }
+     
+     
      public Boolean abilitiesEnable() {
     	 if(getConfig().getBoolean("enableAbilites") == true) {
     		 return true;
@@ -73,27 +101,47 @@ public class SettingsManager {
      }
      
      public boolean canUpgradePerk(String perkName, Player player) {
- 		if(perkName.equalsIgnoreCase("armsman")) {
- 			int skillLvl = getPerkLevel("armsman", player);
- 			int skillMax = getPerkMaxLevel("armsman");
- 			
- 			if(skillLvl < skillMax) { //TODO ALSO ADD A LVL CHECK HERE!
- 				if(skillLvl == 0 && skillLvl >= getRequiredLevel("armsman", 0)) {
- 					
- 				} else if(skillLvl == 4 && skillLvl >= getRequiredLevel("armsman", 4)) {
- 					return true;
- 				} else if(skillLvl == 3 && skillLvl >= getRequiredLevel("armsman", 3)) {
- 					return true;
- 				} else if(skillLvl == 2 && skillLvl >= getRequiredLevel("armsman", 2)) {
- 					return true;
- 				} else if(skillLvl == 1 && skillLvl >= getRequiredLevel("armsman", 1)) {
- 					return true;
- 				}
- 				return false;
- 			}
- 			return false;
- 		}	
- 		return false;
+    	 switch(perkName) {
+    	 case "armsman":
+    		 int armsmanLvl = getPerkLevel("armsman", player);
+  			 int armsmanMax = getPerkMaxLevel("armsman");
+  			
+  			if(armsmanLvl < armsmanMax) {
+  				if(armsmanLvl == 4 && armsmanLvl >= getRequiredLevel("armsman", 4) && hasSkillPoint(player)) {
+  					
+  				} else if(armsmanLvl == 3 && armsmanLvl >= getRequiredLevel("armsman", 3) && hasSkillPoint(player)) {
+  					return true;
+  				} else if(armsmanLvl == 2 && armsmanLvl >= getRequiredLevel("armsman", 2) && hasSkillPoint(player)) {
+  					return true;
+  				} else if(armsmanLvl == 1 && armsmanLvl >= getRequiredLevel("armsman", 1) && hasSkillPoint(player)) {
+  					return true;
+  				} else if(armsmanLvl == 0 && armsmanLvl >= getRequiredLevel("armsman", 0) && hasSkillPoint(player)) {
+  					return true;
+  				} else {
+  					player.closeInventory();
+  					player.sendMessage(ChatColor.RED + "You can't upgrade that perk!");
+  				}
+  			}
+  			break;
+    	 case "hackandslash":
+    		 int hackandslashLvl = getPerkLevel("hackandslash", player);
+   			 int hackandslashMax = getPerkMaxLevel("hackandslash");
+   			
+   			if(hackandslashLvl < hackandslashMax) {
+   				if(hackandslashLvl == 2 && hackandslashLvl >= getRequiredLevel("hackandslash", 2) && hasSkillPoint(player)) {
+   				 if(hackandslashLvl == 1 && hackandslashLvl >= getRequiredLevel("hackandslash", 1) && hasSkillPoint(player)) {
+   					return true;
+   				} else if(hackandslashLvl == 0 && hackandslashLvl >= getRequiredLevel("hackandslash", 0) && hasSkillPoint(player)) {
+   					return true;
+   				} else {
+   					player.closeInventory();
+   					player.sendMessage(ChatColor.RED + "You can't upgrade that perk!");
+   				}
+    		 
+   			}
+    	 }
+    	 }
+    	 return false;
  	}
  	
  	public void upgradePerk(String perkName, Player player) {
@@ -133,7 +181,66 @@ public class SettingsManager {
     	 return getSave().getInt("onehanded." + perkName + ".max");
      }
      
-     
+     public void setupPerks() { //NOTICE SHOULD ONLY BE CALLED ONE TIME!
+    	//TODO put required lvls next to each skill
+     	//TODO move this somewhere else!
+     	//SORRY ABOUT THE WIERD TABBING HERE I DID THIS SO I KNOW WHAT SKILLS UNLOCK WHAT
+     	getSave().set("onehanded.armsman.max", 5);
+     	/*
+     	 * lvls
+     	 * 1: n/a
+     	 * 2: 20
+     	 * 3: 40
+     	 * 4: 60
+     	 * 5: 80
+     	 */
+     	
+     		getSave().set("onehanded.hackandslash.max", 3);
+     		/*
+     		 * lvls
+     		 * 1: 30
+     		 * 2: 60
+     		 * 3: 90
+     		 */
+     	
+     		getSave().set("onehanded.bonebreaker.max", 3);
+     		/*
+     		 * lvls
+     		 * 1: 30
+     		 */
+     	
+     		getSave().set("onehanded.dualflurry.max", 3);
+     		/*
+     		 * lvls
+     		 * 1: 30
+     		 */
+     			getSave().set("onehanded.daulsavagery.max", 1);
+     			/*
+     			 * lvls
+     			 * 1: 70
+     			 */
+     	
+     		getSave().set("onehanded.fightingstance.max", 1);
+     		/*
+     		 * lvls
+     		 * 1: 20
+     		 */
+     			getSave().set("onehanded.savagestrike.max", 1);
+     			/*
+     			 * lvls
+     			 * 1: 50
+     			 */
+     			getSave().set("onehanded.criticalcharge.max", 1);
+     			/*
+     			 * lvls
+     			 * 1: 50
+     			 */
+     				getSave().set("onehanded.paralyzingstrike.max", 1); //need both tier 3 perks
+     				/*
+     				 * lvls
+     				 * 1: 100
+     				 */
+     }
      
     public Boolean createPlayer(Player player, Race race, Classes classy){
     	UUID id = player.getUniqueId();
@@ -161,67 +268,6 @@ public class SettingsManager {
     	getSave().set(id + ".skills.onehanded.criticalcharge", 0);
     	
     	getSave().set(id + ".skills.onehanded.paralyzingstrike", 0);
-    	
-    	
-    	
-    	//TODO put required lvls next to each skill
-    	//TODO move this somewhere else!
-    	//SORRY ABOUT THE WIERD TABBING HERE I DID THIS SO I KNOW WHAT SKILLS UNLOCK WHAT
-    	getSave().set("oneHanded.armsman.max", 5);
-    	/*
-    	 * lvls
-    	 * 1: n/a
-    	 * 2: 20
-    	 * 3: 40
-    	 * 4: 60
-    	 * 5: 80
-    	 */
-    	
-    		getSave().set("onehanded.hackandslash.max", 3);
-    		/*
-    		 * lvls
-    		 * 1: 30
-    		 * 2: 60
-    		 * 3: 90
-    		 */
-    	
-    		getSave().set("onehanded.bonebreaker.max", 3);
-    		/*
-    		 * lvls
-    		 * 1: 30
-    		 */
-    	
-    		getSave().set("onehanded.dualflurry.max", 3);
-    		/*
-    		 * lvls
-    		 * 1: 30
-    		 */
-    			getSave().set("onehanded.daulsavagery.max", 1);
-    			/*
-    			 * lvls
-    			 * 1: 70
-    			 */
-    	
-    		getSave().set("onehanded.fightingstance.max", 1);
-    		/*
-    		 * lvls
-    		 * 1: 20
-    		 */
-    			getSave().set("onehanded.savagestrike.max", 1);
-    			/*
-    			 * lvls
-    			 * 1: 50
-    			 */
-    			getSave().set("onehanded.criticalcharge.max", 1);
-    			/*
-    			 * lvls
-    			 * 1: 50
-    			 */
-    				getSave().set("onehanded.paralyzingstrike.max", 1); //need both tier 3 perks
-    				/*
-    				 * lvls
-    				 * 1: 100
-    				 */
     	
     	
     	
@@ -259,6 +305,10 @@ public class SettingsManager {
     	}
 	}
 
+    public void setSkillLevel(Player player, String skill, int newLevel) {
+    	
+    }
+    
     
     
     private void setSkills(UUID id){
