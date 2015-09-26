@@ -2,6 +2,7 @@ package eu.tamrielcraft.TCSkills.skills;
 
 import java.util.Map;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.CraftItemEvent;
 
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
@@ -25,6 +26,11 @@ public abstract class Skill {
 		}
 		 
 		return count;
+	}
+	
+	protected Boolean hasPerk(Skill skill, String perkName, Player player){
+		if(settings.getPerkLevel(perkName, player) > 0) return true;
+		else return false;
 	}
 	
 

@@ -10,59 +10,65 @@ import org.bukkit.entity.*;
 
 public class Smithing extends Skill {
 
-	Map<Material,Integer> skillLevels, skillExp;
+	Map<Material,SmithingPerk> skillPerks;
+	Map<Material,Integer> skillExp;
 	Map<Entity,Integer> test;
+	
+	private enum SmithingPerk{
+		BASICSMITHING, GOLDENSTRIKE, STONIFICATION, IRONLEGACY, DIAMONDIFICATION,
+		GOLDENADVANCEMENTS, CHAINING, IRONPLATING, DIAMONDWELDING
+	}
 	
 	private static Smithing instance = new Smithing();
 	
 	private Smithing(){
 		// Create hashmap of skillLevels
-		skillLevels = new HashMap<Material,Integer>();
+		skillPerks = new HashMap<Material,SmithingPerk>();
 		skillExp = new HashMap<Material,Integer>();
 		
 		// Armor
-		skillLevels.put(Material.LEATHER_BOOTS,0);
-		skillLevels.put(Material.LEATHER_CHESTPLATE,0);
-		skillLevels.put(Material.LEATHER_HELMET,0);
-		skillLevels.put(Material.LEATHER_LEGGINGS,0);
-		skillLevels.put(Material.CHAINMAIL_BOOTS,50);
-		skillLevels.put(Material.CHAINMAIL_CHESTPLATE,50);
-		skillLevels.put(Material.CHAINMAIL_HELMET,50);
-		skillLevels.put(Material.CHAINMAIL_LEGGINGS,50);
-		skillLevels.put(Material.IRON_BOOTS,70);
-		skillLevels.put(Material.IRON_CHESTPLATE,70);
-		skillLevels.put(Material.IRON_HELMET,70);
-		skillLevels.put(Material.IRON_LEGGINGS,70);
-		skillLevels.put(Material.GOLD_BOOTS,30);
-		skillLevels.put(Material.GOLD_CHESTPLATE,30);
-		skillLevels.put(Material.GOLD_HELMET,30);
-		skillLevels.put(Material.GOLD_LEGGINGS,30);
-		skillLevels.put(Material.DIAMOND_BOOTS,90);
-		skillLevels.put(Material.DIAMOND_CHESTPLATE,90);
-		skillLevels.put(Material.DIAMOND_HELMET, 90);
-		skillLevels.put(Material.DIAMOND_LEGGINGS, 90);
+		skillPerks.put(Material.LEATHER_BOOTS, SmithingPerk.BASICSMITHING);
+		skillPerks.put(Material.LEATHER_CHESTPLATE, SmithingPerk.BASICSMITHING);
+		skillPerks.put(Material.LEATHER_HELMET, SmithingPerk.BASICSMITHING);
+		skillPerks.put(Material.LEATHER_LEGGINGS, SmithingPerk.BASICSMITHING);
+		skillPerks.put(Material.GOLD_BOOTS, SmithingPerk.GOLDENADVANCEMENTS);
+		skillPerks.put(Material.GOLD_CHESTPLATE, SmithingPerk.GOLDENADVANCEMENTS);
+		skillPerks.put(Material.GOLD_HELMET, SmithingPerk.GOLDENADVANCEMENTS);
+		skillPerks.put(Material.GOLD_LEGGINGS, SmithingPerk.GOLDENADVANCEMENTS);
+		skillPerks.put(Material.CHAINMAIL_BOOTS, SmithingPerk.CHAINING);
+		skillPerks.put(Material.CHAINMAIL_CHESTPLATE, SmithingPerk.CHAINING);
+		skillPerks.put(Material.CHAINMAIL_HELMET, SmithingPerk.CHAINING);
+		skillPerks.put(Material.CHAINMAIL_LEGGINGS, SmithingPerk.CHAINING);
+		skillPerks.put(Material.IRON_BOOTS, SmithingPerk.IRONPLATING);
+		skillPerks.put(Material.IRON_CHESTPLATE, SmithingPerk.IRONPLATING);
+		skillPerks.put(Material.IRON_HELMET, SmithingPerk.IRONPLATING);
+		skillPerks.put(Material.IRON_LEGGINGS, SmithingPerk.IRONPLATING);
+		skillPerks.put(Material.DIAMOND_BOOTS, SmithingPerk.DIAMONDWELDING);
+		skillPerks.put(Material.DIAMOND_CHESTPLATE, SmithingPerk.DIAMONDWELDING);
+		skillPerks.put(Material.DIAMOND_HELMET, SmithingPerk.DIAMONDWELDING);
+		skillPerks.put(Material.DIAMOND_LEGGINGS, SmithingPerk.DIAMONDWELDING);
 		
 		// Weapons
-		skillLevels.put(Material.WOOD_AXE, 0);
-		skillLevels.put(Material.WOOD_SPADE, 0);
-		skillLevels.put(Material.WOOD_SWORD, 0);
-		skillLevels.put(Material.WOOD_HOE, 0);
-		skillLevels.put(Material.GOLD_AXE, 30);
-		skillLevels.put(Material.GOLD_SPADE, 30);
-		skillLevels.put(Material.GOLD_SWORD, 30);
-		skillLevels.put(Material.GOLD_HOE, 30);
-		skillLevels.put(Material.STONE_AXE, 50);
-		skillLevels.put(Material.STONE_SPADE, 50);
-		skillLevels.put(Material.STONE_SWORD, 50);
-		skillLevels.put(Material.STONE_HOE, 50);
-		skillLevels.put(Material.IRON_AXE, 70);
-		skillLevels.put(Material.IRON_AXE, 70);
-		skillLevels.put(Material.IRON_AXE, 70);
-		skillLevels.put(Material.IRON_AXE, 70);
-		skillLevels.put(Material.DIAMOND_AXE, 90);
-		skillLevels.put(Material.DIAMOND_SPADE, 90);
-		skillLevels.put(Material.DIAMOND_SWORD, 90);
-		skillLevels.put(Material.DIAMOND_HOE, 90);
+		skillPerks.put(Material.WOOD_AXE, SmithingPerk.BASICSMITHING);
+		skillPerks.put(Material.WOOD_SPADE, SmithingPerk.BASICSMITHING);
+		skillPerks.put(Material.WOOD_SWORD, SmithingPerk.BASICSMITHING);
+		skillPerks.put(Material.WOOD_HOE, SmithingPerk.BASICSMITHING);
+		skillPerks.put(Material.GOLD_AXE, SmithingPerk.GOLDENSTRIKE);
+		skillPerks.put(Material.GOLD_SPADE, SmithingPerk.GOLDENSTRIKE);
+		skillPerks.put(Material.GOLD_SWORD, SmithingPerk.GOLDENSTRIKE);
+		skillPerks.put(Material.GOLD_HOE, SmithingPerk.GOLDENSTRIKE);
+		skillPerks.put(Material.STONE_AXE, SmithingPerk.STONIFICATION);
+		skillPerks.put(Material.STONE_SPADE, SmithingPerk.STONIFICATION);
+		skillPerks.put(Material.STONE_SWORD, SmithingPerk.STONIFICATION);
+		skillPerks.put(Material.STONE_HOE, SmithingPerk.STONIFICATION);
+		skillPerks.put(Material.IRON_AXE, SmithingPerk.IRONLEGACY);
+		skillPerks.put(Material.IRON_AXE, SmithingPerk.IRONLEGACY);
+		skillPerks.put(Material.IRON_AXE, SmithingPerk.IRONLEGACY);
+		skillPerks.put(Material.IRON_AXE, SmithingPerk.IRONLEGACY);
+		skillPerks.put(Material.DIAMOND_AXE, SmithingPerk.DIAMONDIFICATION);
+		skillPerks.put(Material.DIAMOND_SPADE, SmithingPerk.DIAMONDIFICATION);
+		skillPerks.put(Material.DIAMOND_SWORD, SmithingPerk.DIAMONDIFICATION);
+		skillPerks.put(Material.DIAMOND_HOE, SmithingPerk.DIAMONDIFICATION);
 		
 		// Create hashmap of experience
 		// Armor
@@ -116,8 +122,9 @@ public class Smithing extends Skill {
 	
 	@Override
 	public void onCraftEvent(CraftItemEvent event) {
-		if(getLevel(settings.getSmithingExp((Player)event.getWhoClicked())) < skillLevels.get(event.getRecipe().getResult().getType())){
-			event.getWhoClicked().sendMessage("I don't know how to craft this");
+		//if(getLevel(settings.getSmithingExp((Player)event.getWhoClicked())) < skillPerks.get(event.getRecipe().getResult().getType())){
+		if(hasPerk(this, skillPerks.get(event.getRecipe().getResult().getType()).toString(), (Player) event.getWhoClicked())){
+			event.getWhoClicked().sendMessage("Euh, where should I start? I don't know how to craft this...");
 			event.setCancelled(true);
 		}else{
 			// Player is able to craft this, continue and add experience

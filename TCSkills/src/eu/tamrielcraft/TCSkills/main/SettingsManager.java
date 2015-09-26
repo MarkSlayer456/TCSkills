@@ -172,9 +172,17 @@ public class SettingsManager {
     	 return 0;
      }
      
-     public int getPerkLevel(String perkName, Player player) {
+     public int getPerkLevel(String perkName, Player player) { //TODO: also add the skillName to this method via the Skill.getName() 
+    	 // example public int getPerkLevel(Skill skill, String perkName, Player player){ skill.getName() gives you the string for the skillname}
     	 UUID id = player.getUniqueId();
-    	 return getSave().getInt(id + ".skills.onehanded." + perkName);
+    	 int perkLevel;
+    	 try{
+    		 perkLevel = getSave().getInt(id + ".skills.onehanded." + perkName);
+    	 }
+    	 catch(Exception e){
+    		 perkLevel = 0;
+    	 }
+    	 return perkLevel;
      }
      
      public int getPerkMaxLevel(String perkName) {
