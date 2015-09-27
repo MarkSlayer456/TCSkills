@@ -1,5 +1,6 @@
 package eu.tamrielcraft.TCSkills.event;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -34,6 +35,7 @@ import eu.tamrielcraft.TCSkills.main.SettingsManager;
 import eu.tamrielcraft.TCSkills.races.Argonian;
 import eu.tamrielcraft.TCSkills.races.Breton;
 import eu.tamrielcraft.TCSkills.races.DarkElf;
+import eu.tamrielcraft.TCSkills.races.EmptyRace;
 import eu.tamrielcraft.TCSkills.races.HighElf;
 import eu.tamrielcraft.TCSkills.races.Imperial;
 import eu.tamrielcraft.TCSkills.races.Khajiit;
@@ -59,6 +61,12 @@ public class Commands implements CommandExecutor {
 	public static int redGuardFoodLoopInt;
 	
 	public static HashMap<Player, Integer> redGuardLoopHM = new HashMap<Player, Integer>();
+	
+	static ArrayList<Player> classCheck = new ArrayList<Player>();
+	static ArrayList<Player> raceCheck = new ArrayList<Player>();
+	static HashMap<Player, String> playerClass = new HashMap<Player, String>();
+	static HashMap<Player, String> playerRace = new HashMap<Player, String>();
+	
 	
 	
 	public Commands(Plugin plugin, SettingsManager settings) {
@@ -151,7 +159,60 @@ public class Commands implements CommandExecutor {
 				}
 			}
 		case "tcskills": //TODO RECODE THIS
-			return false;
+			if(args.length == 0) { //TODO check to see if player already has a race!
+				if(settings.getRace(player) != EmptyRace.getInstance()) {
+					player.sendMessage(ChatColor.DARK_RED + "You already have picked a race and a class!");
+					return true;
+				}
+				player.sendMessage(ChatColor.DARK_RED + "Please pick a class do /class <classname> to pick if you don't know what the classes do, do /class list");
+				classCheck.add(player);
+			} else {
+				player.sendMessage(ChatColor.RED + "Uasage: /tcskills");
+			}
+		case "class":
+			if(args.length == 0 || args[1].equalsIgnoreCase("list")) {
+				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header")); //TODO add/change descriptions to all of these i don't know if you want them to have a abilities 
+				player.sendMessage(ChatColor.RED + "Archer: " + ChatColor.GOLD + Archer.getInstance().getDetails());
+				player.sendMessage(ChatColor.RED + "Barbarian: " + ChatColor.GOLD + Barbarian.getInstance().getDetails());
+				player.sendMessage(ChatColor.RED + "Knight: " + ChatColor.GOLD + Knight.getInstance().getDetails());
+				player.sendMessage(ChatColor.RED + "Mage: " + ChatColor.GOLD + Mage.getInstance().getDetails());
+				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + Rogue.getInstance().getDetails());
+				player.sendMessage(ChatColor.DARK_RED + "To pick a class do /rcskills!");
+			} else {
+				if(classCheck.contains(player)) {
+					if(args[1].equalsIgnoreCase("archer") || args[1].equalsIgnoreCase("knight") || args[1].equalsIgnoreCase("barbarian") ||
+							args[1].equalsIgnoreCase("mage") || args[1].equalsIgnoreCase("rogue")) {
+					playerClass.put(player, args[1]);
+					player.sendMessage(ChatColor.DARK_RED + "Please pick a race do /race <racename> to pick if you don't know what the races do, do /race list");
+					classCheck.remove(player);
+					raceCheck.add(player);
+					} else {
+						player.sendMessage(ChatColor.RED + "Not a valid class do /class list for a list of classes");
+					}
+				} else {
+					player.sendMessage(ChatColor.RED + "To pick a class do /rcskills!");
+				}
+				
+			}
+		case "race":
+			if(args.length == 0 || args[1].equalsIgnoreCase("list")) {
+				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
+				player.sendMessage(ChatColor.GOLD + "You can be any of these races:");
+				player.sendMessage(ChatColor.RED + "Argonian: " + ChatColor.GOLD + argonian.details() + "!");
+				player.sendMessage(ChatColor.RED + "Breton: " + ChatColor.GOLD + breton.details() + "!");
+				player.sendMessage(ChatColor.RED + "DarkElves: " + ChatColor.GOLD + DarkElf.details() + "!");
+				player.sendMessage(ChatColor.RED + "HighElves: " + ChatColor.GOLD + highelves.details() + "!");
+				player.sendMessage(ChatColor.RED + "Imperials: " + ChatColor.GOLD + Imperial.details() + "!");
+				player.sendMessage(ChatColor.GOLD + "------- Page: 1 / 2 -------");
+				player.sendMessage(ChatColor.RED + "Khajiit: " + ChatColor.GOLD + khajiit.details() + "!");
+				player.sendMessage(ChatColor.RED + "Nords: " + ChatColor.GOLD + nords.details() + "!");
+				player.sendMessage(ChatColor.RED + "Orcs: " + ChatColor.GOLD + Orc.details() + "!");
+				player.sendMessage(ChatColor.RED + "RedGuard: " + ChatColor.GOLD + redguard.details() + "!");
+				player.sendMessage(ChatColor.RED + "WoodElves: " + ChatColor.GOLD + woodelves.details() + "!");
+				
+				return true;
+			}
+			
 		case "favorite":
 				if(settings.getConfig().getBoolean("enableMagic") == false) {
 					player.sendMessage(ChatColor.RED + "Spells are disabled on this server, this could be due to the fact that they are not working!");
