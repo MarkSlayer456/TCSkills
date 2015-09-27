@@ -129,7 +129,7 @@ public class Commands implements CommandExecutor {
 		FileConfiguration save = settings.getSave();
 		String command = cmd.getName().toLowerCase();
 		
-		switch(command){ //TODO this is a bad idea because now you can't use shortcuts to do commands you have to type the full word not the biggest deal but still
+		switch(command){
 		case "skills":
 			SkillTreeGUI.skillTreeOpen(player);
 			return true;
@@ -153,8 +153,9 @@ public class Commands implements CommandExecutor {
 		case "tcskills": //TODO RECODE THIS
 			return false;
 		case "favorite":
-				if(settings.getConfig().getBoolean("enableSpells") == false) {
+				if(settings.getConfig().getBoolean("enableMagic") == false) {
 					player.sendMessage(ChatColor.RED + "Spells are disabled on this server, this could be due to the fact that they are not working!");
+					return true;
 				}
 				if(args.length == 0) {
 					player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
@@ -170,22 +171,23 @@ public class Commands implements CommandExecutor {
 						player.sendMessage(ChatColor.RED + "Invalid spell name make sure you used the whole spell name! /favorite spell <full spell name>");
 						return true;
 					}
-					
+					//TODO make a settings manager method for this!
 					if(args[1].equalsIgnoreCase("fireball") || args[1].equalsIgnoreCase("iceblast") ||
 							args[1].equalsIgnoreCase("fasthealing") || args[1].equalsIgnoreCase("golemsummon") ||
 							args[1].equalsIgnoreCase("familiarsummon") || args[1].equalsIgnoreCase("thundershock") 
 							|| args[1].equalsIgnoreCase("firerune") || args[1].equalsIgnoreCase("icerune")
 							|| args[1].equalsIgnoreCase("shockrune")) {
 						if(save.get(id + ".magic.favorites.amount") == null) {
-							save.set(id + ".magic.favorites.amount", 1);
-							save.set(id + ".magic.favorites.holder." + save.getInt(id +  ".magic.favorites.amount"), args[1]);
+							settings.setupFavs(args[1], player);
+							//save.set(id + ".magic.favorites.amount", 1);
+							//save.set(id + ".magic.favorites.holder." + save.getInt(id +  ".magic.favorites.amount"), args[1]);
 							player.sendMessage(ChatColor.GREEN + "Spell favorited, right click with a stick to cycle through your favorited spells!");
-							settings.saveSave();
+							//settings.saveSave();
 						} else {
-						save.set(id + ".magic.favorites.amount", save.getInt(id + ".magic.favorites.amount") + 1);
-						save.set(id + ".magic.favorites.holder." + save.getInt(id + ".magic.favorites.amount"), args[1]);
+						//save.set(id + ".magic.favorites.amount", save.getInt(id + ".magic.favorites.amount") + 1);
+						//save.set(id + ".magic.favorites.holder." + save.getInt(id + ".magic.favorites.amount"), args[1]);
 						player.sendMessage(ChatColor.GREEN + "Spell favorited, right click with a stick to cycle through your favorited spells!");
-						settings.saveSave();
+						//settings.saveSave();
 						}
 						
 					} else {
@@ -230,7 +232,120 @@ public class Commands implements CommandExecutor {
 					player.sendMessage(ChatColor.RED + "Invaild Setup do /favorite to learn the setup!");
 					return true;
 				}
+				
+				
 		case "spell":
+			
+			
+			if(settings.getConfig().getBoolean("enableSpells") == false) {
+				player.sendMessage(ChatColor.RED + "Spells are disabled on this server, this could be due to the fact that they are not working!");
+				return true;
+			}
+			if(args.length == 0 || args[0].equalsIgnoreCase("1")) {
+				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
+				player.sendMessage(ChatColor.GOLD + "You can cast the following spells:");
+				player.sendMessage(ChatColor.RED + "FireBall");
+				player.sendMessage(ChatColor.RED + "IceBlast");
+				player.sendMessage(ChatColor.RED + "FastHealing");
+				player.sendMessage(ChatColor.RED + "GolemSummon");
+				player.sendMessage(ChatColor.RED + "FamiliarSummon");
+				player.sendMessage(ChatColor.RED + "ThunderShock");
+				player.sendMessage(ChatColor.GOLD + "--- Page: 1/2 --- /s 2 for next page");
+				return true;
+			} else if(args[0].equals("2")) {
+				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
+				player.sendMessage(ChatColor.GOLD + "You can cast the following spells:");
+				player.sendMessage(ChatColor.RED + "FireRune");
+				player.sendMessage(ChatColor.RED + "IceRune");
+				player.sendMessage(ChatColor.RED + "ShockRune");
+				player.sendMessage(ChatColor.GOLD + "--- Page: 2/2 ---");
+			} else if(args[0].equalsIgnoreCase("fireball") || args[0].equalsIgnoreCase("fb")) {
+				if(settings.getSpell(player) == FireBall.getInstance()) {
+					settings.setSpell("", player);
+					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
+					return true;
+				}
+				/*save.set("magic." + player.getUniqueId() + ".fireball", true);
+				save.set("magic." + player.getUniqueId() + ".iceblast", false);
+				save.set("magic." + player.getUniqueId() + ".fasthealing", false);
+				save.set("magic." + player.getUniqueId() + ".golemsummon", false);
+				save.set("magic." + player.getUniqueId() + ".thundershock", false);
+				save.set("magic." + player.getUniqueId() + ".familiarsummon", false);
+				save.set("magic." + player.getUniqueId() + ".firerune", false);
+				save.set("magic." + player.getUniqueId() + ".icerune", false);
+				save.set("magic." + player.getUniqueId() + ".shockrune", false);*/
+				//shorten this
+				settings.setSpell("fireball", player);
+				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FIREBALL " + ChatColor.GOLD + "spell");
+			} else if(args[0].equalsIgnoreCase("iceblast") || args[0].equalsIgnoreCase("ib")) {
+				if(settings.getSpell(player) == IceBlast.getInstance()) {
+					settings.setSpell("", player);
+					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
+					return true;
+				}
+				settings.setSpell("iceblast", player);
+				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "ICEBLAST " + ChatColor.GOLD + "spell");
+			} else if(args[0].equalsIgnoreCase("fasthealing") || args[0].equalsIgnoreCase("fh")) {
+				if(settings.getSpell(player) == FastHealing.getInstance()) {
+					settings.setSpell("", player);
+					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
+					return true;
+				}
+				settings.setSpell("fasthealing", player);
+				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FASTHEALING " + ChatColor.GOLD + "spell");
+			} else if(args[0].equalsIgnoreCase("golemsummon") || args[0].equalsIgnoreCase("gs")) {
+				if(settings.getSpell(player) == GolemSummon.getInstance()) {
+					settings.setSpell("", player);
+					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
+					return true;
+				}
+				settings.setSpell("golemsummon", player);
+				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "GOLEMSUMMON " + ChatColor.GOLD + "spell");
+			} else if(args[0].equalsIgnoreCase("thundershock") || args[0].equalsIgnoreCase("ts")) {
+				if(settings.getSpell(player) == ThunderShock.getInstance()) {
+					settings.setSpell("", player);
+					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
+					return true;
+				}
+				settings.setSpell("thundershock", player);
+				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "THUNDERSHOCK " + ChatColor.GOLD + "spell");
+			} else if(args[0].equalsIgnoreCase("familiarsummon") || args[0].equalsIgnoreCase("fs")) {
+				if(settings.getSpell(player) == FamiliarSummon.getInstance()) {
+					settings.setSpell("", player);
+					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
+					return true;
+				}
+				settings.setSpell("familiarsummon", player);
+				settings.saveSave();
+				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FAMILIAR " + ChatColor.GOLD + "spell");
+			} else if(args[0].equalsIgnoreCase("firerune") || args[0].equalsIgnoreCase("fr"))  {
+				if(settings.getSpell(player) == FireRune.getInstance()) {
+					settings.setSpell("", player);
+					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
+					return true;
+				}
+				settings.setSpell("firerune", player);
+				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "FIRERUNE " + ChatColor.GOLD + "spell");
+			} else if(args[0].equalsIgnoreCase("icerune") || args[0].equalsIgnoreCase("ir")) {
+				if(settings.getSpell(player) == IceRune.getInstance()) {
+					settings.setSpell("", player);
+					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
+					return true;
+				}
+				settings.setSpell("icerune", player);
+				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "ICERUNE " + ChatColor.GOLD + "spell");
+			} else if(args[0].equalsIgnoreCase("shockrune") || args[0].equalsIgnoreCase("sr")) {
+				if(settings.getSpell(player) == ShockRune.getInstance()) {
+					settings.setSpell("", player);
+					player.sendMessage(ChatColor.GOLD + "Spell unequipped");
+					return true;
+				}
+				settings.setSpell("shockrune", player);
+				player.sendMessage(ChatColor.GOLD + "You have selected the " + ChatColor.RED + "SHOCKRUNE " + ChatColor.GOLD + "spell");
+				
+			} else {
+				player.sendMessage(ChatColor.RED + "Usage: /spell <spell name>");
+			} 
 			
 		case "magicregen":	
 			

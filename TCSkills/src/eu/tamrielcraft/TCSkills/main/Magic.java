@@ -100,20 +100,21 @@ public class Magic implements Listener {
 			if(save.get(id + ".magic.favorites.holder.1") == null) {
 				player.sendMessage(ChatColor.RED + "You have no spells favorited! Do /favorite spell <spell name> to favorite some!");
 			} else {
-					if(save.getInt(id + ".magic.favorites.on") >= 3) {
-						save.set(id + ".magic.favorites.on", 0);
-					}
-					if(save.get(id + ".magic.favorites.on") == null) {
-						save.set(id + ".magic.favorites.on", 0);
-					}
-				save.set(id + ".magic.activeSpell", null);
-				save.set(id + ".magic.favorites.on", save.getInt(id + ".magic.favorites.on") + 1);
-				if(save.getInt(id + ".magic.favorites.amount") < save.getInt(id + ".magic.favorites.on")) {
-					save.set(id + "magic.favorites.on", 1);
-					settings.saveSave();
-				}
+				//if(save.getInt(id + ".magic.favorites.on") >= 3) {
+					//save.set(id + ".magic.favorites.on", 0);
+				//}
+					//if(save.get(id + ".magic.favorites.on") == null) {
+						//save.set(id + ".magic.favorites.on", 0);
+					//}
+				settings.nextFavorite(player);
+				settings.setSpell("", player);
+				//save.set(id + ".magic.favorites.on", save.getInt(id + ".magic.favorites.on") + 1);
+				//if(save.getInt(id + ".magic.favorites.amount") < save.getInt(id + ".magic.favorites.on")) {
+					//save.set(id + "magic.favorites.on", 1);
+					//settings.saveSave();
+				//}
 				String spell = save.getString(id + ".magic.favorites.holder." + save.get(id + ".magic.favorites.on"));
-				settings.saveSave();
+				//settings.saveSave();
 				Bukkit.dispatchCommand(player, "spell " + spell);
 			}
 		}

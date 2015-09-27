@@ -65,6 +65,14 @@ public class SettingsManager {
     	addSkillPoint(player);
      }
      
+     public void setDefaults() {
+    	 if(getConfig().get("enableAbilities") == null) {
+    		 getConfig().set("enableAbilities", true);
+        	 getConfig().set("enableMagic", true);
+        	 getConfig().set("Header", "---===[TamerialCraft]===---");
+        	 saveConfig();
+    	 }
+     }
      
      private boolean hasSkillPoint(Player player) {
     	 UUID id = player.getUniqueId();
@@ -74,8 +82,56 @@ public class SettingsManager {
     	 return false;
      }
      
-     public void setSpell(String spellName) {
-    	 
+     public void nextFavorite(Player player) {
+    	 UUID id = player.getUniqueId();
+    	 if(save.getInt(id + ".magic.favorites.on") >= 3) {
+				save.set(id + ".magic.favorites.on", 0);
+		 } else {
+			 save.set(id + ".magic.favorites.on", save.getInt(id + ".magic.favorites.on") + 1);
+		 }
+    	 saveSave();
+     }
+     
+     public void setFavSpell(String spellName, Player player, int numb) {
+    	 UUID id = player.getUniqueId();
+    	 save.set(id + ".magic.favorites.amount", save.getInt(id + ".magic.favorites.amount") + 1);
+		 save.set(id + ".magic.favorites.holder." + save.getInt(id + ".magic.favorites.amount"), spellName);
+		 saveSave();
+     }
+     
+     public void setupFavs(String spellName, Player player) {
+    	 UUID id = player.getUniqueId();
+    	 save.set(id + ".magic.favorites.amount", 1);
+		 save.set(id + ".magic.favorites.holder." + save.getInt(id +  ".magic.favorites.amount"), spellName);
+		 save.set(id + ".magic.favorites.on", 0);
+		 saveSave();
+     }
+     
+     public void setSpell(String spellName, Player player) {
+    	 UUID id = player.getUniqueId();
+    	 switch(spellName) {
+    	 case "fireball":
+    		 save.set(id + ".magic.activeSpell", "fireball");
+    	 case "iceblast":
+    		 save.set(id + ".magic.activeSpell", "iceblast");
+    	 case "fasthealing":
+    		 save.set(id + ".magic.activeSpell", "fasthealing");
+    	 case "golemsummon":
+    		 save.set(id + ".magic.activeSpell", "golemsummon");
+    	 case "thundershock":
+    		 save.set(id + ".magic.activeSpell", "thundershock");
+    	 case "familiarsummon":
+    		 save.set(id + ".magic.activeSpell", "familiar");
+    	 case "firerune":
+    		 save.set(id + ".magic.activeSpell", "firerune");
+    	 case "icerune":
+    		 save.set(id + ".magic.activeSpell", "icerune");
+    	 case "shockrune":
+    		 save.set(id + ".magic.activeSpell", "shockrune");
+    	 case "":
+    		 save.set(id + ".magic.activeSpell", null);
+    	 }
+    	 saveSave();
      }
      
      public void addSkillPoint(Player player) {
