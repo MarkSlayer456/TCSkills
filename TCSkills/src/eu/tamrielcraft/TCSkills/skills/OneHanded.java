@@ -9,9 +9,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.plugin.Plugin;
 
-
-import eu.tamrielcraft.TCSkills.main.SettingsManager;
-
 public class OneHanded extends Skill {
 	
 	private static OneHanded instance = new OneHanded();

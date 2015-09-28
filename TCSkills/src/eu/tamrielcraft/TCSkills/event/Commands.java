@@ -16,15 +16,6 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
-import eu.tamrielcraft.TCKills.spells.FamiliarSummon;
-import eu.tamrielcraft.TCKills.spells.FastHealing;
-import eu.tamrielcraft.TCKills.spells.FireBall;
-import eu.tamrielcraft.TCKills.spells.FireRune;
-import eu.tamrielcraft.TCKills.spells.GolemSummon;
-import eu.tamrielcraft.TCKills.spells.IceBlast;
-import eu.tamrielcraft.TCKills.spells.IceRune;
-import eu.tamrielcraft.TCKills.spells.ShockRune;
-import eu.tamrielcraft.TCKills.spells.ThunderShock;
 import eu.tamrielcraft.TCSkills.classes.Archer;
 import eu.tamrielcraft.TCSkills.classes.Barbarian;
 import eu.tamrielcraft.TCSkills.classes.Classes;
@@ -44,7 +35,16 @@ import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
 import eu.tamrielcraft.TCSkills.races.WoodElf;
-import eu.tamrielcraft.TCSkills.skills.SkillTreeGUI;
+import eu.tamrielcraft.TCSkills.skillsGUI.SkillTreeGUI;
+import eu.tamrielcraft.TCSkills.spells.FamiliarSummon;
+import eu.tamrielcraft.TCSkills.spells.FastHealing;
+import eu.tamrielcraft.TCSkills.spells.FireBall;
+import eu.tamrielcraft.TCSkills.spells.FireRune;
+import eu.tamrielcraft.TCSkills.spells.GolemSummon;
+import eu.tamrielcraft.TCSkills.spells.IceBlast;
+import eu.tamrielcraft.TCSkills.spells.IceRune;
+import eu.tamrielcraft.TCSkills.spells.ShockRune;
+import eu.tamrielcraft.TCSkills.spells.ThunderShock;
 
 public class Commands implements CommandExecutor {
 	
@@ -139,7 +139,7 @@ public class Commands implements CommandExecutor {
 		
 		switch(command){
 		case "skills":
-			SkillTreeGUI.skillTreeOpen(player);
+			SkillTreeGUI.getInstance().skillTreeOpen(player);
 			return true;
 		case "starttc":
 			if(args.length == 2){

@@ -1,4 +1,4 @@
-package eu.tamrielcraft.TCKills.spells;
+package eu.tamrielcraft.TCSkills.spells;
 
 import java.util.HashMap;
 

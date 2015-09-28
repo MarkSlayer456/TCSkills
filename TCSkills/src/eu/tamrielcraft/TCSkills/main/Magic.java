@@ -32,7 +32,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
-import eu.tamrielcraft.TCKills.spells.FamiliarSummon;
+import eu.tamrielcraft.TCSkills.spells.FamiliarSummon;
 
 public class Magic implements Listener {
 	

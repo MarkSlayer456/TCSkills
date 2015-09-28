@@ -12,7 +12,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -38,9 +37,8 @@ import eu.tamrielcraft.TCSkills.races.HighElf;
 import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
-import eu.tamrielcraft.TCSkills.skills.OneHanded;
-import eu.tamrielcraft.TCSkills.skills.SkillTreeGUI;
 import eu.tamrielcraft.TCSkills.skills.Smithing;
+import eu.tamrielcraft.TCSkills.skillsGUI.SkillTreeGUI;
 
 public class EventListener implements Listener {
 	
@@ -66,17 +64,26 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
-		if(!(ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("SkillTree") ||
+		Player player = (Player) e.getWhoClicked();
+		for(String menuName : SkillTreeGUI.skillMenus){
+			if(ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase(menuName) && e.getCurrentItem().getType() != Material.AIR){
+				// Player is operating in one of our skillmenus and is not clicking on an empty field
+				// So now, cancel the event
+				e.setCancelled(true);
+				// and do something with the action
+				SkillTreeGUI.getInstance().itemClicked(player, menuName, e.getCurrentItem().getItemMeta().getDisplayName().toString());
+			}
+		}
+		/*if(!(ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("SkillTree") ||
 				ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("OneHanded")) ||
 			ChatColor.stripColor(e.getInventory().getName()).equalsIgnoreCase("Smithing")) {
 			return;
-		}
-		if(e.getCurrentItem().getType() == null || e.getCurrentItem().getType() == Material.AIR) {
+		}*/
+		/*if(e.getCurrentItem().getType() == null || e.getCurrentItem().getType() == Material.AIR) {
 			return;
-		}
-		Player player = (Player) e.getWhoClicked();
-		e.setCancelled(true);
-		switch(e.getCurrentItem().getItemMeta().getDisplayName().toString()) {
+		}*/
+		//e.setCancelled(true);
+		/*switch(e.getCurrentItem().getItemMeta().getDisplayName().toString()) {
 			case "OneHanded":
 				SkillTreeGUI.skillTreeOpenOneHanded(player);
 				break;
@@ -97,10 +104,7 @@ public class EventListener implements Listener {
 				} 
 				break;
 			case "":
-				
-				
-		}
-		
+		}	*/	
 	}
 	
 	@EventHandler

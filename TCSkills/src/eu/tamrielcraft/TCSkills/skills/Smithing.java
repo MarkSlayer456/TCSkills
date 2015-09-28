@@ -206,7 +206,7 @@ public class Smithing extends Skill {
 			}
 			// Level requirements
 			if(perkLevels.get(perk) > settings.getPerkLevel(getSkillName(), perk.toString(), player)){
-				player.sendMessage("I am not skilled enough in learning this. I might want to practice more.");
+				player.sendMessage("I am not skilled enough to learn this. I might want to practice more.");
 				return;
 			}
 		}

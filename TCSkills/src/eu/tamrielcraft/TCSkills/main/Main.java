@@ -3,7 +3,6 @@ package eu.tamrielcraft.TCSkills.main;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,7 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import eu.tamrielcraft.TCSkills.event.Commands;
 import eu.tamrielcraft.TCSkills.event.EventListener;
 import eu.tamrielcraft.TCSkills.event.LeavingListener;
-import eu.tamrielcraft.TCSkills.skills.SkillTreeGUI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderHook;
 
@@ -54,8 +52,8 @@ public class Main extends JavaPlugin implements Listener {
 		
 		//TODO skilltree
 		settings.setupPerks();
-		SkillTreeGUI.diamondSwordLore.add(ChatColor.RED + "The OneHanded skill tree");
-		SkillTreeGUI.anvilLore.add(ChatColor.RED + "The Smithing skill tree");
+		//SkillTreeGUI.diamondSwordLore.add(ChatColor.RED + "The OneHanded skill tree");
+		//SkillTreeGUI.anvilLore.add(ChatColor.RED + "The Smithing skill tree");
 		
 		plugin = this;
 		
