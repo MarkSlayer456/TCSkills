@@ -160,10 +160,10 @@ public class SettingsManager {
     	 return false;
      }
      
-     public boolean canUpgradePerk(String perkName, Player player) {
+     public boolean canUpgradePerk(String skillName, String perkName, Player player) {
     	 switch(perkName) {
     	 case "armsman":
-    		 int armsmanLvl = getPerkLevel("armsman", player);
+    		 int armsmanLvl = getPerkLevel(skillName, "armsman", player);
   			 int armsmanMax = getPerkMaxLevel("armsman");
   			
   			if(armsmanLvl < armsmanMax) {
@@ -184,7 +184,7 @@ public class SettingsManager {
   			}
   			break;
     	 case "hackandslash":
-    		 int hackandslashLvl = getPerkLevel("hackandslash", player);
+    		 int hackandslashLvl = getPerkLevel(skillName, "hackandslash", player);
    			 int hackandslashMax = getPerkMaxLevel("hackandslash");
    			
    			if(hackandslashLvl < hackandslashMax) {
@@ -232,12 +232,12 @@ public class SettingsManager {
     	 return 0;
      }
      
-     public int getPerkLevel(String perkName, Player player) { //TODO: also add the skillName to this method via the Skill.getName() 
+     public int getPerkLevel(String skillName, String perkName, Player player) { //TODO: also add the skillName to this method via the Skill.getName() 
     	 // example public int getPerkLevel(Skill skill, String perkName, Player player){ skill.getName() gives you the string for the skillname}
     	 UUID id = player.getUniqueId();
     	 int perkLevel;
     	 try{
-    		 perkLevel = getSave().getInt(id + ".skills.onehanded." + perkName);
+    		 perkLevel = getSave().getInt(id + ".skills." + skillName + "." + perkName);
     	 }
     	 catch(Exception e){
     		 perkLevel = 0;
@@ -357,8 +357,6 @@ public class SettingsManager {
     	 * alchemy
     	 */
     	
-    	
-    	
     	try{
     		getSave().set(id + ".race", race.raceName().toLowerCase());
         	getSave().set(id + ".class", classy.className().toLowerCase());
@@ -380,7 +378,7 @@ public class SettingsManager {
     
     
     private void setSkills(UUID id){
-    	getSave().set(id + ".skills.smithing", 0);
+    	getSave().set(id + ".skills.smithing.exp", 0);
     }
     
      public Race getRace(Player player) {
@@ -390,7 +388,8 @@ public class SettingsManager {
  			return EmptyRace.getInstance();
  		}
  		
- 		// Updates the player name to its latest TODO this gave me an error
+ 		// Updates the player name to its latest 
+ 		//TODO: Additional test required as it gives an error (Mark)
  		/*if(!getSave().getString(id + ".name").equals(player.getName())){
  			getSave().set(id + ".name", player.getName());
  			saveSave();
@@ -448,14 +447,14 @@ public class SettingsManager {
     	 }
      }
 	
-	public void setSkill(Player player, String skillName, int amount){
+	public void setSkillExp(Player player, String skillName, int amount){
 		UUID id = player.getUniqueId();
 		getSave().set(id + ".skills." + skillName, amount);
 	}
 	
-	public Integer getSmithingExp(Player player){
+	public Integer getSkillExp(String skillName, Player player){
 		UUID id = player.getUniqueId();
-		return getSave().getInt(id + ".skills.smithing");
+		return getSave().getInt(id + ".skills." + skillName + ".exp");
 	}
 	
 	public Integer getMagic(Player player) {

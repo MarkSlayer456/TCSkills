@@ -64,10 +64,11 @@ public class SkillTreeGUI {
 	}
 	
 	public static void setGUILore(ItemStack item, Player player, String perkName) { //tells the player what level they are!
-		if(armsmanLore.contains(ChatColor.RED + "Level : " + settings.getPerkLevel(perkName, player) + " / " + settings.getPerkMaxLevel(perkName))) {
+		//TODO: 
+		/*if(armsmanLore.contains(ChatColor.RED + "Level : " + settings.getPerkLevel(perkName, player) + " / " + settings.getPerkMaxLevel(perkName))) {
 			return;
 		}
-		armsmanLore.add(ChatColor.RED + "Level : " + settings.getPerkLevel(perkName, player) + " / " + settings.getPerkMaxLevel(perkName));
+		armsmanLore.add(ChatColor.RED + "Level : " + settings.getPerkLevel(perkName, player) + " / " + settings.getPerkMaxLevel(perkName));*/
 	
 	}
 	

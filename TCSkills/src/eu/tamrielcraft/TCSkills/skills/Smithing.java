@@ -6,13 +6,13 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.entity.*;
 
 public class Smithing extends Skill {
 
 	Map<Material,SmithingPerk> skillPerks;
 	Map<Material,Integer> skillExp;
-	Map<Entity,Integer> test;
+	Map<SmithingPerk,Integer> perkLevels;
+	Map<SmithingPerk,SmithingPerk> perkDependencies;
 	
 	private enum SmithingPerk{
 		BASICSMITHING, GOLDENSTRIKE, STONIFICATION, IRONLEGACY, DIAMONDIFICATION,
@@ -25,6 +25,8 @@ public class Smithing extends Skill {
 		// Create hashmap of skillLevels
 		skillPerks = new HashMap<Material,SmithingPerk>();
 		skillExp = new HashMap<Material,Integer>();
+		perkLevels = new HashMap<SmithingPerk,Integer>();
+		perkDependencies = new HashMap<SmithingPerk,SmithingPerk>();
 		
 		// Armor
 		skillPerks.put(Material.LEATHER_BOOTS, SmithingPerk.BASICSMITHING);
@@ -114,6 +116,30 @@ public class Smithing extends Skill {
 		skillExp.put(Material.DIAMOND_SPADE, 90);
 		skillExp.put(Material.DIAMOND_SWORD, 90);
 		skillExp.put(Material.DIAMOND_HOE, 90);
+		
+		// Setup perk level requirements
+		perkLevels.put(SmithingPerk.BASICSMITHING, 0);
+		perkLevels.put(SmithingPerk.GOLDENADVANCEMENTS, 30);
+		perkLevels.put(SmithingPerk.CHAINING, 50);
+		perkLevels.put(SmithingPerk.IRONPLATING, 70);
+		perkLevels.put(SmithingPerk.DIAMONDWELDING, 90);
+		perkLevels.put(SmithingPerk.GOLDENSTRIKE, 30);
+		perkLevels.put(SmithingPerk.STONIFICATION, 50);
+		perkLevels.put(SmithingPerk.IRONLEGACY, 70);
+		perkLevels.put(SmithingPerk.DIAMONDIFICATION, 90);
+		
+		// Setup Dependencies of skilltree
+		// Armor
+		perkDependencies.put(SmithingPerk.BASICSMITHING, null);
+		perkDependencies.put(SmithingPerk.GOLDENADVANCEMENTS, SmithingPerk.BASICSMITHING);
+		perkDependencies.put(SmithingPerk.CHAINING, SmithingPerk.GOLDENADVANCEMENTS);
+		perkDependencies.put(SmithingPerk.IRONPLATING, SmithingPerk.CHAINING);
+		perkDependencies.put(SmithingPerk.DIAMONDWELDING, SmithingPerk.IRONPLATING);
+		// Weapons
+		perkDependencies.put(SmithingPerk.GOLDENSTRIKE, SmithingPerk.BASICSMITHING);
+		perkDependencies.put(SmithingPerk.STONIFICATION, SmithingPerk.GOLDENSTRIKE);
+		perkDependencies.put(SmithingPerk.IRONLEGACY, SmithingPerk.STONIFICATION);
+		perkDependencies.put(SmithingPerk.DIAMONDIFICATION, SmithingPerk.IRONLEGACY);
 	}
 	
 	public static Smithing getInstance() {
@@ -123,22 +149,69 @@ public class Smithing extends Skill {
 	@Override
 	public void onCraftEvent(CraftItemEvent event) {
 		//if(getLevel(settings.getSmithingExp((Player)event.getWhoClicked())) < skillPerks.get(event.getRecipe().getResult().getType())){
-		if(hasPerk(this, skillPerks.get(event.getRecipe().getResult().getType()).toString(), (Player) event.getWhoClicked())){
+		if(hasPerk(this, skillPerks.get(event.getRecipe().getResult().getType()).toString(), 1, (Player) event.getWhoClicked())){
 			event.getWhoClicked().sendMessage("Euh, where should I start? I don't know how to craft this...");
 			event.setCancelled(true);
 		}else{
 			// Player is able to craft this, continue and add experience
 			int expGained = skillExp.get(event.getRecipe().getResult().getType());
-			settings.setSkill((Player) event.getWhoClicked(), getSkillName(), settings.getSmithingExp((Player)event.getWhoClicked()) + expGained);
-			event.getWhoClicked().sendMessage("You gained " + expGained + " experience towards " + getSkillName());
+			Player player = (Player) event.getWhoClicked();
+			int previousExp = settings.getSkillExp(getSkillName(), player);
+			int previousLevel = getLevel(previousExp);
+			int nextExp = previousExp + expGained;
+			int nextLevel = getLevel(nextExp);
 			
-			//TODO: add more messages and display level,...
+			settings.setSkillExp(player, getSkillName(), nextExp);
+			player.sendMessage("You gained " + expGained + " experience towards " + getSkillName());
+			if(nextLevel > previousLevel){
+				player.sendMessage("You gained a level in " + getSkillName() + ". You are now level " + nextLevel);
+			}			
 		}
-		
 	}
 
 	@Override
 	public String getSkillName() {
 		return "smithing";
+	}
+	
+	@Override
+	public void advancePerkLevel(String perkName, Player player) {
+		// Player wants to advance a perk
+		// First get wanted perk
+		SmithingPerk perk = null;
+		for(SmithingPerk s : SmithingPerk.values()){
+			if(perkName.equalsIgnoreCase(s.toString())){
+				perk = s;
+			}
+		}
+		
+		// Additional check
+		if(perk == null){
+			player.sendMessage("Something went wrong... There is no perk with this name.");
+			return;
+		}
+		
+		// Now check whether the player has all requirements
+		SmithingPerk dependency = perkDependencies.get(perk);
+		if(dependency != null){
+			// Perk requirements
+			if(!hasPerk(this, dependency.toString(), 1, player)){
+				player.sendMessage("You haven't unlocked the necessary perks to unlock this perk");
+				return;
+			}
+			// Level requirements
+			if(perkLevels.get(perk) > settings.getPerkLevel(getSkillName(), perk.toString(), player)){
+				player.sendMessage("I am not skilled enough in learning this. I might want to practice more.");
+				return;
+			}
+		}
+		// All clear, advance perk
+		// Need to check level and add one if applicable
+		setPerkLevel(perk.toString(), 1, player);		
+	}
+
+	@Override
+	protected void setPerkLevel(String perkName, int perkLevel, Player player) {
+		settings.getPerkLevel(getSkillName(), perkName, player);
 	}
 }

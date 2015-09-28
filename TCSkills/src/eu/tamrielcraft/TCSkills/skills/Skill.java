@@ -14,6 +14,8 @@ public abstract class Skill {
 	
 	public abstract void onCraftEvent(CraftItemEvent event);
 	public abstract String getSkillName();
+	public abstract void advancePerkLevel(String perkName, Player player);
+	protected abstract void setPerkLevel(String perkName, int perkLevel, Player player);
 	
 	protected int getLevel(int experience){
 		int start = 0; 
@@ -28,10 +30,8 @@ public abstract class Skill {
 		return count;
 	}
 	
-	protected Boolean hasPerk(Skill skill, String perkName, Player player){
-		if(settings.getPerkLevel(perkName, player) > 0) return true;
+	protected Boolean hasPerk(Skill skill, String perkName, int perkLevel, Player player){
+		if(settings.getPerkLevel(skill.getSkillName(), perkName, player) >= perkLevel) return true;
 		else return false;
 	}
-	
-
 }

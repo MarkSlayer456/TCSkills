@@ -13,16 +13,17 @@ import org.bukkit.plugin.Plugin;
 import eu.tamrielcraft.TCSkills.main.SettingsManager;
 
 public class OneHanded extends Skill {
-
 	
-	public static SettingsManager settings = SettingsManager.getInstance();
+	private static OneHanded instance = new OneHanded();
+	
+	public static OneHanded getInstance() {
+		return instance;
+	}
 	
 	@Override
 	public void onCraftEvent(CraftItemEvent event) { }
 
 	public void playerHitByPlayer(EntityDamageByEntityEvent e, Player attacker, Plugin plugin){
-		
-		
 		
 	}
 	
@@ -64,6 +65,18 @@ public class OneHanded extends Skill {
 	public String getSkillName() {
 		
 		return "OneHanded";
+	}
+
+	@Override
+	public void advancePerkLevel(String perkName, Player player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void setPerkLevel(String perkName, int perkLevel, Player player) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

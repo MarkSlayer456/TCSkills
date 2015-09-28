@@ -38,6 +38,7 @@ import eu.tamrielcraft.TCSkills.races.HighElf;
 import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
+import eu.tamrielcraft.TCSkills.skills.OneHanded;
 import eu.tamrielcraft.TCSkills.skills.SkillTreeGUI;
 import eu.tamrielcraft.TCSkills.skills.Smithing;
 
@@ -80,18 +81,18 @@ public class EventListener implements Listener {
 				SkillTreeGUI.skillTreeOpenOneHanded(player);
 				break;
 			case "armsman":
-				if(settings.canUpgradePerk("armsman", player) == true) {
+				if(settings.canUpgradePerk(OneHanded.getInstance().getSkillName(), "armsman", player) == true) {
 					settings.upgradePerk("armsman", player);
 				}
 				break;
 				
 			case "hackandslash":
-				if(settings.canUpgradePerk("hackandslash", player)) {
+				if(settings.canUpgradePerk(OneHanded.getInstance().getSkillName(), "hackandslash", player)) {
 					settings.upgradePerk("hackandslash", player);
 				}
 				break;
 			case "dualflurry":
-				if(settings.canUpgradePerk("dualflurry", player)) {
+				if(settings.canUpgradePerk(OneHanded.getInstance().getSkillName(), "dualflurry", player)) {
 					settings.upgradePerk("dualflurry", player);
 				} 
 				break;
