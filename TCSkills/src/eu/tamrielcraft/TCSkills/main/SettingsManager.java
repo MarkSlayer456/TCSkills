@@ -40,6 +40,7 @@ import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
 import eu.tamrielcraft.TCSkills.races.WoodElf;
+import eu.tamrielcraft.TCSkills.skills.Smithing;
 
 public class SettingsManager {
 	 private SettingsManager() { }
@@ -232,8 +233,7 @@ public class SettingsManager {
     	 return 0;
      }
      
-     public int getPerkLevel(String skillName, String perkName, Player player) { //TODO: also add the skillName to this method via the Skill.getName() 
-    	 // example public int getPerkLevel(Skill skill, String perkName, Player player){ skill.getName() gives you the string for the skillname}
+     public int getPerkLevel(String skillName, String perkName, Player player) {
     	 UUID id = player.getUniqueId();
     	 int perkLevel;
     	 try{
@@ -253,6 +253,10 @@ public class SettingsManager {
     	//TODO put required lvls next to each skill
      	//TODO move this somewhere else!
      	//SORRY ABOUT THE WIERD TABBING HERE I DID THIS SO I KNOW WHAT SKILLS UNLOCK WHAT
+    	 
+    	//TODO: this should be saved in the config file
+    	 
+    	 
      	getSave().set("onehanded.armsman.max", 5);
      	/*
      	 * lvls
@@ -337,9 +341,6 @@ public class SettingsManager {
     	
     	getSave().set(id + ".skills.onehanded.paralyzingstrike", 0);
     	
-    	
-    	
-    	getSave().set(id + ".skills.smithing", 15);
     	getSave().set(id + ".skills.blocking", 15);
     	getSave().set(id + ".skills.archery", 15);
     	getSave().set(id + ".skill.sneak", 15);
@@ -358,9 +359,9 @@ public class SettingsManager {
     	 */
     	
     	try{
+    		getSave().set(id + ".name", player.getName());
     		getSave().set(id + ".race", race.raceName().toLowerCase());
         	getSave().set(id + ".class", classy.className().toLowerCase());
-        	getSave().set(id + ".name", player.getName());
         	setSkills(id);
         	saveSave();
         	return true;
@@ -369,16 +370,11 @@ public class SettingsManager {
     		e.printStackTrace();
     		return false;
     	}
-	}
-
-    public void setSkillLevel(Player player, String skill, int newLevel) {
-    	
-    }
-    
-    
+	}    
     
     private void setSkills(UUID id){
-    	getSave().set(id + ".skills.smithing.exp", 0);
+    	getSave().set(id + ".skills." + Smithing.getInstance().getSkillName() + ".exp", 0);
+    	getSave().set(id + ".skills." + Smithing.getInstance().getSkillName() + "." + Smithing.SmithingPerk.BASICSMITHING.toString().toLowerCase(), 1);
     }
     
      public Race getRace(Player player) {
@@ -449,7 +445,8 @@ public class SettingsManager {
 	
 	public void setSkillExp(Player player, String skillName, int amount){
 		UUID id = player.getUniqueId();
-		getSave().set(id + ".skills." + skillName, amount);
+		getSave().set(id + ".skills." + skillName + ".exp", amount);
+		saveSave();
 	}
 	
 	public Integer getSkillExp(String skillName, Player player){

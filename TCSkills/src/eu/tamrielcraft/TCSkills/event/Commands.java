@@ -94,7 +94,7 @@ public class Commands implements CommandExecutor {
  	 			return Khajiit.getInstance();
  	 		case "nord":
  	 			return Nord.getInstance();
- 	 		case "orcs":
+ 	 		case "orc":
  	 			return Orc.getInstance();
  	 		case "redguard":
  	 			return RedGuard.getInstance();

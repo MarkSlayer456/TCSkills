@@ -31,7 +31,10 @@ public abstract class Skill {
 	}
 	
 	protected Boolean hasPerk(Skill skill, String perkName, int perkLevel, Player player){
-		if(settings.getPerkLevel(skill.getSkillName(), perkName, player) >= perkLevel) return true;
-		else return false;
+		if(settings.getPerkLevel(skill.getSkillName(), perkName, player) >= perkLevel){
+			return true;
+		}else{ 
+			return false;
+		}
 	}
 }

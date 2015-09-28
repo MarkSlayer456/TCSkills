@@ -71,9 +71,6 @@ public class LeavingListener implements Listener {
 		}
 		
 		settings.getSave().set("magic." + player.getUniqueId() + ".favorites.on", 0);
-		
-		
-		
 	}
 	
 }

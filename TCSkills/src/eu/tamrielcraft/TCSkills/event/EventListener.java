@@ -57,7 +57,7 @@ public class EventListener implements Listener {
 		addSmithingMaterials();
 	}
 		
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler//(priority = EventPriority.NORMAL)
 	public void onCraftItem(CraftItemEvent event){
 		if(smithing.contains(event.getInventory().getResult().getType())){
 			Smithing.getInstance().onCraftEvent(event);

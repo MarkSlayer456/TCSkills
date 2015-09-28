@@ -14,7 +14,7 @@ public class Smithing extends Skill {
 	Map<SmithingPerk,Integer> perkLevels;
 	Map<SmithingPerk,SmithingPerk> perkDependencies;
 	
-	private enum SmithingPerk{
+	public enum SmithingPerk{
 		BASICSMITHING, GOLDENSTRIKE, STONIFICATION, IRONLEGACY, DIAMONDIFICATION,
 		GOLDENADVANCEMENTS, CHAINING, IRONPLATING, DIAMONDWELDING
 	}
@@ -148,24 +148,29 @@ public class Smithing extends Skill {
 	
 	@Override
 	public void onCraftEvent(CraftItemEvent event) {
-		//if(getLevel(settings.getSmithingExp((Player)event.getWhoClicked())) < skillPerks.get(event.getRecipe().getResult().getType())){
-		if(hasPerk(this, skillPerks.get(event.getRecipe().getResult().getType()).toString(), 1, (Player) event.getWhoClicked())){
+		Player player = (Player) event.getWhoClicked();
+		if(!hasPerk(this, skillPerks.get(event.getRecipe().getResult().getType()).toString().toLowerCase(), 1, player)){
 			event.getWhoClicked().sendMessage("Euh, where should I start? I don't know how to craft this...");
 			event.setCancelled(true);
 		}else{
-			// Player is able to craft this, continue and add experience
-			int expGained = skillExp.get(event.getRecipe().getResult().getType());
-			Player player = (Player) event.getWhoClicked();
-			int previousExp = settings.getSkillExp(getSkillName(), player);
-			int previousLevel = getLevel(previousExp);
-			int nextExp = previousExp + expGained;
-			int nextLevel = getLevel(nextExp);
-			
-			settings.setSkillExp(player, getSkillName(), nextExp);
-			player.sendMessage("You gained " + expGained + " experience towards " + getSkillName());
-			if(nextLevel > previousLevel){
-				player.sendMessage("You gained a level in " + getSkillName() + ". You are now level " + nextLevel);
-			}			
+			// Next line is needed to avoid being able to mass right-click and not lose resources but gain experience
+			if((event.getCursor().getType().getMaxStackSize() > 1 && event.getCursor().getType() == event.getRecipe().getResult().getType()) || event.getCursor().getType() == Material.AIR){
+				// Player is able to craft this, continue and add experience
+				int expGained = skillExp.get(event.getRecipe().getResult().getType());
+				int previousExp = settings.getSkillExp(getSkillName(), player);
+				int previousLevel = getLevel(previousExp);
+				int nextExp = previousExp + expGained;
+				int nextLevel = getLevel(nextExp);
+				
+				settings.setSkillExp(player, getSkillName(), nextExp);
+				player.sendMessage("You gained " + expGained + " experience towards " + getSkillName());
+				if(nextLevel > previousLevel){
+					player.sendMessage("You gained a level in " + getSkillName() + ". You are now level " + nextLevel);
+				}
+			}else{
+				player.sendMessage("I still have something in my hand!");
+				event.setCancelled(true);
+			}
 		}
 	}
 
