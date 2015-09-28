@@ -250,11 +250,14 @@ public class SettingsManager {
      }
      
      public void setupPerks() { //NOTICE SHOULD ONLY BE CALLED ONE TIME!
+    	 //TODO could put this in setdefaults!
     	//TODO put required lvls next to each skill
-     	//TODO move this somewhere else!
      	//SORRY ABOUT THE WIERD TABBING HERE I DID THIS SO I KNOW WHAT SKILLS UNLOCK WHAT
+    	//TODO might add a info.onehanded.... just to organize the info better 
+    	 
     	 
     	//TODO: this should be saved in the config file
+    	//TODO Why? these are the default values for skyrim and it's setup to only work with 5...
     	 
     	 
      	getSave().set("onehanded.armsman.max", 5);

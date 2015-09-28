@@ -1,6 +1,7 @@
 package eu.tamrielcraft.TCSkills.skillsGUI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -21,6 +22,9 @@ public class SkillTreeGUI {
 	//public static ArrayList<String> diamondSwordLore = new ArrayList<String>(); //HAVE ONE OF THESE FOR EACH ITEM AND ADD THE DETAILS TO THE ON ENABLE	
 	//public static ArrayList<String> anvilLore = new ArrayList<String>();
 	//public static ArrayList<String> armsmanLore = new ArrayList<String>();
+	
+	public static HashMap<String, List<String>> lore = new HashMap<String, List<String>>();
+	
 	
 	//TODO: SHOULD DO IT WITH A HASHMAP
 	
@@ -46,6 +50,7 @@ public class SkillTreeGUI {
 		ItemStack diamondSword = new ItemStack(Material.DIAMOND_SWORD);
 		ItemMeta diamondSwordMeta = diamondSword.getItemMeta();
 		diamondSwordMeta.setDisplayName("OneHanded");
+		diamondSwordMeta.setLore(lore.get("diamondsword"));
 		//diamondSwordMeta.setLore(diamondSwordLore);
 		diamondSword.setItemMeta(diamondSwordMeta);
 		inv.setItem(0, diamondSword);
@@ -54,6 +59,7 @@ public class SkillTreeGUI {
 		ItemStack anvil = new ItemStack(Material.ANVIL);
 		ItemMeta anvilMeta = anvil.getItemMeta();		
 		anvilMeta.setDisplayName("Smithing");
+		anvilMeta.setLore(lore.get("anvil"));
 		//anvilMeta.setLore(anvilLore);
 		anvil.setItemMeta(anvilMeta);
 		inv.setItem(1, anvil);

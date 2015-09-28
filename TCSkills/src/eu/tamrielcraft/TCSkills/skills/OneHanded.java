@@ -9,12 +9,24 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.plugin.Plugin;
 
+import eu.tamrielcraft.TCSkills.skills.Smithing.SmithingPerk;
+
 public class OneHanded extends Skill {
 	
 	private static OneHanded instance = new OneHanded();
 	
+	Map<Material, OneHandedPerk> skillperks;
+	Map<OneHandedPerk, Integer> perkLevels;
+	Map<OneHandedPerk, SmithingPerk> perkDependencies;
+	
+	
 	public static OneHanded getInstance() {
 		return instance;
+	}
+	
+	public enum OneHandedPerk {
+		ARMSMAN, HACKANDSLASH, BONEBREAKER, DUALFLURRY, DAULSAVAGERY, FIGHTINGSTANCE,
+		SAVAGESTRIKE, CRITICALCHARGE, PARALYZINGSTRIKE
 	}
 	
 	@Override
