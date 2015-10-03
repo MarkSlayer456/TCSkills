@@ -9,7 +9,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.plugin.Plugin;
 
-import eu.tamrielcraft.TCSkills.skills.Smithing.SmithingPerk;
 
 public class OneHanded extends Skill {
 	
@@ -17,7 +16,19 @@ public class OneHanded extends Skill {
 	
 	Map<Material, OneHandedPerk> skillperks;
 	Map<OneHandedPerk, Integer> perkLevels;
-	Map<OneHandedPerk, SmithingPerk> perkDependencies;
+	public static Map<OneHandedPerk, OneHandedPerk> perkDependencies;
+	
+	public static Map<OneHandedPerk, Boolean> hasPerk;
+	
+	public static Map<Integer, Integer> armsman;
+	public static Map<Integer, Integer> hackandslash;
+	public static Map<Integer, Integer> bonebreaker;
+	public static Map<Integer, Integer> dualflurry;
+	public static Map<Integer, Integer> dualsavagery;
+	public static Map<Integer, Integer> fightingstance;
+	public static Map<Integer, Integer> savagestrike;
+	public static Map<Integer, Integer> criticalcharge;
+	public static Map<Integer, Integer> paralyzingstrike;
 	
 	
 	public static OneHanded getInstance() {
@@ -25,7 +36,7 @@ public class OneHanded extends Skill {
 	}
 	
 	public enum OneHandedPerk {
-		ARMSMAN, HACKANDSLASH, BONEBREAKER, DUALFLURRY, DAULSAVAGERY, FIGHTINGSTANCE,
+		ARMSMAN, HACKANDSLASH, BONEBREAKER, DUALFLURRY, DUALSAVAGERY, FIGHTINGSTANCE,
 		SAVAGESTRIKE, CRITICALCHARGE, PARALYZINGSTRIKE
 	}
 	
@@ -67,12 +78,55 @@ public class OneHanded extends Skill {
 		skillExp.put("witch", 5);
 		skillExp.put("enderman", 10);
 		skillExp.put("slime", 10);
+		
+		//Level dependencies
+		armsman.put(1, 0);
+		armsman.put(2, 20);
+		armsman.put(3, 40);
+		armsman.put(4, 60);
+		armsman.put(5, 80);
+		
+		hackandslash.put(1, 30);
+		hackandslash.put(2, 60);
+		hackandslash.put(3, 90);
+		
+		bonebreaker.put(1, 30);
+		
+		dualflurry.put(1, 30);
+		
+		dualsavagery.put(1, 70);
+		
+		fightingstance.put(1, 20);
+		
+		savagestrike.put(1, 50);
+		
+		criticalcharge.put(1, 50);
+		
+		paralyzingstrike.put(1, 100);
+		
+		
+		
+		
+		
+		
+		//Perk dependencies
+		perkDependencies.put(OneHandedPerk.ARMSMAN, null);
+		perkDependencies.put(OneHandedPerk.HACKANDSLASH, OneHandedPerk.ARMSMAN);
+		perkDependencies.put(OneHandedPerk.BONEBREAKER, OneHandedPerk.ARMSMAN);
+		perkDependencies.put(OneHandedPerk.DUALFLURRY, OneHandedPerk.ARMSMAN);
+		perkDependencies.put(OneHandedPerk.DUALFLURRY, OneHandedPerk.DUALSAVAGERY);
+		perkDependencies.put(OneHandedPerk.FIGHTINGSTANCE, OneHandedPerk.ARMSMAN);
+		perkDependencies.put(OneHandedPerk.SAVAGESTRIKE, OneHandedPerk.FIGHTINGSTANCE);
+		perkDependencies.put(OneHandedPerk.CRITICALCHARGE, OneHandedPerk.FIGHTINGSTANCE);
+		perkDependencies.put(OneHandedPerk.CRITICALCHARGE, OneHandedPerk.PARALYZINGSTRIKE);
+		
+		
+		
 	}
 	
 
 	@Override
 	public String getSkillName() {
-		
 		return "OneHanded";
 	}
 

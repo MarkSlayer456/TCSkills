@@ -30,7 +30,9 @@ import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
 import eu.tamrielcraft.TCSkills.races.WoodElf;
+import eu.tamrielcraft.TCSkills.skills.OneHanded;
 import eu.tamrielcraft.TCSkills.skills.Smithing;
+import eu.tamrielcraft.TCSkills.skills.OneHanded.OneHandedPerk;
 import eu.tamrielcraft.TCSkills.spells.FamiliarSummon;
 import eu.tamrielcraft.TCSkills.spells.FastHealing;
 import eu.tamrielcraft.TCSkills.spells.FireBall;
@@ -161,75 +163,163 @@ public class SettingsManager {
     	 return false;
      }
      
+     public int getSkillLevel(Player player, String skillName) { //TODO
+		return 100;
+    	 
+     }
+     
      public boolean canUpgradePerk(String skillName, String perkName, Player player) {
+    	 if(hasSkillPoint(player) != true) {
+    		 player.sendMessage(ChatColor.RED + "You need a skill point to upgrade skills!");
+    		 return false;
+    	 }
+    	 
+    	 switch(skillName) {
+    	 case "onehanded":
+    		 int onehandedLevel = getSkillLevel(player, "onehanded");
     	 switch(perkName) {
     	 case "armsman":
     		 int armsmanLvl = getPerkLevel(skillName, "armsman", player);
   			 int armsmanMax = getPerkMaxLevel("armsman");
+  			 
+  			if(armsmanLvl == armsmanMax) {
+  				player.sendMessage(ChatColor.RED + "This skill is maxed out!");
+  				return false;
+  			}
   			
-  			if(armsmanLvl < armsmanMax) {
-  				if(armsmanLvl == 4 && armsmanLvl >= getRequiredLevel("armsman", 4) && hasSkillPoint(player)) {
+  				switch(armsmanLvl) {
+  				case 5:
+  					if(onehandedLevel >= getRequiredLevel("onehanded", "armsman", 5)) {
+  						return true;
+  					}
+  				case 4:
+  					if(onehandedLevel >= getRequiredLevel("onehanded", "armsman", 4)) {
+  						return true;
+  					}
+  				case 3:
+  					if(onehandedLevel >= getRequiredLevel("onehanded", "armsman", 3)) {
+  						return true;
+  					}
+  				case 2:
+  					if(onehandedLevel >= getRequiredLevel("onehanded", "armsman", 2)) {
+  						return true;
+  					}
+  				case 1:
+  					if(onehandedLevel >= getRequiredLevel("onehanded", "armsman", 1)) {
+  						OneHanded.hasPerk.put(OneHandedPerk.ARMSMAN, true); //TODO put this on all the slot 1 for every perk
+  						return true;
+  					}
+  				}
+  				break;
+  				
+  				/*if(armsmanLvl == 5 && armsmanLvl >= getRequiredLevel("onehanded", "armsman", 5)) {
   					
-  				} else if(armsmanLvl == 3 && armsmanLvl >= getRequiredLevel("armsman", 3) && hasSkillPoint(player)) {
+  				} else if(armsmanLvl == 4 && armsmanLvl >= getRequiredLevel("onehanded", "armsman", 3)) {
   					return true;
-  				} else if(armsmanLvl == 2 && armsmanLvl >= getRequiredLevel("armsman", 2) && hasSkillPoint(player)) {
+  				} else if(armsmanLvl == 3 && armsmanLvl >= getRequiredLevel("onehaned", "armsman", 2)) {
   					return true;
-  				} else if(armsmanLvl == 1 && armsmanLvl >= getRequiredLevel("armsman", 1) && hasSkillPoint(player)) {
+  				} else if(armsmanLvl == 2 && armsmanLvl >= getRequiredLevel("onehanded", "armsman", 1)) {
   					return true;
-  				} else if(armsmanLvl == 0 && armsmanLvl >= getRequiredLevel("armsman", 0) && hasSkillPoint(player)) {
+  				} else if(armsmanLvl == 1 && armsmanLvl >= getRequiredLevel("onehanded", "armsman", 0)) {
   					return true;
   				} else {
   					player.closeInventory();
   					player.sendMessage(ChatColor.RED + "You can't upgrade that perk!");
   				}
-  			}
-  			break;
+  			break;*/
     	 case "hackandslash":
     		 int hackandslashLvl = getPerkLevel(skillName, "hackandslash", player);
    			 int hackandslashMax = getPerkMaxLevel("hackandslash");
+   			if(hackandslashLvl == hackandslashMax) {
+   				player.sendMessage(ChatColor.RED + "This skill is maxed out!");
+   				return false;
+   			}
+   			OneHandedPerk perk = OneHanded.perkDependencies.get(OneHandedPerk.HACKANDSLASH);
+   			if(OneHanded.hasPerk.get(perk) == false) {
+   				player.sendMessage(ChatColor.RED + "You do not have the required perks to unlock this perk!");
+   				return false;
+   			}
    			
-   			if(hackandslashLvl < hackandslashMax) {
-   				if(hackandslashLvl == 2 && hackandslashLvl >= getRequiredLevel("hackandslash", 2) && hasSkillPoint(player)) {
-   				 if(hackandslashLvl == 1 && hackandslashLvl >= getRequiredLevel("hackandslash", 1) && hasSkillPoint(player)) {
+   			switch(hackandslashLvl) {
+   				case 3:
+   					if(onehandedLevel >= getRequiredLevel("onehanded", "hackandslash", 3)) {
+  						return true;
+  					}
+   				case 2:
+   					if(onehandedLevel >= getRequiredLevel("onehanded", "hackandslash", 2)) {
+  						return true;
+  					}
+   				case 1:
+   					if(onehandedLevel >= getRequiredLevel("onehanded", "hackandslash", 1)) {
+  						return true;
+  					}
+   					break;
+   			}
+   			
+   			
+   				/*if(hackandslashLvl == 3 && hackandslashLvl >= getRequiredLevel("onehanded", "hackandslash", 2) && hasSkillPoint(player)) {
+   				 if(hackandslashLvl == 2 && hackandslashLvl >= getRequiredLevel("onehanded", "hackandslash", 1) && hasSkillPoint(player)) {
    					return true;
-   				} else if(hackandslashLvl == 0 && hackandslashLvl >= getRequiredLevel("hackandslash", 0) && hasSkillPoint(player)) {
+   				} else if(hackandslashLvl == 1 && hackandslashLvl >= getRequiredLevel("onehanded", "hackandslash", 0) && hasSkillPoint(player)) {
    					return true;
    				} else {
    					player.closeInventory();
    					player.sendMessage(ChatColor.RED + "You can't upgrade that perk!");
    				}
     		 
-   			}
+   			}*/
     	 }
+    	 case "smithing":
+    		 
     	 }
     	 return false;
  	}
  	
- 	public void upgradePerk(String perkName, Player player) {
+ 	public void upgradePerk(String skillName, String perkName, Player player) {
  		UUID id = player.getUniqueId();
- 		if(perkName.equalsIgnoreCase("armsman")) {
- 		getSave().set(id + ".skills.onehanded.armsman", getSave().getInt(id + ".skills.onehanded.armsman") + 1);
- 		} else if(perkName.equalsIgnoreCase("")) {
- 			
+ 		switch(skillName) {
+ 		case "onehanded":
+ 		switch(perkName) {
+ 		case "armsman":
+ 			getSave().set(id + ".skills.onehanded.armsman", getSave().getInt(id + ".skills.onehanded.armsman") + 1);
+ 		case "":
+ 		}
  		}
  		saveSave();
  	}
      
      
-     public int getRequiredLevel(String perkName, int perkNumber) {
-    	 if(perkName.equalsIgnoreCase("armsman")) {
-    		 if(perkNumber == 0) {
-    			 return 0;
-    		 } else if(perkNumber == 1) {
-    			 return 20;
-    		 } else if(perkNumber == 2) {
-    			 return 40;
-    		 } else if(perkNumber == 3) {
-    			 return 60;
-    		 } else if(perkNumber == 4) {
-    			 return 80;
+     public int getRequiredLevel(String skillName, String perkName, int perkNumber) {
+    	 switch(skillName) {
+    	 case "onehanded":
+    		 switch(perkName) {
+    		 case "armsman":
+    		 	 return OneHanded.armsman.get(perkNumber);
+    		 case "hackandslash":
+    			 return OneHanded.hackandslash.get(perkNumber);
+    		 case "bonebreaker":
+    			 return OneHanded.bonebreaker.get(perkNumber);
+    		 case "dualflurry":
+    			 return OneHanded.dualflurry.get(perkNumber);
+    		 case "dualsavagery":
+    			 return OneHanded.dualsavagery.get(perkNumber);
+    		 case "fightingstance":
+    			 return OneHanded.fightingstance.get(perkNumber);
+    		 case "savagestrike":
+    			 return OneHanded.savagestrike.get(perkNumber);
+    		 case "criticalcharge":
+    			 return OneHanded.criticalcharge.get(perkNumber);
+    		 case "paralyzingstrike":
+    			 return OneHanded.paralyzingstrike.get(perkNumber);
     		 }
+    	 case "smithing":
+    		 
+    	 
     	 }
+    	 
+    	 
+    	 
+    	 
     	 return 0;
      }
      
@@ -289,7 +379,7 @@ public class SettingsManager {
      		 * lvls
      		 * 1: 30
      		 */
-     			getSave().set("onehanded.daulsavagery.max", 1);
+     			getSave().set("onehanded.dualsavagery.max", 1);
      			/*
      			 * lvls
      			 * 1: 70

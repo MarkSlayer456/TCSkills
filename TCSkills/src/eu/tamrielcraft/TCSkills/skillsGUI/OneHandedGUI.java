@@ -39,17 +39,17 @@ public class OneHandedGUI extends SkillGUI {
 		switch(displayName){
 		case "armsman":
 			if(settings.canUpgradePerk(OneHanded.getInstance().getSkillName(), "armsman", player) == true) {
-				settings.upgradePerk("armsman", player);
+				settings.upgradePerk("onehanded", "armsman", player);
 			}
 			break;
 		case "hackandslash":
 			if(settings.canUpgradePerk(OneHanded.getInstance().getSkillName(), "hackandslash", player)) {
-				settings.upgradePerk("hackandslash", player);
+				settings.upgradePerk("onehanded", "hackandslash", player);
 			}
 			break;
 		case "dualflurry":
 			if(settings.canUpgradePerk(OneHanded.getInstance().getSkillName(), "dualflurry", player)) {
-				settings.upgradePerk("dualflurry", player);
+				settings.upgradePerk("onehanded", "dualflurry", player);
 			}
 			break;
 		}
