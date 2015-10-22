@@ -137,11 +137,8 @@ public class OneHanded extends Skill {
 	}
 
 	@Override
-	protected void setPerkLevel(String perkName, int perkLevel, Player player) {
+	protected void upgradePerk(String perkName, Player player) {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
-	
 }

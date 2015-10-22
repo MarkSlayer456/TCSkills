@@ -313,18 +313,15 @@ public class SettingsManager {
     			 return OneHanded.paralyzingstrike.get(perkNumber);
     		 }
     	 case "smithing":
-    		 
-    	 
+    		 	 
     	 }
-    	 
-    	 
-    	 
-    	 
     	 return 0;
      }
      
      public int getPerkLevel(String skillName, String perkName, Player player) {
     	 UUID id = player.getUniqueId();
+    	 skillName = skillName.toLowerCase();
+    	 perkName = perkName.toLowerCase();
     	 int perkLevel;
     	 try{
     		 perkLevel = getSave().getInt(id + ".skills." + skillName + "." + perkName);
@@ -335,6 +332,31 @@ public class SettingsManager {
     	 return perkLevel;
      }
      
+     public void setPerkLevel(String skillName, String perkName, Player player, int level){
+    	 UUID id = player.getUniqueId();
+    	 skillName = skillName.toLowerCase();
+    	 perkName = perkName.toLowerCase();
+    	 try{
+    		 getSave().set(id + "." + skillName + "." + perkName, level);
+    	 }
+    	 catch(Exception e){
+    		 player.sendMessage("Could not update perk level");
+    	 }
+     }
+     
+     public int getAbilityPoints(Player player){
+    	 UUID id = player.getUniqueId();
+    	 int abilityPoints = 0;
+    	 try{
+    		 getSave().get(id + ".AP");
+    	 }
+    	 catch(Exception e){
+    		 player.sendMessage("Something went wrong with getting your ability points. Report this to an admin.");
+    	 }
+    	 return abilityPoints;
+     }
+     
+     //TODO should be moved to individual perks
      public int getPerkMaxLevel(String perkName) {
     	 return getSave().getInt("onehanded." + perkName + ".max");
      }
@@ -410,7 +432,7 @@ public class SettingsManager {
     public Boolean createPlayer(Player player, Race race, Classes classy){
     	UUID id = player.getUniqueId();
     	
-    	
+    	// Should only add the default ones. Rest should be added on upgrade
     	//ONE HANDED
     	getSave().set(id + ".skills.onehanded", 15);
     	
@@ -455,6 +477,7 @@ public class SettingsManager {
     		getSave().set(id + ".name", player.getName());
     		getSave().set(id + ".race", race.raceName().toLowerCase());
         	getSave().set(id + ".class", classy.className().toLowerCase());
+        	getSave().set(id + ".AP", 0);
         	setSkills(id);
         	saveSave();
         	return true;

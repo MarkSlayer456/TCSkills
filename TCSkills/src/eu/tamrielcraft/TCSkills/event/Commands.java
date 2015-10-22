@@ -153,9 +153,11 @@ public class Commands implements CommandExecutor {
 						return true;
 					}else{
 						player.sendMessage(ChatColor.RED + "This class does not exist. Check /class for all available classes");
+						return false;
 					}
 				}else{
 					player.sendMessage(ChatColor.RED + "This race does not exist. Check /race for all available races");
+					return false;
 				}
 			}
 		case "tcskills": //TODO RECODE THIS

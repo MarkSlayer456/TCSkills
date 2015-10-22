@@ -7,8 +7,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import eu.tamrielcraft.TCSkills.skills.Smithing;
+import eu.tamrielcraft.TCSkills.skills.Smithing.SmithingPerk;
+
 public class SmithingGUI extends SkillGUI {
 	private static SmithingGUI instance = new SmithingGUI();
+	private static Smithing smithingSkill = Smithing.getInstance();
 	
 	public static SmithingGUI getInstance(){
 		return instance;
@@ -16,7 +20,7 @@ public class SmithingGUI extends SkillGUI {
 	
 	public void createSkillInventory(Player player){
 		// Center basic skill
-		Inventory inv = Bukkit.createInventory(player, 18, "Smithing");
+		Inventory inv = Bukkit.createInventory(player, 45, "Smithing");
 		ItemStack basicSmithing = new ItemStack(Material.ANVIL);
 		ItemMeta basicSmithingMeta = basicSmithing.getItemMeta();
 		basicSmithingMeta.setDisplayName("Basic Smithing");
@@ -25,19 +29,38 @@ public class SmithingGUI extends SkillGUI {
 		inv.setItem(4, basicSmithing);
 		
 		// Left tree (weapons)
-		ItemStack goldenStrike = new ItemStack(Material.ANVIL);
+		//ItemStack stickLeft = new ItemStack(Material.STICK);
+		//inv.setItem(12, stickLeft);
+		
+		ItemStack goldenStrike = new ItemStack(Material.GOLD_SWORD);
 		ItemMeta goldenStrikeMeta = goldenStrike.getItemMeta();
-		goldenStrikeMeta.setDisplayName("Basic Smithing");
-		setGUILore(goldenStrike, player, "Basic Smithing");
+		goldenStrikeMeta.setDisplayName("Golden Strike");
+		setGUILore(goldenStrike, player, "GoldenStrike");
 		goldenStrike.setItemMeta(goldenStrikeMeta);
-		inv.setItem(2, goldenStrike);
+		//inv.setItem(20, goldenStrike);
+		inv.setItem(12, goldenStrike);
+		
+		//ItemStack ladder1 = new ItemStack(Material.LADDER);
+		//inv.setItem(29, ladder1);
 		
 		ItemStack stonification = new ItemStack(Material.STONE_SWORD);
 		ItemMeta stonificationMeta = stonification.getItemMeta();
 		stonificationMeta.setDisplayName("Stonification");
 		setGUILore(stonification, player, "Stonification");
 		stonification.setItemMeta(stonificationMeta);
-		inv.setItem(11, stonification);
+		//inv.setItem(38, stonification);
+		inv.setItem(21, stonification);
+		
+		//ItemStack ladder2 = new ItemStack(Material.LADDER);
+		//inv.setItem(47, ladder2);
+		
+		ItemStack ironLegacy = new ItemStack(Material.IRON_SWORD);
+		ItemMeta ironLegacyMeta = ironLegacy.getItemMeta();
+		ironLegacyMeta.setDisplayName("Iron Legacy");
+		setGUILore(ironLegacy, player, "Iron Legacy");
+		ironLegacy.setItemMeta(ironLegacyMeta);
+		//inv.setItem(56, ironLegacy);
+		inv.setItem(30, ironLegacy);
 		
 		
 		player.openInventory(inv);
@@ -45,7 +68,18 @@ public class SmithingGUI extends SkillGUI {
 	
 	@Override
 	public void itemClicked(Player player, String displayName){
-		
+		switch(displayName){
+		case "Basic Smithing":
+			smithingSkill.advancePerkLevel(SmithingPerk.BASICSMITHING.toString(), player); break;
+		case "Golden Strike":
+			smithingSkill.advancePerkLevel(SmithingPerk.GOLDENSTRIKE.toString(), player); break;
+		case "Stonification":
+			smithingSkill.advancePerkLevel(SmithingPerk.STONIFICATION.toString(), player); break;
+		case "Iron Legacy":
+			smithingSkill.advancePerkLevel(SmithingPerk.IRONLEGACY.toString(), player); break;
+		default:
+			
+		}
 	}
 
 	@Override
