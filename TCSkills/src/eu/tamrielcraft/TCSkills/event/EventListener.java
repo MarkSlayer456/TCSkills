@@ -19,6 +19,7 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -45,6 +46,7 @@ public class EventListener implements Listener {
 	private Plugin plugin;
 	private SettingsManager settings;
 	static ScoreboardManager manager = Bukkit.getScoreboardManager();
+	private final double expGainer = 0.5;
 	
 	// Material collections
 	private List<Material> smithing = new ArrayList<Material>();
@@ -54,8 +56,21 @@ public class EventListener implements Listener {
 		this.plugin = plugin;
 		addSmithingMaterials();
 	}
-		
+	
 	@EventHandler//(priority = EventPriority.NORMAL)
+	public void onGainExp(PlayerExpChangeEvent event){
+		// First, set new amount of experience
+		//TODO: should be tested!
+		event.setAmount((int)Math.floor((event.getAmount() * expGainer)));
+		
+		// Next, check if player levels up, if so, add AP
+		if(event.getPlayer().getExpToLevel() <= event.getAmount()){
+			// Player is about to level up so add AP
+			settings.addSkillPoint(event.getPlayer());
+		}
+	}
+		
+	@EventHandler
 	public void onCraftItem(CraftItemEvent event){
 		if(smithing.contains(event.getInventory().getResult().getType())){
 			Smithing.getInstance().onCraftEvent(event);

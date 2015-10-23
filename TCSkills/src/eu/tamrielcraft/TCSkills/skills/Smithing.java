@@ -196,7 +196,10 @@ public class Smithing extends Skill {
 	public void advancePerkLevel(String perkName, Player player) {
 		// Player wants to advance a perk
 		// First, check if player has any Ability Points
-		
+		if(settings.getAbilityPoints(player) <= 0){
+			player.sendMessage("You don't have enough ability points to upgrade");
+			return;
+		}
 		
 		// Next get wanted perk
 		SmithingPerk perk = null;
