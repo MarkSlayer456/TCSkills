@@ -46,11 +46,10 @@ public class Main extends JavaPlugin implements Listener {
 		this.getCommand("c").setExecutor(new Commands(this, settings));
 		this.getCommand("starttc").setExecutor(new Commands(this,settings));
 		this.getCommand("skills").setExecutor(new Commands(this, settings));
+		this.getCommand("tcskills").setExecutor(new Commands(this, settings));
 		
 		
 		settings.setDefaults();
-		
-		//TODO skilltree
 		settings.setupPerks();
 		//SkillTreeGUI.diamondSwordLore.add(ChatColor.RED + "The OneHanded skill tree");
 		//SkillTreeGUI.anvilLore.add(ChatColor.RED + "The Smithing skill tree");

@@ -261,6 +261,9 @@ public class EventListener implements Listener {
 		final Player player = (Player) e.getPlayer();
 		final Race race = settings.getRace(player);
 		
+		// Check player name
+		settings.updatePlayerName(player);
+		
 		if(race != null) {
 			// Player has a race
 			race.sendWelcome(player);

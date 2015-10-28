@@ -64,8 +64,8 @@ public class Commands implements CommandExecutor {
 	
 	static ArrayList<Player> classCheck = new ArrayList<Player>();
 	static ArrayList<Player> raceCheck = new ArrayList<Player>();
-	static HashMap<Player, String> playerClass = new HashMap<Player, String>();
-	static HashMap<Player, String> playerRace = new HashMap<Player, String>();
+	static HashMap<Player, Classes> playerClass = new HashMap<Player, Classes>();
+	static HashMap<Player, Race> playerRace = new HashMap<Player, Race>();
 	
 	
 	
@@ -141,6 +141,7 @@ public class Commands implements CommandExecutor {
 		case "skills":
 			SkillTreeGUI.getInstance().skillTreeOpen(player);
 			return true;
+			
 		case "starttc":
 			if(args.length == 2){
 				Race race = getTCRace(args[0]);
@@ -160,44 +161,53 @@ public class Commands implements CommandExecutor {
 					return false;
 				}
 			}
-		case "tcskills": //TODO RECODE THIS
-			if(args.length == 0) { //TODO check to see if player already has a race!
+			
+		case "tcskills":
+			if(args.length == 0) {
 				if(settings.getRace(player) != EmptyRace.getInstance()) {
 					player.sendMessage(ChatColor.DARK_RED + "You already have picked a race and a class!");
 					return true;
 				}
 				player.sendMessage(ChatColor.DARK_RED + "Please pick a class do /class <classname> to pick if you don't know what the classes do, do /class list");
 				classCheck.add(player);
+				return true;
 			} else {
 				player.sendMessage(ChatColor.RED + "Uasage: /tcskills");
+				return false;
 			}
+			
 		case "class":
-			if(args.length == 0 || args[1].equalsIgnoreCase("list")) {
-				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header")); //TODO add/change descriptions to all of these i don't know if you want them to have a abilities 
+			if(args.length == 0 || args[0].equalsIgnoreCase("list")) {
+				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header")); 
 				player.sendMessage(ChatColor.RED + "Archer: " + ChatColor.GOLD + Archer.getInstance().getDetails());
 				player.sendMessage(ChatColor.RED + "Barbarian: " + ChatColor.GOLD + Barbarian.getInstance().getDetails());
 				player.sendMessage(ChatColor.RED + "Knight: " + ChatColor.GOLD + Knight.getInstance().getDetails());
 				player.sendMessage(ChatColor.RED + "Mage: " + ChatColor.GOLD + Mage.getInstance().getDetails());
 				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + Rogue.getInstance().getDetails());
 				player.sendMessage(ChatColor.DARK_RED + "To pick a class do /rcskills!");
+				return true;
 			} else {
 				if(classCheck.contains(player)) {
-					if(args[1].equalsIgnoreCase("archer") || args[1].equalsIgnoreCase("knight") || args[1].equalsIgnoreCase("barbarian") ||
-							args[1].equalsIgnoreCase("mage") || args[1].equalsIgnoreCase("rogue")) {
-					playerClass.put(player, args[1]);
-					player.sendMessage(ChatColor.DARK_RED + "Please pick a race do /race <racename> to pick if you don't know what the races do, do /race list");
-					classCheck.remove(player);
-					raceCheck.add(player);
+					Classes classy = getTCClass(args[0]);
+					if(classy != null) {
+						playerClass.put(player, classy);
+						player.sendMessage(ChatColor.DARK_RED + "Please pick a race do /race <racename> to pick if you don't know what the races do, do /race list");
+						classCheck.remove(player);
+						raceCheck.add(player);
+						return true;
 					} else {
 						player.sendMessage(ChatColor.RED + "Not a valid class do /class list for a list of classes");
+						return false;
 					}
 				} else {
-					player.sendMessage(ChatColor.RED + "To pick a class do /rcskills!");
+					player.sendMessage(ChatColor.RED + "To pick a class do /tcskills!");
+					return false;
 				}
 				
 			}
+			
 		case "race":
-			if(args.length == 0 || args[1].equalsIgnoreCase("list")) {
+			if(args.length == 0 || args[0].equalsIgnoreCase("list")) {
 				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
 				player.sendMessage(ChatColor.GOLD + "You can be any of these races:");
 				player.sendMessage(ChatColor.RED + "Argonian: " + ChatColor.GOLD + argonian.details() + "!");
@@ -211,8 +221,26 @@ public class Commands implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "Orcs: " + ChatColor.GOLD + Orc.details() + "!");
 				player.sendMessage(ChatColor.RED + "RedGuard: " + ChatColor.GOLD + redguard.details() + "!");
 				player.sendMessage(ChatColor.RED + "WoodElves: " + ChatColor.GOLD + woodelves.details() + "!");
-				
 				return true;
+			} else {
+				if(raceCheck.contains(player)){
+					Race race = getTCRace(args[0]);
+					if(race != null){
+						playerRace.put(player, race);
+						raceCheck.remove(player);
+						settings.createPlayer(player, playerRace.get(player), playerClass.get(player));
+						player.sendMessage("Congrats! You are now a " + ChatColor.GOLD + playerRace.get(player).raceName() +
+								ChatColor.WHITE + "with a " + ChatColor.GOLD + playerClass.get(player).className() + 
+								ChatColor.WHITE + " as your class.");
+						// Clean up
+						playerRace.remove(player);
+						playerClass.remove(player);
+						return true;
+					} else {
+						player.sendMessage(ChatColor.RED + "Not a valid race. Do /race list for a list of races");
+						return false;
+					}
+				}
 			}
 			
 		case "favorite":
@@ -410,56 +438,9 @@ public class Commands implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "Usage: /spell <spell name>");
 			} 
 			
-		case "magicregen":	
+		case "magicregen":	//TODO
 			
-		}
-		
-		//TODO: should put it all into one switch statement
-		
-		if(cmd.getName().equalsIgnoreCase("class") || cmd.getName().equalsIgnoreCase("c")) {
-			if(args.length == 0) {
-				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header")); //TODO add/change descriptions to all of these i don't know if you want them to have a abilities 
-				player.sendMessage(ChatColor.RED + "Archer: " + ChatColor.GOLD + Archer.getInstance().getDetails());
-				player.sendMessage(ChatColor.RED + "Barbarian: " + ChatColor.GOLD + Barbarian.getInstance().getDetails());
-				player.sendMessage(ChatColor.RED + "Knight: " + ChatColor.GOLD + Knight.getInstance().getDetails());
-				player.sendMessage(ChatColor.RED + "Mage: " + ChatColor.GOLD + Mage.getInstance().getDetails());
-				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + Rogue.getInstance().getDetails());
-				return true;
-			}/* else if(args.length >= 2) {
-				player.sendMessage(ChatColor.RED + "Usage: /class <class name>");
-			}*/
-			
-			/*if(args[0].equalsIgnoreCase("archer") || args[0].equalsIgnoreCase("archers")) {
-				save.set(id + ".class", "archer");
-				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Archer" + ChatColor.GOLD + "!");
-			} else if(args[0].equalsIgnoreCase("barbarian") || args[0].equalsIgnoreCase("barbarians")) {
-				save.set(id + ".class", "barbarian");
-				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Barbarian " + ChatColor.GOLD + "!");
-			} else if(args[0].equalsIgnoreCase("knight") || args[0].equalsIgnoreCase("knights")) {
-				save.set(id + ".class", "knight");
-				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Knight" + ChatColor.GOLD + "!");
-			} else if(args[0].equalsIgnoreCase("mage") || args[0].equalsIgnoreCase("mages")) {
-				save.set(id + ".class", "mage");
-				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Mage" + ChatColor.GOLD + "!");
-			} else if(args[0].equalsIgnoreCase("rogue") || args[0].equalsIgnoreCase("rogues")) {
-				save.set(id + ".class", "rogue");
-				player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Rogues" + ChatColor.GOLD + "!");
-			} else if(args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("l")) {
-				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header")); //TODO add/change descriptions to all of these i don't know if you want them to have a abilities 
-				player.sendMessage(ChatColor.RED + "Archer: " + ChatColor.GOLD + "");
-				player.sendMessage(ChatColor.RED + "Barbarian: " + ChatColor.GOLD + "");
-				player.sendMessage(ChatColor.RED + "Knight: " + ChatColor.GOLD + "");
-				player.sendMessage(ChatColor.RED + "Mage: " + ChatColor.GOLD + "");
-				player.sendMessage(ChatColor.RED + "Rogue: " + ChatColor.GOLD + "Now you see me... now you don't");
-			} else {
-				player.sendMessage(ChatColor.RED + "Usage: /class <class name>");
-				return true;
-			}*/
-			//settings.saveSave();
-			return false;
-		}
-		
-		
+		}		
 		  if(cmd.getName().equalsIgnoreCase("spell") || cmd.getName().equalsIgnoreCase("s")) {
 			if(settings.getConfig().getBoolean("enableSpells") == false) {
 				player.sendMessage(ChatColor.RED + "Spells are disabled on this server, this could be due to the fact that they are not working!");
@@ -578,110 +559,7 @@ public class Commands implements CommandExecutor {
 				player.sendMessage(ChatColor.RED + "Usage: /spell <spell name>");
 			} 
 		}
-		
-		
-		if(cmd.getName().equalsIgnoreCase("race") || cmd.getName().equalsIgnoreCase("r")) {
-			//TODO remove when done testing!
-			//if(settings.getRaces().getBoolean(player.getUniqueId() + "") == true) {
-				//player.sendMessage(ChatColor.RED + "You have already picked your race!");
-				//return true;
-			//}
-			
-			if(args.length != 1) {
-				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
-				player.sendMessage(ChatColor.GOLD + "You can be any of these races:");
-				player.sendMessage(ChatColor.RED + "Argonian: " + ChatColor.GOLD + argonian.details() + "!");
-				player.sendMessage(ChatColor.RED + "Breton: " + ChatColor.GOLD + breton.details() + "!");
-				player.sendMessage(ChatColor.RED + "DarkElves: " + ChatColor.GOLD + DarkElf.details() + "!");
-				player.sendMessage(ChatColor.RED + "HighElves: " + ChatColor.GOLD + highelves.details() + "!");
-				player.sendMessage(ChatColor.RED + "Imperials: " + ChatColor.GOLD + Imperial.details() + "!");
-				player.sendMessage(ChatColor.RED + "Khajiit: " + ChatColor.GOLD + khajiit.details() + "!");
-				player.sendMessage(ChatColor.RED + "Nords: " + ChatColor.GOLD + nords.details() + "!");
-				player.sendMessage(ChatColor.RED + "Orcs: " + ChatColor.GOLD + Orc.details() + "!");
-				player.sendMessage(ChatColor.RED + "RedGuard: " + ChatColor.GOLD + redguard.details() + "!");
-				player.sendMessage(ChatColor.RED + "WoodElves: " + ChatColor.GOLD + woodelves.details() + "!");
-				return true;
-			} /*else {
-				if(args[0].equalsIgnoreCase("nords") || args[0].equalsIgnoreCase("nord")) {
-					save.set(id + ".race", "nord");
-					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Nord" + ChatColor.GOLD + "!");
-					settings.saveSave();
-					return true;
-				} else if(args[0].equalsIgnoreCase("orcs") || args[0].equalsIgnoreCase("orc")) {
-					save.set(id + ".race", "orc");
-					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Orc" + ChatColor.GOLD + "!");
-					player.setMaxHealth(24);
-					settings.saveSave();
-					return true;
-				} else if(args[0].equalsIgnoreCase("argonians") || args[0].equalsIgnoreCase("argonian")) {
-					save.set(id + ".race", "argonian");
-					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Argonian" + ChatColor.GOLD + "!");
-					settings.saveSave();
-					return true;
-				} else if(args[0].equalsIgnoreCase("bretons") || args[0].equalsIgnoreCase("breton")) {
-					save.set(id + ".race", "breton");
-					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Breton" + ChatColor.GOLD + "!");
-					settings.saveSave();
-					return true;
-				} else if(args[0].equalsIgnoreCase("darkelves") || args[0].equalsIgnoreCase("darkelf")) {
-					save.set(id + ".race", "darkelf");
-					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "DarkElf" + ChatColor.GOLD + "!");
-					settings.saveSave();
-					return true;
-				} else if(args[0].equalsIgnoreCase("highelves") || args[0].equalsIgnoreCase("highelf")) {
-					save.set(id + ".race", "highelf");
-					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "HighElf" + ChatColor.GOLD + "!");
-					settings.saveSave();
-					return true;	
-				} else if(args[0].equalsIgnoreCase("imperials") || args[0].equalsIgnoreCase("imperial")) {
-					save.set(id + ".race", "imperial");
-					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Imperial" + ChatColor.GOLD + "!");
-					settings.saveSave();
-					return true;
-				} else if(args[0].equalsIgnoreCase("khajiits") || args[0].equalsIgnoreCase("khajiit")) {
-					save.set(id + ".race", "khajiit");
-					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "Khajiit" + ChatColor.GOLD + "!");
-					settings.saveSave();
-					return true;
-				} else if(args[0].equalsIgnoreCase("redguards") || args[0].equalsIgnoreCase("redguard")) {
-					save.set(id + ".race", "redguard");
-					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "RedGuard" + ChatColor.GOLD + "!");
-					redGuardFoodLoopInt = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-						@Override
-						public void run() {
-							if(player.getFoodLevel() < 8) {
-								player.setFoodLevel(8);
-								player.updateInventory();
-							}
-						}	
-					}, 10, 10);
-					settings.saveSave();
-					return true;
-				} else if(args[0].equalsIgnoreCase("woodelves") || args[0].equalsIgnoreCase("woodelf")) {
-					save.set(id + ".race", "woodelf");
-					player.sendMessage(ChatColor.GOLD + "You are now a " + ChatColor.RED + "WoodElf" + ChatColor.GOLD + "!");
-					settings.saveSave();
-					return true;
-				} else */if(args[0].equalsIgnoreCase("list")) {
-				player.sendMessage(ChatColor.AQUA + settings.getConfig().getString("Header"));
-				player.sendMessage(ChatColor.GOLD + "You can be any of these races:");
-				player.sendMessage(ChatColor.RED + "Argonian: " + ChatColor.GOLD + argonian.details() + "!");
-				player.sendMessage(ChatColor.RED + "Breton: " + ChatColor.GOLD + breton.details() + "!");
-				player.sendMessage(ChatColor.RED + "DarkElves: " + ChatColor.GOLD + DarkElf.details() + "!");
-				player.sendMessage(ChatColor.RED + "HighElves: " + ChatColor.GOLD + highelves.details() + "!");
-				player.sendMessage(ChatColor.RED + "Imperials: " + ChatColor.GOLD + Imperial.details() + "!");
-				player.sendMessage(ChatColor.RED + "Khajiit: " + ChatColor.GOLD + khajiit.details() + "!");
-				player.sendMessage(ChatColor.RED + "Nords: " + ChatColor.GOLD + nords.details() + "!");
-				player.sendMessage(ChatColor.RED + "Orcs: " + ChatColor.GOLD + Orc.details() + "!");
-				player.sendMessage(ChatColor.RED + "RedGuard: " + ChatColor.GOLD + redguard.details() + "!");
-				player.sendMessage(ChatColor.RED + "WoodElves: " + ChatColor.GOLD + woodelves.details() + "!");
-				return true;
-				} else {
-					player.sendMessage(ChatColor.RED + "Usage: /race <racename> or /race list");
-				//}
-			}
-			
-		}
+
 		if(cmd.getName().equalsIgnoreCase("magicregen") || cmd.getName().equalsIgnoreCase("mr")) {
 			if(player.isOp()) {
 				Scoreboard board = player.getScoreboard();					

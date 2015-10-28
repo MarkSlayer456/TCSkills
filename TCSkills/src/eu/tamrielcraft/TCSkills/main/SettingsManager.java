@@ -353,7 +353,7 @@ public class SettingsManager {
     		 saveSave();
     	 }
     	 catch(Exception e){
-    		 // Player is not created so do nothing (TODO ?)
+    		 // Player is not created so do nothing (TODO)
     	 }
     	 
     	 /*if(getSave().get(id + ".skillpoints") == null) {
@@ -372,10 +372,7 @@ public class SettingsManager {
      
      public void setupPerks() { //NOTICE SHOULD ONLY BE CALLED ONE TIME!
     	 //TODO could put this in setdefaults!
-    	//TODO put required lvls next to each skill
-     	//SORRY ABOUT THE WIERD TABBING HERE I DID THIS SO I KNOW WHAT SKILLS UNLOCK WHAT
-    	//TODO might add a info.onehanded.... just to organize the info better 
-    	 
+     	//SORRY ABOUT THE WIERD TABBING HERE I DID THIS SO I KNOW WHAT SKILLS UNLOCK WHAT    	 
     	 
     	//TODO: this should be saved in the config file
     	//TODO Why? these are the default values for skyrim and it's setup to only work with 5...
@@ -455,7 +452,7 @@ public class SettingsManager {
     		return false;
     	}
     	
-    	// Should only add the default ones. Rest should be added on upgrade
+    	//TODO: Should only add the default ones. Rest should be added on upgrade
     	//ONE HANDED
     	getSave().set(id + ".skills.onehanded", 15);
     	
@@ -484,20 +481,18 @@ public class SettingsManager {
     	getSave().set(id + ".skill.sneak", 15);
     	getSave().set(id + ".skills.lightarmor", 15);
     	getSave().set(id + ".skills.heavyarmor", 15);
-    	getSave().set(id + ".skills.Illusion", 15);
-    	
-    	/*
-    	 * TODO
-    	 * aliteration
-    	 * restoration
-    	 * conjuration
-    	 * destrcution
-    	 * lockpicking
-    	 * alchemy
-    	 */
-    	
+    	getSave().set(id + ".skills.Illusion", 15);    	
     	return true;
-	}    
+	}
+    
+    public void updatePlayerName(Player player){
+    	// Updates the player name to its latest
+    	UUID id = player.getUniqueId();
+    	if(!getSave().getString(id + ".name").equals(player.getName())){
+    		getSave().set(id + ".name", player.getName());
+    	 	saveSave();
+    	}
+    }
     
     private void setSkills(UUID id){
     	getSave().set(id + ".skills." + Smithing.getInstance().getSkillName() + ".exp", 0);
@@ -510,13 +505,6 @@ public class SettingsManager {
  			// This way no player record is created but the plugin doesn't crash
  			return EmptyRace.getInstance();
  		}
- 		
- 		// Updates the player name to its latest 
- 		//TODO: Additional test required as it gives an error (Mark)
- 		/*if(!getSave().getString(id + ".name").equals(player.getName())){
- 			getSave().set(id + ".name", player.getName());
- 			saveSave();
- 		}*/
  		
  		String race = getSave().getString(id + ".race").toLowerCase();
  		if(race != null){

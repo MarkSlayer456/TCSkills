@@ -21,7 +21,7 @@ public class LeavingListener implements Listener {
 	
 	static SettingsManager settings = SettingsManager.getInstance();
 	
-	/*@EventHandler
+	@EventHandler
 	public void onPlayerDisconnect(PlayerQuitEvent e) {
 		Player player = (Player) e.getPlayer();
 		
@@ -39,7 +39,7 @@ public class LeavingListener implements Listener {
 			Bukkit.getScheduler().cancelTask(task);
 		}
 		
-		if(Magic.golemHM.containsValue(player)) {
+		/*if(Magic.golemHM.containsValue(player)) {
 			IronGolem golem = Magic.golemP.get(player);
 			golem.setLeashHolder(null);
 			golem.setHealth(0);
@@ -68,9 +68,9 @@ public class LeavingListener implements Listener {
 				Magic.shockRuneTimerIntHM.remove(player);
 				}
 			}
-		}
+		}*/
 		
 		settings.getSave().set("magic." + player.getUniqueId() + ".favorites.on", 0);
-	}*/
+	}
 	
 }

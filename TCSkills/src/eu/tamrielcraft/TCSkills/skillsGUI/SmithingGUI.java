@@ -28,38 +28,25 @@ public class SmithingGUI extends SkillGUI {
 		basicSmithing.setItemMeta(basicSmithingMeta);
 		inv.setItem(4, basicSmithing);
 		
-		// Left tree (weapons)
-		//ItemStack stickLeft = new ItemStack(Material.STICK);
-		//inv.setItem(12, stickLeft);
-		
 		ItemStack goldenStrike = new ItemStack(Material.GOLD_SWORD);
 		ItemMeta goldenStrikeMeta = goldenStrike.getItemMeta();
 		goldenStrikeMeta.setDisplayName("Golden Strike");
 		setGUILore(goldenStrike, player, "GoldenStrike");
 		goldenStrike.setItemMeta(goldenStrikeMeta);
-		//inv.setItem(20, goldenStrike);
 		inv.setItem(12, goldenStrike);
-		
-		//ItemStack ladder1 = new ItemStack(Material.LADDER);
-		//inv.setItem(29, ladder1);
-		
+
 		ItemStack stonification = new ItemStack(Material.STONE_SWORD);
 		ItemMeta stonificationMeta = stonification.getItemMeta();
 		stonificationMeta.setDisplayName("Stonification");
 		setGUILore(stonification, player, "Stonification");
 		stonification.setItemMeta(stonificationMeta);
-		//inv.setItem(38, stonification);
 		inv.setItem(21, stonification);
-		
-		//ItemStack ladder2 = new ItemStack(Material.LADDER);
-		//inv.setItem(47, ladder2);
 		
 		ItemStack ironLegacy = new ItemStack(Material.IRON_SWORD);
 		ItemMeta ironLegacyMeta = ironLegacy.getItemMeta();
 		ironLegacyMeta.setDisplayName("Iron Legacy");
 		setGUILore(ironLegacy, player, "Iron Legacy");
 		ironLegacy.setItemMeta(ironLegacyMeta);
-		//inv.setItem(56, ironLegacy);
 		inv.setItem(30, ironLegacy);
 		
 		
