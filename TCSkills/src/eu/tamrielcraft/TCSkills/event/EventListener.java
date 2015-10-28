@@ -60,13 +60,15 @@ public class EventListener implements Listener {
 	@EventHandler//(priority = EventPriority.NORMAL)
 	public void onGainExp(PlayerExpChangeEvent event){
 		// First, set new amount of experience
-		//TODO: should be tested!
 		event.setAmount((int)Math.floor((event.getAmount() * expGainer)));
 		
 		// Next, check if player levels up, if so, add AP
-		if(event.getPlayer().getExpToLevel() <= event.getAmount()){
+		int expNeededToLevel = (int) Math.ceil((event.getPlayer().getExpToLevel()
+				- (event.getPlayer().getExp()) * event.getPlayer().getExpToLevel()));		
+		if(expNeededToLevel <= event.getAmount()){
 			// Player is about to level up so add AP
-			settings.addSkillPoint(event.getPlayer());
+			settings.addAbilityPoint(event.getPlayer());
+			event.getPlayer().sendMessage("You leveled up and got an ability point!");
 		}
 	}
 		

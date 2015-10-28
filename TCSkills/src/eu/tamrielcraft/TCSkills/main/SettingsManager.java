@@ -65,7 +65,7 @@ public class SettingsManager {
      File sfile;
     
      public void playerLevelUp(Player player) {
-    	addSkillPoint(player);
+    	addAbilityPoint(player);
      }
      
      public void setDefaults() {
@@ -135,19 +135,7 @@ public class SettingsManager {
     		 save.set(id + ".magic.activeSpell", null);
     	 }
     	 saveSave();
-     }
-     
-     public void addSkillPoint(Player player) {
-    	 UUID id = player.getUniqueId();
-    	 if(getSave().get(id + ".skillpoints") == null) {
-    		 getSave().set(id + ".skillpoints", 1);
-    		 return;
-    	 } else {
-    		 getSave().set(id + ".skillpoints", getSave().get(id + ".skillpoints"));
-    		 return;
-    	 }
-     }
-     
+     }     
      
      public Boolean abilitiesEnable() {
     	 if(getConfig().getBoolean("enableAbilites") == true) {
@@ -356,6 +344,27 @@ public class SettingsManager {
     	 return abilityPoints;
      }
      
+     public void addAbilityPoint(Player player) {
+    	 UUID id = player.getUniqueId();
+    	 int currAP = 0;
+    	 try{
+    		 currAP = getSave().getInt(id + ".AP");
+    		 getSave().set(id + ".AP", currAP + 1);
+    		 saveSave();
+    	 }
+    	 catch(Exception e){
+    		 // Player is not created so do nothing (TODO ?)
+    	 }
+    	 
+    	 /*if(getSave().get(id + ".skillpoints") == null) {
+    		 getSave().set(id + ".skillpoints", 1);
+    		 return;
+    	 } else {
+    		 getSave().set(id + ".skillpoints", getSave().get(id + ".skillpoints"));
+    		 return;
+    	 }*/
+     }
+     
      //TODO should be moved to individual perks
      public int getPerkMaxLevel(String perkName) {
     	 return getSave().getInt("onehanded." + perkName + ".max");
@@ -432,6 +441,20 @@ public class SettingsManager {
     public Boolean createPlayer(Player player, Race race, Classes classy){
     	UUID id = player.getUniqueId();
     	
+    	try{
+    		getSave().set(id + ".name", player.getName());
+    		getSave().set(id + ".race", race.raceName().toLowerCase());
+        	getSave().set(id + ".class", classy.className().toLowerCase());
+        	getSave().set(id + ".AP", 0);
+        	setSkills(id);
+        	saveSave();
+        	//return true;
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
+    	
     	// Should only add the default ones. Rest should be added on upgrade
     	//ONE HANDED
     	getSave().set(id + ".skills.onehanded", 15);
@@ -473,19 +496,7 @@ public class SettingsManager {
     	 * alchemy
     	 */
     	
-    	try{
-    		getSave().set(id + ".name", player.getName());
-    		getSave().set(id + ".race", race.raceName().toLowerCase());
-        	getSave().set(id + ".class", classy.className().toLowerCase());
-        	getSave().set(id + ".AP", 0);
-        	setSkills(id);
-        	saveSave();
-        	return true;
-    	}
-    	catch(Exception e){
-    		e.printStackTrace();
-    		return false;
-    	}
+    	return true;
 	}    
     
     private void setSkills(UUID id){

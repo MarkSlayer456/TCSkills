@@ -21,7 +21,7 @@ public class LeavingListener implements Listener {
 	
 	static SettingsManager settings = SettingsManager.getInstance();
 	
-	@EventHandler
+	/*@EventHandler
 	public void onPlayerDisconnect(PlayerQuitEvent e) {
 		Player player = (Player) e.getPlayer();
 		
@@ -71,6 +71,6 @@ public class LeavingListener implements Listener {
 		}
 		
 		settings.getSave().set("magic." + player.getUniqueId() + ".favorites.on", 0);
-	}
+	}*/
 	
 }

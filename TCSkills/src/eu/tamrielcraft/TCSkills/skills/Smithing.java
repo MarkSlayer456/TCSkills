@@ -29,6 +29,7 @@ public class Smithing extends Skill {
 		skillExp = new HashMap<Material,Integer>();
 		perkLevels = new HashMap<SmithingPerk,Integer>();
 		perkDependencies = new HashMap<SmithingPerk,SmithingPerk>();
+		perkMaxLevel = new HashMap<SmithingPerk,Integer>();
 		
 		// Armor
 		skillPerks.put(Material.LEATHER_BOOTS, SmithingPerk.BASICSMITHING);
