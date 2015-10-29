@@ -16,6 +16,9 @@ import eu.tamrielcraft.TCSkills.skills.OneHanded;
 public class OneHandedGUI extends SkillGUI {
 	
 	private static OneHandedGUI instance = new OneHandedGUI();
+	private static OneHanded oh = OneHanded.getInstance();
+	
+	
 	private List<String> armsmanLore = new ArrayList<String>();
 
 	public static OneHandedGUI getInstance(){
@@ -38,19 +41,13 @@ public class OneHandedGUI extends SkillGUI {
 	public void itemClicked(Player player, String displayName) {
 		switch(displayName){
 		case "armsman":
-			if(settings.canUpgradePerk(OneHanded.getInstance().getSkillName(), "armsman", player) == true) {
-				settings.upgradePerk("onehanded", "armsman", player);
-			}
+			oh.advancePerkLevel(displayName, player);
 			break;
 		case "hackandslash":
-			if(settings.canUpgradePerk(OneHanded.getInstance().getSkillName(), "hackandslash", player)) {
-				settings.upgradePerk("onehanded", "hackandslash", player);
-			}
+			oh.advancePerkLevel(displayName, player);
 			break;
 		case "dualflurry":
-			if(settings.canUpgradePerk(OneHanded.getInstance().getSkillName(), "dualflurry", player)) {
-				settings.upgradePerk("onehanded", "dualflurry", player);
-			}
+			oh.advancePerkLevel(displayName, player);
 			break;
 		}
 	}

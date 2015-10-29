@@ -3,11 +3,14 @@ package eu.tamrielcraft.TCSkills.skills;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.plugin.Plugin;
+
+import eu.tamrielcraft.TCSkills.skills.Smithing.SmithingPerk;
 
 
 public class OneHanded extends Skill {
@@ -118,7 +121,7 @@ public class OneHanded extends Skill {
 		perkDependencies.put(OneHandedPerk.FIGHTINGSTANCE, OneHandedPerk.ARMSMAN);
 		perkDependencies.put(OneHandedPerk.SAVAGESTRIKE, OneHandedPerk.FIGHTINGSTANCE);
 		perkDependencies.put(OneHandedPerk.CRITICALCHARGE, OneHandedPerk.FIGHTINGSTANCE);
-		perkDependencies.put(OneHandedPerk.CRITICALCHARGE, OneHandedPerk.PARALYZINGSTRIKE);
+		perkDependencies.put(OneHandedPerk.CRITICALCHARGE, OneHandedPerk.PARALYZINGSTRIKE); //TODO this one has 2 perk dependencies so what should i do?
 		
 		
 		
@@ -132,13 +135,38 @@ public class OneHanded extends Skill {
 
 	@Override
 	public void advancePerkLevel(String perkName, Player player) {
-		// TODO Auto-generated method stub
+		OneHandedPerk perk = null;
+		for(OneHandedPerk s : OneHandedPerk.values()) {
+			if(perkName.equalsIgnoreCase(s.toString())) {
+				perk = s;
+			}
+		}
 		
+		if(perk == null) {
+			player.sendMessage(ChatColor.RED + "Something went wrong... There is no perk with this name.");
+		}
+		// Now check whether the player has all requirements
+				OneHandedPerk dependency = perkDependencies.get(perk);
+				if(dependency != null){
+					// Perk requirements
+					if(!hasPerk(this, dependency.toString(), 1, player)){
+						player.sendMessage("You haven't unlocked the necessary perks to unlock this perk");
+						return;
+					}
+					// Level requirements
+					if(perkLevels.get(perk) > settings.getPerkLevel(getSkillName(), perk.toString(), player)){
+						player.sendMessage("I am not skilled enough to learn this. I might want to practice more.");
+						return;
+					}
+				}
+				// All clear, advance perk
+				// Need to check level and add one if applicable
+				setPerkLevel(perk.toString(), 1, player);	
 	}
 
 	@Override
 	protected void setPerkLevel(String perkName, int perkLevel, Player player) {
-		// TODO Auto-generated method stub
+		settings.getPerkLevel(getSkillName(), perkName, player);
 		
 	}
 	
