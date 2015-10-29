@@ -11,7 +11,7 @@ public class Smithing extends Skill {
 
 	Map<Material,SmithingPerk> skillPerks;
 	Map<Material,Integer> skillExp;
-	Map<SmithingPerk,Integer> perkLevels; //TODO some perks can be upgraded more than 
+	Map<SmithingPerk,Integer> perkLevels, perkMaxLevel; //TODO some perks can be upgraded more than 
 	//once and each time the level requirement changes like armsman level 1 you need level 20 onehanded but level 2 you need level 40 onehanded
 	
 	Map<SmithingPerk,SmithingPerk> perkDependencies;
@@ -29,6 +29,7 @@ public class Smithing extends Skill {
 		skillExp = new HashMap<Material,Integer>();
 		perkLevels = new HashMap<SmithingPerk,Integer>();
 		perkDependencies = new HashMap<SmithingPerk,SmithingPerk>();
+		perkMaxLevel = new HashMap<SmithingPerk,Integer>();
 		
 		// Armor
 		skillPerks.put(Material.LEATHER_BOOTS, SmithingPerk.BASICSMITHING);
@@ -142,6 +143,17 @@ public class Smithing extends Skill {
 		perkDependencies.put(SmithingPerk.STONIFICATION, SmithingPerk.GOLDENSTRIKE);
 		perkDependencies.put(SmithingPerk.IRONLEGACY, SmithingPerk.STONIFICATION);
 		perkDependencies.put(SmithingPerk.DIAMONDIFICATION, SmithingPerk.IRONLEGACY);
+		
+		// Setup Max level of skills
+		perkMaxLevel.put(SmithingPerk.BASICSMITHING, 1);
+		perkMaxLevel.put(SmithingPerk.GOLDENADVANCEMENTS, 1);
+		perkMaxLevel.put(SmithingPerk.CHAINING, 1);
+		perkMaxLevel.put(SmithingPerk.IRONPLATING, 1);
+		perkMaxLevel.put(SmithingPerk.DIAMONDWELDING, 1);
+		perkMaxLevel.put(SmithingPerk.GOLDENSTRIKE, 1);
+		perkMaxLevel.put(SmithingPerk.STONIFICATION, 1);
+		perkMaxLevel.put(SmithingPerk.IRONLEGACY, 1);
+		perkMaxLevel.put(SmithingPerk.DIAMONDIFICATION, 1);
 	}
 	
 	public static Smithing getInstance() {
@@ -184,17 +196,29 @@ public class Smithing extends Skill {
 	@Override
 	public void advancePerkLevel(String perkName, Player player) {
 		// Player wants to advance a perk
-		// First get wanted perk
+		// First, check if player has any Ability Points
+		if(settings.getAbilityPoints(player) <= 0){
+			player.sendMessage("You don't have enough ability points to upgrade");
+			return;
+		}
+		
+		// Next get wanted perk
 		SmithingPerk perk = null;
 		for(SmithingPerk s : SmithingPerk.values()){
 			if(perkName.equalsIgnoreCase(s.toString())){
 				perk = s;
 			}
-		}
-		
+		}	
 		// Additional check
 		if(perk == null){
 			player.sendMessage("Something went wrong... There is no perk with this name.");
+			return;
+		}
+		
+		// Then, check if player is at max level of perk
+		if(hasPerk(this, perk.toString(), perkMaxLevel.get(perk), player)){
+			// Player is at max level so report and abort
+			player.sendMessage("You are already a professional in this ability!");
 			return;
 		}
 		
@@ -202,7 +226,7 @@ public class Smithing extends Skill {
 		SmithingPerk dependency = perkDependencies.get(perk);
 		if(dependency != null){
 			// Perk requirements
-			if(!hasPerk(this, dependency.toString(), 1, player)){
+			if(!hasPerk(this, dependency.toString().toLowerCase(), 1, player)){
 				player.sendMessage("You haven't unlocked the necessary perks to unlock this perk");
 				return;
 			}
@@ -214,11 +238,17 @@ public class Smithing extends Skill {
 		}
 		// All clear, advance perk
 		// Need to check level and add one if applicable
-		setPerkLevel(perk.toString(), 1, player);		
+		upgradePerk(perk.toString(), player);
+		player.sendMessage("Perklevel upgraded!");
 	}
-
+	
 	@Override
-	protected void setPerkLevel(String perkName, int perkLevel, Player player) {
-		settings.getPerkLevel(getSkillName(), perkName, player);
+	protected void upgradePerk(String perkName, Player player){
+		if(hasPerk(this, perkName, 1, player)){
+			int level = settings.getPerkLevel(getSkillName(), perkName, player);
+			setPerkLevel(this, perkName, level + 1, player);
+		}else{
+			addPerk(this, perkName, player);
+		}
 	}
 }

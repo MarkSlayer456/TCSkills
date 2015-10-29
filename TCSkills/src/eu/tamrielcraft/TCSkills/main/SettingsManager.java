@@ -65,7 +65,7 @@ public class SettingsManager {
      File sfile;
     
      public void playerLevelUp(Player player) {
-    	addSkillPoint(player);
+    	addAbilityPoint(player);
      }
      
      public void setDefaults() {
@@ -135,19 +135,7 @@ public class SettingsManager {
     		 save.set(id + ".magic.activeSpell", null);
     	 }
     	 saveSave();
-     }
-     
-     public void addSkillPoint(Player player) {
-    	 UUID id = player.getUniqueId();
-    	 if(getSave().get(id + ".skillpoints") == null) {
-    		 getSave().set(id + ".skillpoints", 1);
-    		 return;
-    	 } else {
-    		 getSave().set(id + ".skillpoints", getSave().get(id + ".skillpoints"));
-    		 return;
-    	 }
-     }
-     
+     }     
      
      public Boolean abilitiesEnable() {
     	 if(getConfig().getBoolean("enableAbilites") == true) {
@@ -313,18 +301,15 @@ public class SettingsManager {
     			 return OneHanded.paralyzingstrike.get(perkNumber);
     		 }
     	 case "smithing":
-    		 
-    	 
+    		 	 
     	 }
-    	 
-    	 
-    	 
-    	 
     	 return 0;
      }
      
      public int getPerkLevel(String skillName, String perkName, Player player) {
     	 UUID id = player.getUniqueId();
+    	 skillName = skillName.toLowerCase();
+    	 perkName = perkName.toLowerCase();
     	 int perkLevel;
     	 try{
     		 perkLevel = getSave().getInt(id + ".skills." + skillName + "." + perkName);
@@ -335,16 +320,59 @@ public class SettingsManager {
     	 return perkLevel;
      }
      
+     public void setPerkLevel(String skillName, String perkName, Player player, int level){
+    	 UUID id = player.getUniqueId();
+    	 skillName = skillName.toLowerCase();
+    	 perkName = perkName.toLowerCase();
+    	 try{
+    		 getSave().set(id + "." + skillName + "." + perkName, level);
+    	 }
+    	 catch(Exception e){
+    		 player.sendMessage("Could not update perk level");
+    	 }
+     }
+     
+     public int getAbilityPoints(Player player){
+    	 UUID id = player.getUniqueId();
+    	 int abilityPoints = 0;
+    	 try{
+    		 getSave().get(id + ".AP");
+    	 }
+    	 catch(Exception e){
+    		 player.sendMessage("Something went wrong with getting your ability points. Report this to an admin.");
+    	 }
+    	 return abilityPoints;
+     }
+     
+     public void addAbilityPoint(Player player) {
+    	 UUID id = player.getUniqueId();
+    	 int currAP = 0;
+    	 try{
+    		 currAP = getSave().getInt(id + ".AP");
+    		 getSave().set(id + ".AP", currAP + 1);
+    		 saveSave();
+    	 }
+    	 catch(Exception e){
+    		 // Player is not created so do nothing (TODO)
+    	 }
+    	 
+    	 /*if(getSave().get(id + ".skillpoints") == null) {
+    		 getSave().set(id + ".skillpoints", 1);
+    		 return;
+    	 } else {
+    		 getSave().set(id + ".skillpoints", getSave().get(id + ".skillpoints"));
+    		 return;
+    	 }*/
+     }
+     
+     //TODO should be moved to individual perks
      public int getPerkMaxLevel(String perkName) {
     	 return getSave().getInt("onehanded." + perkName + ".max");
      }
      
      public void setupPerks() { //NOTICE SHOULD ONLY BE CALLED ONE TIME!
     	 //TODO could put this in setdefaults!
-    	//TODO put required lvls next to each skill
-     	//SORRY ABOUT THE WIERD TABBING HERE I DID THIS SO I KNOW WHAT SKILLS UNLOCK WHAT
-    	//TODO might add a info.onehanded.... just to organize the info better 
-    	 
+     	//SORRY ABOUT THE WIERD TABBING HERE I DID THIS SO I KNOW WHAT SKILLS UNLOCK WHAT    	 
     	 
     	//TODO: this should be saved in the config file
     	//TODO Why? these are the default values for skyrim and it's setup to only work with 5...
@@ -410,7 +438,21 @@ public class SettingsManager {
     public Boolean createPlayer(Player player, Race race, Classes classy){
     	UUID id = player.getUniqueId();
     	
+    	try{
+    		getSave().set(id + ".name", player.getName());
+    		getSave().set(id + ".race", race.raceName().toLowerCase());
+        	getSave().set(id + ".class", classy.className().toLowerCase());
+        	getSave().set(id + ".AP", 0);
+        	setSkills(id);
+        	saveSave();
+        	//return true;
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
     	
+    	//TODO: Should only add the default ones. Rest should be added on upgrade
     	//ONE HANDED
     	getSave().set(id + ".skills.onehanded", 15);
     	
@@ -439,31 +481,18 @@ public class SettingsManager {
     	getSave().set(id + ".skill.sneak", 15);
     	getSave().set(id + ".skills.lightarmor", 15);
     	getSave().set(id + ".skills.heavyarmor", 15);
-    	getSave().set(id + ".skills.Illusion", 15);
-    	
-    	/*
-    	 * TODO
-    	 * aliteration
-    	 * restoration
-    	 * conjuration
-    	 * destrcution
-    	 * lockpicking
-    	 * alchemy
-    	 */
-    	
-    	try{
+    	getSave().set(id + ".skills.Illusion", 15);    	
+    	return true;
+	}
+    
+    public void updatePlayerName(Player player){
+    	// Updates the player name to its latest
+    	UUID id = player.getUniqueId();
+    	if(!getSave().getString(id + ".name").equals(player.getName())){
     		getSave().set(id + ".name", player.getName());
-    		getSave().set(id + ".race", race.raceName().toLowerCase());
-        	getSave().set(id + ".class", classy.className().toLowerCase());
-        	setSkills(id);
-        	saveSave();
-        	return true;
+    	 	saveSave();
     	}
-    	catch(Exception e){
-    		e.printStackTrace();
-    		return false;
-    	}
-	}    
+    }
     
     private void setSkills(UUID id){
     	getSave().set(id + ".skills." + Smithing.getInstance().getSkillName() + ".exp", 0);
@@ -476,13 +505,6 @@ public class SettingsManager {
  			// This way no player record is created but the plugin doesn't crash
  			return EmptyRace.getInstance();
  		}
- 		
- 		// Updates the player name to its latest 
- 		//TODO: Additional test required as it gives an error (Mark)
- 		/*if(!getSave().getString(id + ".name").equals(player.getName())){
- 			getSave().set(id + ".name", player.getName());
- 			saveSave();
- 		}*/
  		
  		String race = getSave().getString(id + ".race").toLowerCase();
  		if(race != null){

@@ -15,7 +15,7 @@ public abstract class Skill {
 	public abstract void onCraftEvent(CraftItemEvent event);
 	public abstract String getSkillName();
 	public abstract void advancePerkLevel(String perkName, Player player);
-	protected abstract void setPerkLevel(String perkName, int perkLevel, Player player);
+	protected abstract void upgradePerk(String perkName, Player player);
 	
 	protected int getLevel(int experience){
 		int start = 0; 
@@ -36,5 +36,13 @@ public abstract class Skill {
 		}else{ 
 			return false;
 		}
+	}
+	
+	protected void setPerkLevel(Skill skill, String perkName, int perkLevel, Player player) {
+		settings.setPerkLevel(skill.getSkillName(), perkName, player, perkLevel);
+	}
+	
+	protected void addPerk(Skill skill, String perkName, Player player){
+		setPerkLevel(skill, perkName, 1, player);
 	}
 }

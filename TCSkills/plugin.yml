@@ -32,4 +32,7 @@ commands:
   skills:
     description: Displays skill tree
     usage: /<command>
+  tcskills:
+    description: Guided race and class selection tool
+    usage: /<command>
   
