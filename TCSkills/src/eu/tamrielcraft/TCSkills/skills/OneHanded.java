@@ -10,12 +10,13 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.plugin.Plugin;
 
 
+
 public class OneHanded extends Skill {
 	
 	private static OneHanded instance = new OneHanded();
 	
 	Map<Material, OneHandedPerk> skillperks;
-	Map<OneHandedPerk, Integer> perkLevels;
+	Map<OneHandedPerk, Integer> perkLevels, perkMaxLevel;
 	public static Map<OneHandedPerk, OneHandedPerk> perkDependencies;
 	
 	public static Map<OneHandedPerk, Boolean> hasPerk;
@@ -121,6 +122,8 @@ public class OneHanded extends Skill {
 		perkDependencies.put(OneHandedPerk.CRITICALCHARGE, OneHandedPerk.PARALYZINGSTRIKE); //TODO this one has 2 perk dependencies so what should i do?
 		
 		
+		//Perk max levels
+		
 		
 	}
 	
@@ -132,13 +135,62 @@ public class OneHanded extends Skill {
 
 	@Override
 	public void advancePerkLevel(String perkName, Player player) {
-		// TODO Auto-generated method stub
+		// Player wants to advance a perk
+				// First, check if player has any Ability Points
+				if(settings.getAbilityPoints(player) <= 0){
+					player.sendMessage("You don't have enough ability points to upgrade");
+					return;
+				}
+				
+				// Next get wanted perk
+				OneHandedPerk perk = null;
+				for(OneHandedPerk s : OneHandedPerk.values()){
+					if(perkName.equalsIgnoreCase(s.toString())){
+						perk = s;
+					}
+				}	
+				// Additional check
+				if(perk == null){
+					player.sendMessage("Something went wrong... There is no perk with this name.");
+					return;
+				}
+				
+				// Then, check if player is at max level of perk
+				if(hasPerk(this, perk.toString(), perkMaxLevel.get(perk), player)){
+					// Player is at max level so report and abort
+					player.sendMessage("You are already a professional in this ability!");
+					return;
+				}
+				
+				// Now check whether the player has all requirements
+				OneHandedPerk dependency = perkDependencies.get(perk);
+				if(dependency != null){
+					// Perk requirements
+					if(!hasPerk(this, dependency.toString().toLowerCase(), 1, player)){
+						player.sendMessage("You haven't unlocked the necessary perks to unlock this perk");
+						return;
+					}
+					// Level requirements
+					if(perkLevels.get(perk) > settings.getPerkLevel(getSkillName(), perk.toString(), player)){
+						player.sendMessage("I am not skilled enough to learn this. I might want to practice more.");
+						return;
+					}
+				}
+				// All clear, advance perk
+				// Need to check level and add one if applicable
+				upgradePerk(perk.toString(), player);
+				player.sendMessage("Perklevel upgraded!");
 		
 	}
 
 	@Override
 	protected void upgradePerk(String perkName, Player player) {
-		// TODO Auto-generated method stub
+		if(hasPerk(this, perkName, 1, player)) {
+			int level = settings.getPerkLevel(getSkillName(), perkName, player);
+			setPerkLevel(this, perkName, level + 1, player);
+		} else {
+			addPerk(this, perkName, player);
+		}	
 		
 	}
 }
