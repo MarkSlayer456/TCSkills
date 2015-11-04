@@ -30,6 +30,7 @@ import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
 import eu.tamrielcraft.TCSkills.races.WoodElf;
+import eu.tamrielcraft.TCSkills.skills.LockPicking;
 import eu.tamrielcraft.TCSkills.skills.OneHanded;
 import eu.tamrielcraft.TCSkills.skills.Smithing;
 import eu.tamrielcraft.TCSkills.skills.OneHanded.OneHandedPerk;
@@ -300,8 +301,6 @@ public class SettingsManager {
     		 case "paralyzingstrike":
     			 return OneHanded.paralyzingstrike.get(perkNumber);
     		 }
-    	 case "smithing":
-    		 	 
     	 }
     	 return 0;
      }
@@ -497,6 +496,8 @@ public class SettingsManager {
     private void setSkills(UUID id){
     	getSave().set(id + ".skills." + Smithing.getInstance().getSkillName() + ".exp", 0);
     	getSave().set(id + ".skills." + Smithing.getInstance().getSkillName() + "." + Smithing.SmithingPerk.BASICSMITHING.toString().toLowerCase(), 1);
+    	getSave().set(id + ".skills." + LockPicking.getInstance().getSkillName() + ".exp", 0);
+    	getSave().set(id + ".skills." + LockPicking.getInstance().getSkillName() + "." + LockPicking.LockPickingPerk.NOVICE.toString().toLowerCase(), 1);
     }
     
      public Race getRace(Player player) {

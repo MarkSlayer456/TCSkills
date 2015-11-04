@@ -49,6 +49,13 @@ public class SmithingGUI extends SkillGUI {
 		ironLegacy.setItemMeta(ironLegacyMeta);
 		inv.setItem(30, ironLegacy);
 		
+		ItemStack diamondification = new ItemStack(Material.DIAMOND_SWORD);
+		ItemMeta diamondificationMeta = diamondification.getItemMeta();
+		diamondificationMeta.setDisplayName("Diamondification");
+		setGUILore(diamondification, player, "Diamondification");
+		diamondification.setItemMeta(diamondificationMeta);
+		inv.setItem(39, diamondification);
+		
 		
 		player.openInventory(inv);
 	}
@@ -64,6 +71,8 @@ public class SmithingGUI extends SkillGUI {
 			smithingSkill.advancePerkLevel(SmithingPerk.STONIFICATION.toString(), player); break;
 		case "Iron Legacy":
 			smithingSkill.advancePerkLevel(SmithingPerk.IRONLEGACY.toString(), player); break;
+		case "Diamondification":
+			smithingSkill.advancePerkLevel(SmithingPerk.DIAMONDIFICATION.toString(), player); break;
 		default:
 			
 		}
