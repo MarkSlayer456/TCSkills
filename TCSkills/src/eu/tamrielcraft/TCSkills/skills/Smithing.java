@@ -11,8 +11,7 @@ public class Smithing extends Skill {
 
 	Map<Material,SmithingPerk> skillPerks;
 	Map<Material,Integer> skillExp;
-	Map<SmithingPerk,Integer> perkLevels, perkMaxLevel; //TODO some perks can be upgraded more than 
-	//once and each time the level requirement changes like armsman level 1 you need level 20 onehanded but level 2 you need level 40 onehanded
+	Map<SmithingPerk,Integer> perkLevels, perkMaxLevel;
 	
 	Map<SmithingPerk,SmithingPerk> perkDependencies;
 	

@@ -24,8 +24,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -38,6 +40,7 @@ import eu.tamrielcraft.TCSkills.races.HighElf;
 import eu.tamrielcraft.TCSkills.races.Orc;
 import eu.tamrielcraft.TCSkills.races.Race;
 import eu.tamrielcraft.TCSkills.races.RedGuard;
+import eu.tamrielcraft.TCSkills.skills.Alchemy;
 import eu.tamrielcraft.TCSkills.skills.Smithing;
 import eu.tamrielcraft.TCSkills.skillsGUI.SkillTreeGUI;
 
@@ -50,11 +53,13 @@ public class EventListener implements Listener {
 	
 	// Material collections
 	private List<Material> smithing = new ArrayList<Material>();
+	private List<PotionType> alchemy = new ArrayList<PotionType>();
 
 	public EventListener(Plugin plugin, SettingsManager settings) {
 		this.settings = settings;
 		this.plugin = plugin;
 		addSmithingMaterials();
+		addAlchemyPotions();
 	}
 	
 	@EventHandler//(priority = EventPriority.NORMAL)
@@ -76,6 +81,9 @@ public class EventListener implements Listener {
 	public void onCraftItem(CraftItemEvent event){
 		if(smithing.contains(event.getInventory().getResult().getType())){
 			Smithing.getInstance().onCraftEvent(event);
+		}
+		if(alchemy.contains(Potion.fromItemStack((event.getRecipe().getResult())).getType())){
+			Alchemy.getInstance().onCraftEvent(event);			
 		}
 	}
 
@@ -351,7 +359,7 @@ public class EventListener implements Listener {
 		}
 	}
 	
-	public void addSmithingMaterials(){
+	private void addSmithingMaterials(){
 		smithing.add(Material.LEATHER_BOOTS);
 		smithing.add(Material.LEATHER_CHESTPLATE);
 		smithing.add(Material.LEATHER_HELMET);
@@ -395,4 +403,19 @@ public class EventListener implements Listener {
 		smithing.add(Material.DIAMOND_SWORD);
 		smithing.add(Material.DIAMOND_HOE);
 	}
+	
+	private void addAlchemyPotions(){
+		alchemy.add(PotionType.INSTANT_HEAL);
+		alchemy.add(PotionType.SPEED);
+		alchemy.add(PotionType.JUMP);
+		alchemy.add(PotionType.STRENGTH);
+		alchemy.add(PotionType.WATER_BREATHING);
+		alchemy.add(PotionType.POISON);
+		alchemy.add(PotionType.WEAKNESS);
+		alchemy.add(PotionType.INSTANT_DAMAGE);
+		alchemy.add(PotionType.NIGHT_VISION);
+		alchemy.add(PotionType.FIRE_RESISTANCE);
+		alchemy.add(PotionType.REGEN);
+		alchemy.add(PotionType.INVISIBILITY);
+		}
 }
